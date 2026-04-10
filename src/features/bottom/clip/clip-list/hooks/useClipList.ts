@@ -1,0 +1,47 @@
+import { useCallback, useState } from 'react';
+import { useAnimatedStyle, interpolate, Extrapolate } from 'react-native-reanimated';
+import { useHapticFeedback, useScroll } from '@hooks/utils';
+import { LOGO_ANIMATION_CONFIG } from '../constants';
+
+export const useClipList = () => {
+  const { triggerHaptic } = useHapticFeedback();
+  const [refreshing, setRefreshing] = useState(false);
+  const { scrollY } = useScroll();
+
+  const handleRefresh = useCallback(() => {
+    setRefreshing(true);
+    triggerHaptic('light');
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1500);
+  }, [triggerHaptic]);
+
+  const handleScroll = useCallback(
+    (event: any) => {
+      const offsetY = event.nativeEvent.contentOffset.y;
+      scrollY.value = offsetY;
+    },
+    [scrollY],
+  );
+
+  const logoAnimatedStyle = useAnimatedStyle(() => {
+    const rotation = interpolate(
+      scrollY.value,
+      LOGO_ANIMATION_CONFIG.INPUT_RANGE,
+      LOGO_ANIMATION_CONFIG.OUTPUT_RANGE,
+      Extrapolate.CLAMP,
+    );
+
+    return {
+      transform: [{ rotate: `${rotation}deg` }],
+    };
+  }, [scrollY]);
+
+  return {
+    refreshing,
+    handleRefresh,
+    handleScroll,
+    logoAnimatedStyle,
+  };
+};
+

@@ -1,0 +1,20 @@
+{
+    "account": "Account",
+    "next": "Next",
+    "skip": "Skip",
+    "hello": "Hello",
+    "phoneNumber": "Phone Number",
+    "changeLanguageTitle": "Change Language",
+    "changeLanguageSubtitle": "Select your preferred language",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "fullName": "Full Name",
+    "dateOfBirth": "Date of Birth",
+    "back": "Back",
+    "errors": {
+        "generic": {
+            "title": "Oops, something went wrong!",
+            "description": "Don't worry, we're fixing it. Please try again later! 😊"
+        }
+    }
+}

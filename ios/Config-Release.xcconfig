@@ -1,0 +1,3 @@
+#include "Pods/Target Support Files/Pods-Wuzz/Pods-Wuzz.release.xcconfig"
+#include "Config.xcconfig"
+PRODUCT_BUNDLE_IDENTIFIER = com.koobam.wuzz$(IOS_BUNDLE_ID_SUFFIX)

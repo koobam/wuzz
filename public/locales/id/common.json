@@ -1,0 +1,21 @@
+{
+    "account": "Akun",
+    "hello": "Halo",
+    "next": "Lanjut",
+    "skip": "Lewati",
+    "phoneNumber": "Nomor Handphone",
+    "changeLanguageTitle": "Ubah Bahasa",
+    "changeLanguageSubtitle": "Pilih bahasa yang Anda inginkan",
+    "signIn": "Masuk",
+    "signUp": "Daftar",
+    "firstName": "Nama Depan",
+    "lastName": "Nama Belakang",
+    "dateOfBirth": "Tanggal Lahir",
+    "back": "Kembali",
+    "errors": {
+        "generic": {
+            "title": "Ups, ada yang kurang beres!",
+            "description": "Tenang, kita sedang memperbaikinya. Coba lagi nanti ya! 😊"
+        }
+    }
+}

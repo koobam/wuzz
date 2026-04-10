@@ -1,0 +1,72 @@
+---
+description: useCallback/useMemo usage and no inline styles; prefer component props or StyleSheet
+globs: "**/*.tsx"
+alwaysApply: true
+---
+
+# React performance and styling
+
+## useCallback
+
+Use `useCallback` for **functions** that would otherwise cause unnecessary re-renders:
+
+- **Event handlers passed as props** (e.g. `onPress`, `onScroll`, `onChange`), so memoized children don’t re-render when the parent re-renders.
+- **Callbacks passed to list items or children** (e.g. `renderItem`, `keyExtractor` for FlashList/FlatList).
+- **Functions used in dependency arrays** of other hooks (e.g. `useEffect`, `useMemo`).
+
+```tsx
+// ❌ BAD – new function every render, breaks memo() on children
+const handlePress = () => navigation.navigate('screen');
+
+// ✅ GOOD – stable reference when dependencies don’t change
+const handlePress = useCallback(() => {
+  navigation.navigate('screen');
+}, [navigation]);
+```
+
+Only add `useCallback` when the function is passed to a memoized component or used in a dependency array. Avoid wrapping every small helper if it’s not needed for stability.
+
+---
+
+## useMemo
+
+Use `useMemo` for **non-function values** (objects, arrays, or expensive computations) that are passed as props or used in dependency arrays:
+
+- **Computed values** that are expensive to compute.
+- **Objects or arrays** passed as props (e.g. `style`, `contentContainerStyle`) so the reference is stable and memoized children don’t re-render unnecessarily.
+
+```tsx
+// ❌ BAD – new object every render
+contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 16 }}
+
+// ✅ GOOD – stable reference
+const contentContainerStyle = useMemo(
+  () => ({ paddingHorizontal: 16, paddingBottom: 16 }),
+  [],
+);
+```
+
+Do **not** use `useMemo` for functions; use `useCallback` for those.
+
+---
+
+## Styling: no inline style objects when avoidable
+
+- **Prefer component props** for layout and appearance (e.g. `overflow`, `borderRadius`, `padding` from your design system / atoms) instead of inline `style={{ ... }}`.
+- If the component has no prop for what you need, use **StyleSheet.create** and pass the resulting style by reference. Avoid one-off inline objects like `style={{ overflow: 'hidden' }}`.
+
+```tsx
+// ❌ BAD – inline style object
+<Box style={{ overflow: 'hidden' }} />
+
+// ✅ GOOD – use component prop if available (e.g. overflow prop)
+<Box overflow="hidden" />
+
+// ✅ GOOD – if no prop exists, use StyleSheet
+const styles = StyleSheet.create({
+  overflowHidden: { overflow: 'hidden' },
+});
+<Box style={styles.overflowHidden} />
+```
+
+Apply this for any style you’re tempted to write as `style={{ ... }}`; only use inline style when it’s a single dynamic value (e.g. `style={{ width: screenWidth }}`) and the rule above doesn’t conflict.

@@ -1,0 +1,28 @@
+diff --git a/node_modules/@react-navigation/bottom-tabs/lib/module/views/BottomTabBar.js b/node_modules/@react-navigation/bottom-tabs/lib/module/views/BottomTabBar.js
+index 0000000..1111111 100644
+--- a/node_modules/@react-navigation/bottom-tabs/lib/module/views/BottomTabBar.js
++++ b/node_modules/@react-navigation/bottom-tabs/lib/module/views/BottomTabBar.js
+@@ -228,7 +228,7 @@
+     } : {
+       borderTopWidth: StyleSheet.hairlineWidth
+     }, {
+-      backgroundColor: tabBarBackgroundElement != null ? 'transparent' : colors.card,
++      ...(tabBarBackgroundElement == null ? { backgroundColor: colors.card } : {}),
+       borderColor: colors.border
+     }, sidebar ? {
+       paddingTop: (hasHorizontalLabels ? spacing : spacing / 2) + insets.top,
+diff --git a/node_modules/@react-navigation/bottom-tabs/lib/module/views/BottomTabItem.js b/node_modules/@react-navigation/bottom-tabs/lib/module/views/BottomTabItem.js
+index 0000000..1111111 100644
+--- a/node_modules/@react-navigation/bottom-tabs/lib/module/views/BottomTabItem.js
++++ b/node_modules/@react-navigation/bottom-tabs/lib/module/views/BottomTabItem.js
+@@ -148,8 +148,8 @@
+       'pressOpacity': 1,
+       'style': [styles.tab, {
+         flex,
+-        backgroundColor,
+-        borderRadius
++        borderRadius,
++        ...(backgroundColor && backgroundColor !== 'transparent' ? { backgroundColor } : {})
+       }, sidebar ? variant === 'material' ? horizontal ? styles.tabBarSidebarMaterial : styles.tabVerticalMaterial : horizontal ? styles.tabBarSidebarUiKit : styles.tabVerticalUiKit : variant === 'material' ? styles.tabVerticalMaterial : horizontal ? styles.tabHorizontalUiKit : styles.tabVerticalUiKit],
+       'children': /*#__PURE__*/_jsxs(React.Fragment, {
+         children: [renderIcon(scene), renderLabel(scene)]

@@ -1,0 +1,15 @@
+export const ROOT_ROUTES = {
+  BOTTOM: 'bottom',
+  CHECKOUT: 'checkout',
+  OUTLET_LIST: 'outletlist',
+  MENU_SEARCH: 'menusearch',
+  LAUNDRY: 'laundry',
+  SHARE_PROFILE_QR: 'shareProfileQr',
+  STREAK: 'streak',
+  LOGIN: 'login',
+  REGISTER: 'register',
+  ORDER_STATUS: 'orderstatus',
+  HELP: 'help',
+  WEBVIEW: 'webview',
+  LEADERBOARD: 'leaderboard',
+} as const;

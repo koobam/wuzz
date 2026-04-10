@@ -1,0 +1,2 @@
+export { getFieldConfig } from './fieldConfig';
+

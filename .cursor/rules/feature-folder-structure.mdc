@@ -1,0 +1,38 @@
+---
+description: Put screen-specific code in features/.../(pages-name) mirroring pages structure
+globs: "**/pages/**/*.tsx"
+alwaysApply: true
+---
+
+# Feature folder structure
+
+Put screen-specific **components**, **hooks**, **utils**, and **types** under `src/features/`, mirroring the **pages** path. The segment that identifies the screen in `pages/` becomes the same path in `features/`.
+
+**Rule:** For a page at `src/pages/(group)/<page-name>/...`, use a feature folder at `src/features/(group)/<page-name>/`.
+
+## Examples
+
+| Page path | Feature path |
+|-----------|--------------|
+| `pages/(bottom)/home/index.tsx` | `features/(bottom)/home/` |
+| `pages/(order)/product/index.tsx` | `features/(order)/product/` |
+| `pages/(outlet)/outlet-list/index.tsx` | `features/(outlet)/outlet-list/` |
+| `pages/(bottom)/history/index.tsx` | `features/(bottom)/history/` |
+
+## Feature folder contents
+
+Inside `features/(group)/<page-name>/` use:
+
+- **`components/`** – UI pieces used only by this screen (optionally with `components/index.ts` barrel).
+- **`hooks/`** – custom hooks for this screen (e.g. `useBannerPager`).
+- **`utils/`** – constants, helpers, pure functions (e.g. `constants.ts`, `index.ts`).
+- **`types.ts`** – screen props and related types (e.g. `HomeType`).
+- **`index.ts`** – re-export types, components, hooks, utils (no screen component; the screen stays in `pages/`).
+
+Pages stay thin: they import from the feature and compose the screen (e.g. `import { ... } from '@features/(bottom)/home'` or from `@features/(bottom)/home/components'` and `@features/(bottom)/home/types'`).
+
+## Do not
+
+- Put the **screen component** (e.g. `Home`) in the feature folder; it lives in `pages/.../index.tsx`.
+- Put shared/reusable components in a feature folder; those belong in `components/` (atoms, molecules, organisms).
+- Create `features/(group)/<page-name>/index.tsx` that exports the screen; use `index.ts` for re-exports only.

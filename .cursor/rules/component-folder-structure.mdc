@@ -1,0 +1,46 @@
+---
+description: Component folder structure – one folder per component, types in .types.ts, separators in own file/folder
+globs: src/features/**/*.tsx
+alwaysApply: false
+---
+
+# Component folder structure
+
+When creating or refactoring components (especially under `src/features/`), use this structure.
+
+## One folder per component
+
+- Each component lives in its **own folder** with a **kebab-case** name (e.g. `order-summary-row`, `payment-summary-section`).
+- The folder is the component’s namespace; avoid flat files like `OrderSummaryRow.tsx` next to other components in the same group.
+
+## Folder contents
+
+Inside the component folder:
+
+- **`index.tsx`** – The main component. Export the component (and optionally subcomponents that belong here).
+- **`[component-name].types.ts`** – All props and related types for this component (e.g. `OrderSummaryRowProps` in `order-summary-row.types.ts`). Do not define props inline in the component file.
+- No separate “index for re-export only” unless you need to expose multiple public entries; the default is one component per folder with `index.tsx` as the entry.
+
+## Separators and small subcomponents
+
+- **Separators** (e.g. list item separators) live in their **own file or folder**, not inline in the parent component.
+  - Either a sibling folder (e.g. `summary-item-separator/index.tsx`) or a dedicated file (e.g. `payment-summary-separator.tsx` then moved into `payment-summary-separator/index.tsx` when converting to folders).
+- Same idea for small, single-purpose UI pieces used only by one parent: give them a folder (or at least a file) and import from there.
+
+## Naming
+
+- **Folder names**: kebab-case (`order-summary-row`, `what-we-do-section`).
+- **Types file**: `[folder-name].types.ts` (e.g. `order-summary-row.types.ts`).
+- **Component names in code**: keep PascalCase (e.g. `OrderSummaryRow`, `PaymentSummarySection`).
+
+## Barrel (index) at group level
+
+- The parent group (e.g. `summary/`, `detail-sheet/`, `timeline/`) has an **`index.ts`** that re-exports only what consumers need (usually the main screen-level components), e.g. `export { OrderSummaryRow } from './order-summary-row';`.
+- Internal subcomponents (e.g. separators, step cards) do not need to be in the barrel unless they are part of the public API.
+
+## Import paths after refactor
+
+- From a component **inside** a folder: use relative paths with one more `../` when going to feature root (e.g. `../../../types`, `../../../utils`).
+- Between sibling folders: `../sibling-folder` (e.g. `../summary-item-separator`, `../payment-summary-separator`).
+
+Apply this when you add new components or when the user asks to “refactor like the others” or “make it a folder / handle components like that.”

@@ -1,0 +1,53 @@
+---
+description: Minimize Android overdraw by avoiding redundant backgroundColor on views
+globs: "**/*.tsx"
+alwaysApply: true
+---
+
+# Android overdraw and backgroundColor
+
+On **Android**, every view with a `backgroundColor` (including transparent) can cause **overdraw**: the same pixel is drawn multiple times. Too many opaque or semi-opaque layers hurt performance and can trigger GPU overdraw warnings in developer options.
+
+## When to avoid backgroundColor
+
+- **Fully covered views**: If the view’s entire area is covered by opaque children (e.g. a wrapper `View` that only groups children), do **not** set `backgroundColor`. The GPU will still draw it before drawing the children.
+- **Same as parent**: If the background color is the same as the parent’s, set it on the parent only (or the single visible layer) so the pixel is drawn once.
+- **Purely structural wrappers**: Wrappers used only for layout (e.g. flex containers with no visible background) should not get a background unless needed for design (e.g. card surface).
+
+## When backgroundColor is acceptable
+
+- **Visible surfaces**: Cards, headers, modals, and any UI that must show a distinct background.
+- **Root or screen background**: One background for the screen or root container is fine.
+- **Clipping / rounded corners**: If you need a visible “frame” (e.g. rounded corners with a visible fill), one background on that container is acceptable; avoid adding an extra inner wrapper with the same color just for layout.
+
+## Practices
+
+- Prefer **one background per visible layer**; avoid nested views that all set the same or redundant backgrounds.
+- Use **StyleSheet** (or design-system props) for background styles; keep the rule “no unnecessary inline style objects” from the styling rule.
+- For **clipping only** (e.g. `overflow: 'hidden'`, `borderRadius`), use a single wrapper with background only if the design requires a visible background there; otherwise omit `backgroundColor` on the clipping wrapper.
+
+```tsx
+// ❌ BAD – wrapper adds overdraw; same color as parent, fully covered by child
+<View style={{ backgroundColor: theme.colors.surface }}>
+  <Card /> {/* already has same background */}
+</View>
+
+// ✅ GOOD – one background on the visible surface
+<Card />
+
+// ❌ BAD – two opaque layers for no visual difference
+<View style={[styles.row, { backgroundColor: theme.colors.surface }]}>
+  <View style={{ backgroundColor: theme.colors.surface, flex: 1 }}>
+    <Text>...</Text>
+  </View>
+</View>
+
+// ✅ GOOD – single background
+<View style={[styles.row, styles.surfaceBg]}>
+  <View style={styles.flex1}>
+    <Text>...</Text>
+  </View>
+</View>
+```
+
+Consider overdraw when adding or reviewing `backgroundColor` (and equivalent design-system background props) so Android stays within a reasonable overdraw budget.
