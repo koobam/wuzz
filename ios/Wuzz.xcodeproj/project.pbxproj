@@ -13,6 +13,8 @@
 		1FF198C617864C8F8FB4CDE4 /* Poppins-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6A7E64CF42AF49BB8DC0DCD5 /* Poppins-LightItalic.ttf */; };
 		25217702E15142F48E44AC47 /* selection.json in Resources */ = {isa = PBXBuildFile; fileRef = E7A913423FBE418E89B159CC /* selection.json */; };
 		27F55090A24647B4ADFE6B9F /* Poppins-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C04D5E2FBCA04A2385B318A5 /* Poppins-ExtraLight.ttf */; };
+		3D612CF02F93B194005CB60F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3D612CEF2F93B194005CB60F /* GoogleService-Info.plist */; };
+		3D612CF42F93B231005CB60F /* GoogleService-Info.Staging.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3D612CF32F93B231005CB60F /* GoogleService-Info.Staging.plist */; };
 		56CDDB6E08044D519D1E1AF0 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B96887FEDA134B37991DB623 /* Colors.xcassets */; };
 		5BE109150EA84777928A4FA3 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF20AC8A0B4446DE83F7C3F5 /* Poppins-Medium.ttf */; };
 		5EEACA885CB948F0B8D6CD8C /* Poppins-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 336953C8544D4B858285B2EC /* Poppins-ExtraBold.ttf */; };
@@ -47,6 +49,8 @@
 		2485B9972BA74A7DB8797758 /* BootSplash.storyboard */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = BootSplash.storyboard; path = Wuzz/BootSplash.storyboard; sourceTree = "<group>"; };
 		2AD363C85E464B39880F191D /* Poppins-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Thin.ttf"; path = "../public/fonts/Poppins-Thin.ttf"; sourceTree = "<group>"; };
 		336953C8544D4B858285B2EC /* Poppins-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraBold.ttf"; path = "../public/fonts/Poppins-ExtraBold.ttf"; sourceTree = "<group>"; };
+		3D612CEF2F93B194005CB60F /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3D612CF32F93B231005CB60F /* GoogleService-Info.Staging.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.Staging.plist"; sourceTree = "<group>"; };
 		3E878F9CBF794AF58BA841C1 /* icomoon.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = icomoon.ttf; path = ../public/icons/icomoon.ttf; sourceTree = "<group>"; };
 		4DD1B710509041F0BA3356EC /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-SemiBold.ttf"; path = "../public/fonts/Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
 		619161B13BCD46D0B36C4278 /* Poppins-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Bold.ttf"; path = "../public/fonts/Poppins-Bold.ttf"; sourceTree = "<group>"; };
@@ -98,6 +102,8 @@
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
 				2485B9972BA74A7DB8797758 /* BootSplash.storyboard */,
 				B96887FEDA134B37991DB623 /* Colors.xcassets */,
+				3D612CEF2F93B194005CB60F /* GoogleService-Info.plist */,
+				3D612CF32F93B231005CB60F /* GoogleService-Info.Staging.plist */,
 			);
 			name = Wuzz;
 			sourceTree = "<group>";
@@ -253,6 +259,7 @@
 				27F55090A24647B4ADFE6B9F /* Poppins-ExtraLight.ttf in Resources */,
 				B395CDB28D3F406A8B144E41 /* Poppins-ExtraLightItalic.ttf in Resources */,
 				C17B1A9E825C43FFABF1254F /* Poppins-Italic.ttf in Resources */,
+				3D612CF02F93B194005CB60F /* GoogleService-Info.plist in Resources */,
 				6854C681842F48EBB2EF08AD /* Poppins-Light.ttf in Resources */,
 				1FF198C617864C8F8FB4CDE4 /* Poppins-LightItalic.ttf in Resources */,
 				5BE109150EA84777928A4FA3 /* Poppins-Medium.ttf in Resources */,
@@ -260,6 +267,7 @@
 				B1ACADBD603747FE997B7852 /* Poppins-Regular.ttf in Resources */,
 				6857216CD5164462AF5EF840 /* Poppins-SemiBold.ttf in Resources */,
 				04F08D0EC3994EB1ABD01ACE /* Poppins-SemiBoldItalic.ttf in Resources */,
+				3D612CF42F93B231005CB60F /* GoogleService-Info.Staging.plist in Resources */,
 				F857C52FCFCE45A3B822F8D2 /* Poppins-Thin.ttf in Resources */,
 				5F10A16D08CA422497003F74 /* Poppins-ThinItalic.ttf in Resources */,
 				A1B2C3D4E5F64738291A2B3C4D /* FredokaOne-Regular.ttf in Resources */,
@@ -297,9 +305,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Wuzz/Pods-Wuzz-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Wuzz/Pods-Wuzz-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -314,9 +326,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Wuzz/Pods-Wuzz-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Wuzz/Pods-Wuzz-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

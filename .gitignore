@@ -85,3 +85,12 @@ yarn-error.log
 .env.hotupdater
 .hot-updater/output
 .hot-updater/log
+
+# Firebase
+ios/GoogleService-Info.plist
+ios/GoogleService-Info.Staging.plist
+ios/Wuzz/GoogleService-Info.plist
+ios/Wuzz/GoogleService-Info.Staging.plist
+
+android/app/google-services.json
+android/app/google-services.staging.json
