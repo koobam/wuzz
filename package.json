@@ -38,6 +38,7 @@
     "axios": "^1.13.2",
     "babel-plugin-module-resolver": "^5.0.2",
     "deprecated-react-native-prop-types": "^5.0.0",
+    "i18next": "^26.0.5",
     "iconsax-react-native": "^0.0.8",
     "react": "19.1.1",
     "react-hook-form": "^7.54.2",
