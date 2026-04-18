@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@candlefinance/faster-image": "^1.7.2",
-    "@gorhom/bottom-sheet": "^5.2.6",
+    "@gorhom/bottom-sheet": "5.2.6",
     "@hookform/resolvers": "^3.9.1",
     "@hot-updater/react-native": "0.27.0",
     "@lukemorales/query-key-factory": "^1.3.4",

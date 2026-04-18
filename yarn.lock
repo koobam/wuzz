@@ -1823,7 +1823,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gorhom/bottom-sheet@npm:^5.2.6":
+"@gorhom/bottom-sheet@npm:5.2.6":
   version: 5.2.6
   resolution: "@gorhom/bottom-sheet@npm:5.2.6"
   dependencies:
@@ -4235,7 +4235,7 @@ __metadata:
     "@babel/preset-env": "npm:^7.25.3"
     "@babel/runtime": "npm:^7.25.0"
     "@candlefinance/faster-image": "npm:^1.7.2"
-    "@gorhom/bottom-sheet": "npm:^5.2.6"
+    "@gorhom/bottom-sheet": "npm:5.2.6"
     "@hookform/resolvers": "npm:^3.9.1"
     "@hot-updater/bare": "npm:0.27.0"
     "@hot-updater/react-native": "npm:0.27.0"
