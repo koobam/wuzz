@@ -19,12 +19,15 @@ const queryClientManager = new QueryClientManager({
 let scriptHostname = '127.0.0.1';
 try {
   const scriptURL = NativeModules.SourceCode?.scriptURL;
+  console.log('scriptURL:', scriptURL);
+
   if (scriptURL) {
     scriptHostname = scriptURL.split('://')[1].split(':')[0];
   }
 } catch {
   // fallback
 }
+console.log('hostname resolved:', scriptHostname);
 
 Reactotron.configure({
   name: Config?.APP_DISPLAY_NAME ?? Config?.APP_ENV ?? 'Wuzz',

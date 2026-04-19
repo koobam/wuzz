@@ -20,6 +20,7 @@ module.exports = {
           '@assets': './public/assets',
           '@icons': './public/icons',
           '@fonts': './public/fonts',
+          '@locales': './public/locales',
         },
       },
     ],

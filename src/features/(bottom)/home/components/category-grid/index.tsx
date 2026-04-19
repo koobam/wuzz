@@ -4,6 +4,7 @@ import type { CategoryGridProps } from './category-grid.types';
 import { CategoryCard } from './category-card';
 import { CategoryGridError } from './category-grid-error';
 import { CategoryGridLoading } from './category-grid-loading';
+import { useTranslation } from 'react-i18next';
 
 export const CategoryGrid = memo(
   ({
@@ -13,6 +14,7 @@ export const CategoryGrid = memo(
     isError = false,
     error,
   }: CategoryGridProps) => {
+    const { t } = useTranslation("home");
     const items = itemsProp;
     const errorMessage = useMemo(() => {
       if (error instanceof Error) return error.message;
@@ -36,11 +38,11 @@ export const CategoryGrid = memo(
         }}
       >
         <VStack>
-          <Text type="s2" weight="medium">
-            Cepat, Bersih, dan Aman!
+          <Text type="s2" weight="semibold">
+            {t('category.title')}
           </Text>
           <Text type="l1" color={theme.pallate.neutral['04']}>
-            Kiloan hingga premium, semua tersedia untukmu.
+            {t('category.description')}
           </Text>
         </VStack>
         {isLoading ? (

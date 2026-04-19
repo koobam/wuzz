@@ -41,6 +41,8 @@ export const Home = memo((props: HomeType) => {
     isError: isErrorLaundryServices,
     error: errorLaundryServices,
   } = useFetchLaundryServices();
+
+  console.log(errorLaundryServices);
   const { data: alacarteData } = useFetchLaundryServicesAlacarte();
   const {
     data: moodsData,

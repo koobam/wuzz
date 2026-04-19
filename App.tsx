@@ -22,10 +22,9 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { HotUpdater } from '@hot-updater/react-native';
+import '@core/i18n';
 
-if (__DEV__) {
-  require('./ReactotronConfig');
-}
+require('./ReactotronConfig');
 // Initialize Mapbox with access token (set MAPBOX_ACCESS_TOKEN in .env)
 Mapbox.setAccessToken(
   'pk.eyJ1Ijoia29vYmFtIiwiYSI6ImNtZWxtajNncjBmeWMyd3FyM3V3NzUwMzUifQ.eusnZIscj38jvv9zmm1tHA',

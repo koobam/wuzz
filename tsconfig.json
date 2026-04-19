@@ -17,7 +17,8 @@
       "@services/*": ["src/services/*"],
       "@assets/*": ["public/assets/*"],
       "@fonts/*": ["public/fonts/*"],
-      "@icons/*": ["public/icons/*"]
+      "@icons/*": ["public/icons/*"],
+      "@locales/*": ["public/locales/*"]
     }
   }
 }

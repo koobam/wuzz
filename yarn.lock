@@ -1614,17 +1614,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.23.2, @babel/runtime@npm:^7.29.2":
+  version: 7.29.2
+  resolution: "@babel/runtime@npm:7.29.2"
+  checksum: 10c0/30b80a0140d16467792e1bbeb06f655b0dab70407da38dfac7fedae9c859f9ae9d846ef14ad77bd3814c064295fe9b1bc551f1541ea14646ae9f22b71a8bc17a
+  languageName: node
+  linkType: hard
+
 "@babel/runtime@npm:^7.25.0, @babel/runtime@npm:^7.27.6":
   version: 7.28.4
   resolution: "@babel/runtime@npm:7.28.4"
   checksum: 10c0/792ce7af9750fb9b93879cc9d1db175701c4689da890e6ced242ea0207c9da411ccf16dc04e689cc01158b28d7898c40d75598f4559109f761c12ce01e959bf7
-  languageName: node
-  linkType: hard
-
-"@babel/runtime@npm:^7.29.2":
-  version: 7.29.2
-  resolution: "@babel/runtime@npm:7.29.2"
-  checksum: 10c0/30b80a0140d16467792e1bbeb06f655b0dab70407da38dfac7fedae9c859f9ae9d846ef14ad77bd3814c064295fe9b1bc551f1541ea14646ae9f22b71a8bc17a
   languageName: node
   linkType: hard
 
@@ -4363,6 +4363,7 @@ __metadata:
     eslint: "npm:^8.19.0"
     hot-updater: "npm:^0.27.0"
     i18next: "npm:^26.0.5"
+    i18next-resources-to-backend: "npm:^1.2.1"
     iconsax-react-native: "npm:^0.0.8"
     jest: "npm:^29.6.3"
     patch-package: "npm:^8.0.1"
@@ -4379,6 +4380,7 @@ __metadata:
     react-native-device-info: "npm:^14.1.1"
     react-native-gesture-handler: "npm:^2.28.0"
     react-native-linear-gradient: "npm:^2.8.3"
+    react-native-localize: "npm:^3.7.0"
     react-native-mmkv: "npm:^3.3.3"
     react-native-network-info: "npm:^5.2.2"
     react-native-pager-view: "npm:^6.9.1"
@@ -7359,6 +7361,15 @@ __metadata:
   version: 8.0.1
   resolution: "human-signals@npm:8.0.1"
   checksum: 10c0/195ac607108c56253757717242e17cd2e21b29f06c5d2dad362e86c672bf2d096e8a3bbb2601841c376c2301c4ae7cff129e87f740aa4ebff1390c163114c7c4
+  languageName: node
+  linkType: hard
+
+"i18next-resources-to-backend@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "i18next-resources-to-backend@npm:1.2.1"
+  dependencies:
+    "@babel/runtime": "npm:^7.23.2"
+  checksum: 10c0/ba83152726aae34ab34bb152518b666d4393bf816c91ab6e1064090cbbb9b235d3dfbcf9d5640c825819644fddcaf7799f581cdbe6abb3e7b11d58c50dc4644a
   languageName: node
   linkType: hard
 
@@ -10475,6 +10486,23 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10c0/cd41bf28e9f468173f1e5e768685128ebf8bbf9077710e43b63482c1a76f37bff8ab3d1d6adfd7b4d54e648672356c02bea46c47cdbdb1844ebe5c5caf720114
+  languageName: node
+  linkType: hard
+
+"react-native-localize@npm:^3.7.0":
+  version: 3.7.0
+  resolution: "react-native-localize@npm:3.7.0"
+  peerDependencies:
+    "@expo/config-plugins": "*"
+    react: "*"
+    react-native: "*"
+    react-native-macos: "*"
+  peerDependenciesMeta:
+    "@expo/config-plugins":
+      optional: true
+    react-native-macos:
+      optional: true
+  checksum: 10c0/a65814e95473ed25924d68fc05c8d924d3891a9c939e5f799f727f366e1feee1421b0b7b74f1032edc3c215fd5113d5bef7243757bd7a2de9f4c02a57e522a59
   languageName: node
   linkType: hard
 
