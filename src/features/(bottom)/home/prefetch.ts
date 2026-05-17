@@ -8,7 +8,7 @@ export async function prefetchHomeData(): Promise<void> {
       { path: LAUNDRY_SERVICES_ENDPOINTS.regular, prefetchKey: LAUNDRY_SERVICES_QUERY_KEY.regular },
       { path: LAUNDRY_SERVICES_ENDPOINTS.alacarte, prefetchKey: LAUNDRY_SERVICES_QUERY_KEY.alacarte },
     ]);
-  } catch (error) {
+  } catch (error) { 
     // TODO: Sentry.captureException(error)
     console.error('[prefetchHomeData]', error);
   }
