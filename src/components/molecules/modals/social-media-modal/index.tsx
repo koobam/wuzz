@@ -64,7 +64,7 @@ export const SocialMediaModal = memo((props: SocialMediaModalProps) => {
           marginTop: theme.spacing.standard,
           marginHorizontal: theme.spacing.large,
         }}
-        spacing={theme.spacing.tiny}
+        gap={theme.spacing.tiny}
         variant="default"
         rounded
       >

@@ -48,7 +48,7 @@ const ClipDetail = memo(({ route, navigation }: ClipDetailType) => {
       >
         <HStack
           items="center"
-          spacing={theme.spacing.standard}
+          gap={theme.spacing.standard}
           padding={{
             paddingHorizontal: theme.spacing.large,
             paddingVertical: theme.spacing.standard,
@@ -60,7 +60,7 @@ const ClipDetail = memo(({ route, navigation }: ClipDetailType) => {
             backgroundColor={theme.pallate.neutral['05']}
             borderRadius={999}
           />
-          <HStack items="baseline" spacing={theme.spacing.small}>
+          <HStack items="baseline" gap={theme.spacing.small}>
           <Text weight="medium" color={navigationTheme.colors.text}>
             loremipsum
           </Text>
@@ -125,14 +125,14 @@ const ClipDetail = memo(({ route, navigation }: ClipDetailType) => {
             borderBottomWidth: 1,
           }}
           borderColor={theme.pallate.neutral['05']}
-          spacing={theme.spacing.medium}
+          gap={theme.spacing.medium}
           padding={{
             paddingHorizontal: theme.spacing.large,
             paddingTop: theme.spacing.standard,
             paddingBottom: theme.spacing.large,
           }}
         >
-          <Pressable items="center" spacing={theme.spacing.tiny}>
+          <Pressable items="center" gap={theme.spacing.tiny}>
             <Heart
               size={26}
               fill={theme.pallate.neutral['01']}
@@ -142,7 +142,7 @@ const ClipDetail = memo(({ route, navigation }: ClipDetailType) => {
               12
             </Text>
           </Pressable>
-          <Pressable items="center" spacing={theme.spacing.tiny}>
+          <Pressable items="center" gap={theme.spacing.tiny}>
             <Repeat
               size={26}
               fill={theme.pallate.neutral['01']}
@@ -152,7 +152,7 @@ const ClipDetail = memo(({ route, navigation }: ClipDetailType) => {
               12
             </Text>
           </Pressable>
-          <Pressable items="center" spacing={theme.spacing.tiny}>
+          <Pressable items="center" gap={theme.spacing.tiny}>
             <Send2
               size={26}
               fill={theme.pallate.neutral['01']}
@@ -220,7 +220,7 @@ const ClipDetail = memo(({ route, navigation }: ClipDetailType) => {
                 paddingHorizontal: theme.spacing.large,
               }}
               items="center"
-              spacing={theme.spacing.standard}
+              gap={theme.spacing.standard}
             >
               <Box
                 width={40}
@@ -241,7 +241,7 @@ const ClipDetail = memo(({ route, navigation }: ClipDetailType) => {
                 />
               </Box>
               <VStack fill>
-                <HStack items="baseline" spacing={theme.spacing.small}>
+                <HStack items="baseline" gap={theme.spacing.small}>
                 <Text
                   weight="medium"
                   type="b2"

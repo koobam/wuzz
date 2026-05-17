@@ -45,7 +45,7 @@ export const ScanResultCard = memo(function ScanResultCard({
     <VStack
       style={styles.card}
       padding={theme.spacing.large}
-      spacing={theme.spacing.standard}
+      gap={theme.spacing.standard}
     >
       <Text type="s3" weight="semibold" color={theme.pallate.neutral['05']}>
         {MACHINE_LABEL[machineType]}
@@ -53,7 +53,7 @@ export const ScanResultCard = memo(function ScanResultCard({
       <Text type="l1" color={theme.pallate.neutral['04']} style={styles.priceRow}>
         {coinsFormatted} koin = {rupiahFormatted}
       </Text>
-      <VStack spacing={theme.spacing.small} padding={{ paddingTop: theme.spacing.small }}>
+      <VStack gap={theme.spacing.small} padding={{ paddingTop: theme.spacing.small }}>
         {onProcessScanned != null && (
           <Pressable
             onPress={onProcessScanned}

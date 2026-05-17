@@ -132,7 +132,7 @@ export const Menu = memo((props: MenuScreenProps) => {
         minY={top}
         maxY={SCREEN_HEIGHT - navHeight}
       >
-        <VStack spacing={theme.spacing.small} width={FLOAT_SIZE} height={FLOAT_SIZE} items="center" justify="center" fill backgroundColor={theme.pallate.neutral['01']}>
+        <VStack gap={theme.spacing.small} width={FLOAT_SIZE} height={FLOAT_SIZE} items="center" justify="center" fill backgroundColor={theme.pallate.neutral['01']}>
           <Box width={FLOAT_SIZE} height={50} backgroundColor={theme.pallate.neutral['02']} />
           <Text type="l2" align="center" weight="stylized" text={`Custom\nYour Coffee`} />
         </VStack>

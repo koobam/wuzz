@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -13,10 +13,9 @@ import {
   HStack,
   Flex,
 } from '@components/atoms';
-import { PaperclipSvg } from '@assets/index';
 import { IconX } from 'tabler-icons-react-native';
-import { useVerificationForm, useVerificationLogic } from '@features/auth/verification/hooks';
-import { OTPInput, VerificationHeader } from '@features/auth/verification/components';
+import { useVerificationForm, useVerificationLogic } from '@features/(auth)/verification/hooks';
+import { OTPInput, VerificationHeader } from '@features/(auth)/verification/components';
 
 const Verification = memo(() => {
   const {
@@ -27,8 +26,6 @@ const Verification = memo(() => {
   } = useVerificationForm();
 
   const {
-    verificationMethod,
-    displayText,
     isLoading,
     canResend,
     countdown,
@@ -39,6 +36,12 @@ const Verification = memo(() => {
 
   const isFormLoading = isSubmitting || isLoading;
 
+  const onInvalid = useCallback(() => {
+    // You can show a toast or alert here if needed
+    console.log('Form validation failed', errors);
+  }, [errors]);
+  
+  const onSubmit = useCallback(() => handleSubmit(handleVerify, onInvalid)(), [handleSubmit, handleVerify, onInvalid]);
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -60,21 +63,21 @@ const Verification = memo(() => {
       >
         {/* Header */}
         <HStack items="center" justify="space-between">
-          <PaperclipSvg />
+          {/* <PaperclipSvg /> */}
           <Button
             variant="secondary"
             size="fixed"
             rounded
             onPress={handleClose}
           >
-            <IconX size={20} color={theme.pallate.neutral['01']} />
+            <IconX size={20} color={theme.pallate.neutral['05']} />
           </Button>
         </HStack>
 
         {/* Title Section */}
         <VerificationHeader
-          verificationMethod={verificationMethod}
-          displayText={displayText}
+          verificationMethod="sms"
+          displayText="Enter the 6-digit code we sent to your phone number"
         />
 
         {/* Form Section */}
@@ -86,11 +89,11 @@ const Verification = memo(() => {
             variant="primary"
             size="lg"
             rounded
-            onPress={handleSubmit(handleVerify)}
+            onPress={onSubmit}
             disabled={isFormLoading}
             style={{ marginTop: theme.spacing.standard }}
           >
-            <Text type="b1" weight="bold" color={theme.pallate.neutral['06']}>
+            <Text type="b1" weight="semibold" color={theme.pallate.neutral['01']}>
               {isFormLoading ? 'Verifying...' : 'Verify'}
             </Text>
           </Button>
@@ -100,17 +103,20 @@ const Verification = memo(() => {
             variant="link"
             size="sm"
             onPress={handleResendOTP}
-            disabled={!canResend || isFormLoading}
+            disabled={!canResend}
           >
+            <Text type="b2" color={theme.pallate.neutral['04']}>
+              {"Didn't receive a code? "}
+            </Text>
             <Text
               type="b2"
               color={
-                canResend && !isFormLoading
+                canResend
                   ? theme.pallate.primary['03']
-                  : theme.pallate.neutral['03']
+                  : theme.pallate.neutral['05']
               }
             >
-              {canResend ? 'Resend code' : `Resend code in ${countdown}s`}
+              {canResend ? 'Resend code' : `Resend in ${countdown}s`}
             </Text>
           </Button>
         </VStack>
@@ -124,7 +130,6 @@ Verification.displayName = 'Verification';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.pallate.neutral['06'],
     paddingTop: theme.spacing.standard,
   },
   scrollContent: {

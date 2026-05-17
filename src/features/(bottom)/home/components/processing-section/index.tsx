@@ -3,7 +3,7 @@ import { Text, theme, VStack } from '@components/atoms';
 
 export const ProcessingSection = memo(() => (
   <VStack
-    spacing={theme.spacing.standard}
+    gap={theme.spacing.standard}
     padding={{
       paddingHorizontal: theme.spacing.large,
       paddingBottom: theme.spacing.large,

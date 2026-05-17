@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native/scripts/react_native_pods_utils/script_phases.sh b/node_modules/react-native/scripts/react_native_pods_utils/script_phases.sh
+index 92325f1..7c5cd13 100755
+--- a/node_modules/react-native/scripts/react_native_pods_utils/script_phases.sh
++++ b/node_modules/react-native/scripts/react_native_pods_utils/script_phases.sh
+@@ -96,7 +96,7 @@ generateCodegenArtifactsFromSchema () {
+ generateArtifacts () {
+     describe "Generating codegen artifacts"
+     pushd "$RCT_SCRIPT_RN_DIR" >/dev/null || exit 1
+-        "$NODE_BINARY" "scripts/generate-codegen-artifacts.js" --path "$RCT_SCRIPT_APP_PATH" --outputPath "$TEMP_OUTPUT_DIR" --targetPlatform "ios"
++        "$NODE_BINARY" "scripts/generate-codegen-artifacts.js" --path "$RCT_SCRIPT_APP_PATH" --outputPath "$RCT_SCRIPT_OUTPUT_DIR" --targetPlatform "ios"
+     popd >/dev/null || exit 1
+ }
+ 

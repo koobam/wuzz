@@ -1,0 +1,23 @@
+{
+  "$schema": "https://nitro.margelo.com/nitro.schema.json",
+  "cxxNamespace": ["wuzz", "text"],
+  "ios": {
+    "iosModuleName": "WuzzNitroText"
+  },
+  "android": {
+    "androidNamespace": ["com", "wuzz", "nitrotext"],
+    "androidCxxLibName": "WuzzNitroText"
+  },
+  "autolinking": {
+    "TextMeasurer": {
+      "ios": {
+        "language": "swift",
+        "implementationClassName": "HybridTextMeasurer"
+      },
+      "android": {
+        "language": "kotlin",
+        "implementationClassName": "HybridTextMeasurer"
+      }
+    }
+  }
+}

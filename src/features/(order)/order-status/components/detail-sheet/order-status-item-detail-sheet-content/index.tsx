@@ -19,12 +19,12 @@ export const OrderStatusItemDetailSheetContent = memo(
 
     return (
       <VStack
-        spacing={theme.spacing.large}
+        gap={theme.spacing.large}
         padding={{ paddingBottom: theme.spacing.large }}
       >
         <VStack
           padding={{ paddingHorizontal: theme.spacing.large }}
-          spacing={theme.spacing.standard}
+          gap={theme.spacing.standard}
         >
           {showBadges && <DetailBadgesRow item={item} />}
 

@@ -24,7 +24,7 @@ export const OutletCard = memo((props: OutletCardProps) => {
     <Pressable
       onPress={onOutletPress}
       padding={theme.spacing.medium}
-      spacing={theme.spacing.standard}
+      gap={theme.spacing.standard}
       items="center"
       borderRadius={20}
       backgroundColor={theme.pallate.neutral['02']}
@@ -47,7 +47,7 @@ export const OutletCard = memo((props: OutletCardProps) => {
           text={outletName ?? 'Choose outlet'}
           color={theme.pallate.neutral['05']}
         />
-        <HStack items="center" spacing={theme.spacing.tiny}>
+        <HStack items="center" gap={theme.spacing.tiny}>
           {distanceKm != null && (
             <Fragment>
               <Text

@@ -19,7 +19,7 @@ export const ServiceSection = memo(({ onServicePress }: ServiceSectionProps) => 
 
   return (
     <VStack
-      spacing={theme.spacing.standard}
+      gap={theme.spacing.standard}
       padding={{
         paddingHorizontal: theme.spacing.large,
         paddingBottom: theme.spacing.large,
@@ -28,11 +28,11 @@ export const ServiceSection = memo(({ onServicePress }: ServiceSectionProps) => 
       <Text type="s2" weight="semibold">
         Service yang kami berikan!
       </Text>
-      <HStack spacing={theme.spacing.small}>
+      <HStack gap={theme.spacing.small}>
         <Pressable
           direction="column"
           width={cardWidth}
-          spacing={theme.spacing.small}
+          gap={theme.spacing.small}
           onPress={onServicePress}
           borderRadius={30}
           height={220}
@@ -61,8 +61,8 @@ export const ServiceSection = memo(({ onServicePress }: ServiceSectionProps) => 
             Cuci hanya 1 - 2 hari praktis dan nyaman di kantong.
           </Text>
         </Pressable>
-        <VStack width={cardWidth} spacing={theme.spacing.small}>
-          <HStack items="center" spacing={theme.spacing.tiny} width="100%">
+        <VStack width={cardWidth} gap={theme.spacing.small}>
+          <HStack items="center" gap={theme.spacing.tiny} width="100%">
             <Flash
               size={32}
               variant="Bold"
@@ -83,7 +83,7 @@ export const ServiceSection = memo(({ onServicePress }: ServiceSectionProps) => 
             width="100%"
             items="center"
             padding={theme.spacing.medium}
-            spacing={theme.spacing.small}
+            gap={theme.spacing.small}
             onPress={onServicePress}
             backgroundColor={theme.pallate.neutral['02']}
           >
@@ -114,7 +114,7 @@ export const ServiceSection = memo(({ onServicePress }: ServiceSectionProps) => 
             width="100%"
             items="center"
             padding={theme.spacing.medium}
-            spacing={theme.spacing.small}
+            gap={theme.spacing.small}
             onPress={onServicePress}
             backgroundColor={theme.pallate.neutral['02']}
           >

@@ -37,7 +37,7 @@ export interface LaundryService {
   description: string;
   price: number;
   unit: string;
-  service_type: 'kiloan' | 'satuan';
+  service_type: string;
   min_kg?: number;
   max_kg?: number;
   discount: number;

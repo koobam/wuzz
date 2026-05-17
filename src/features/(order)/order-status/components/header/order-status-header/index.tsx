@@ -35,7 +35,7 @@ export const OrderStatusHeader = memo(
           paddingHorizontal: theme.spacing.large,
           paddingTop: theme.spacing.small,
         }}
-        spacing={theme.spacing.medium}
+        gap={theme.spacing.medium}
       >
         <HStack justify="space-between" items="center">
           <Pressable
@@ -45,7 +45,7 @@ export const OrderStatusHeader = memo(
               paddingHorizontal: theme.spacing.medium,
             }}
             items="center"
-            spacing={theme.spacing.small}
+            gap={theme.spacing.small}
             borderRadius={999}
             backgroundColor={theme.pallate.neutral['01']}
           >
@@ -62,7 +62,7 @@ export const OrderStatusHeader = memo(
             }}
             items="center"
             justify="center"
-            spacing={theme.spacing.small}
+            gap={theme.spacing.small}
             borderRadius={999}
             backgroundColor={theme.pallate.neutral['01']}
           >
@@ -72,7 +72,7 @@ export const OrderStatusHeader = memo(
             </Text>
           </Pressable>
         </HStack>
-        <VStack spacing={theme.spacing.standard}>
+        <VStack gap={theme.spacing.standard}>
           <OrderStatusLocationCard
             title="Outlet"
             description="Wuzz 1090 Supermall Karawaci"

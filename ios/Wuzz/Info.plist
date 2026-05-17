@@ -51,7 +51,7 @@
 	<key>NSContactsUsageDescription</key>
 	<string>Digunakan untuk memilih kontak saat berbagi profil.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Show current location on map.</string>
+	<string>Wuzz uses your location to find the nearest outlets and show accurate distances.</string>
 	<key>RCTNewArchEnabled</key>
 	<true/>
 	<key>UIAppFonts</key>

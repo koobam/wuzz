@@ -1,10 +1,13 @@
 import { memo, useCallback, useMemo } from 'react';
-import { Box, Flex, HStack, Pressable, Text, VStack, theme } from '@components/atoms';
+import { Box, Flex, HStack, Text, VStack, theme } from '@components/atoms';
+import { Shimmer } from 'wuzz-shimmer';
 import {
   BatteryCharging,
   BatteryEmpty,
   BatteryFull,
+  Box as BoxIcon,
   Location,
+  Truck,
 } from 'iconsax-react-native';
 import { IconChevronDown } from 'tabler-icons-react-native';
 import {
@@ -13,46 +16,69 @@ import {
   getStatusStyles,
   OutletServiceBadge,
 } from '@features/(outlet)/outlet-list';
-import type { OutletService, OutletStatus } from '@features/(outlet)/outlet-list';
+import type { OutletStatus } from '@features/(outlet)/outlet-list';
 import { StyleSheet } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import type { OutletCardProps, OutletCardTagItem } from './outlet-card.types';
+import GesturePressable from '@components/atoms/gesture-pressable';
 
-const DEFAULT_NAME = 'Wuzz 2025 - Supermall Karawaci';
-const DEFAULT_STATUS = 'Lagi Ramai Nih!';
 const CARD_BORDER_RADIUS = 20;
 const TAG_ICON_SIZE = 16;
 const TAG_DOT_SIZE = 2;
 
 const STATUS_LABELS: Record<OutletStatus, string> = {
-  ramai: 'Lagi Ramai Nih!',
-  sedang: 'Sedang',
-  sepi: 'Sepi',
+  busy: 'Busy',
+  moderate: 'Moderate',
+  quiet: 'Quiet',
 };
 
-function getAccentColor(services: OutletService[] | undefined): string {
-  if (!services || services.length === 0) return theme.pallate.primary['03'];
-  if (services.length === 2) return theme.pallate.primary['03'];
-  return services[0] === 'coffee'
-    ? theme.pallate.coffee['03']
-    : theme.pallate.teal['03'];
-}
+const OutletCardSkeleton = memo(() => (
+  <Box
+    margin={{
+      marginHorizontal: theme.spacing.standard,
+      marginVertical: theme.spacing.standard,
+    }}
+    borderRadius={CARD_BORDER_RADIUS}
+    padding={theme.spacing.small}
+    backgroundColor={theme.pallate.neutral['01']}
+  >
+    <Flex
+      fill
+      borderWidth={1}
+      borderRadius={CARD_BORDER_RADIUS}
+      borderColor={theme.pallate.neutral['03']}
+      style={styles.cardInner}
+    >
+      <HStack
+        padding={{
+          paddingHorizontal: theme.spacing.medium,
+          paddingVertical: theme.spacing.standard,
+        }}
+        fill
+        items="center"
+        gap={theme.spacing.standard}
+      >
+        <VStack fill gap={theme.spacing.small}>
+          <Shimmer width={160} height={14} borderRadius={6} />
+          <Shimmer width={100} height={12} borderRadius={6} />
+          <Shimmer width={120} height={12} borderRadius={6} />
+        </VStack>
+        <Shimmer width={24} height={24} borderRadius={6} />
+      </HStack>
+    </Flex>
+  </Box>
+));
 
-export const OutletCard = memo(({ onPress, outlet }: OutletCardProps) => {
-  const accentColor = useMemo(
-    () => getAccentColor(outlet?.services),
-    [outlet?.services],
-  );
+OutletCardSkeleton.displayName = 'OutletCardSkeleton';
 
-  const displayName = outlet?.name ?? DEFAULT_NAME;
-  const displayAddress = outlet?.address;
-  const statusLabel =
-    (outlet?.status && STATUS_LABELS[outlet.status]) ?? DEFAULT_STATUS;
-  const showBadge = outlet?.services && outlet.services.length > 0;
+export const OutletCard = memo(({ onPress, isError, error, outlet }: OutletCardProps) => {
+  const statusLabel = outlet?.status ? STATUS_LABELS[outlet.status] : undefined;
+  const showBadge = (outlet?.services.length ?? 0) > 0;
 
   const tagItems = useMemo((): OutletCardTagItem[] => {
+    if (!outlet) return [];
     const items: OutletCardTagItem[] = [];
-    if (outlet?.distanceKm != null) {
+    if (outlet.distanceKm != null) {
       items.push({
         type: 'distance',
         id: 'distance',
@@ -60,7 +86,7 @@ export const OutletCard = memo(({ onPress, outlet }: OutletCardProps) => {
         distanceKm: outlet.distanceKm,
       });
     }
-    if (outlet?.status) {
+    if (outlet.status && statusLabel) {
       items.push({
         type: 'status',
         id: 'status',
@@ -68,41 +94,52 @@ export const OutletCard = memo(({ onPress, outlet }: OutletCardProps) => {
         statusValue: outlet.status,
       });
     }
+    if (outlet.deliveryTypes && outlet.deliveryTypes.length > 0) {
+      items.push({
+        type: 'delivery-type',
+        id: 'delivery-types',
+        deliveryTypes: outlet.deliveryTypes,
+      });
+    }
     return items;
-  }, [outlet?.distanceKm, outlet?.status, statusLabel]);
+  }, [outlet, statusLabel]);
 
   const renderTagItem = useCallback(
     ({ item }: { item: OutletCardTagItem }) => {
       if (item.type === 'distance') {
-        const styles = getDistanceStyles(item.distanceKm);
+        const distStyles = getDistanceStyles(item.distanceKm);
         return (
-          <HStack items="center" spacing={theme.spacing.tiny}>
-            <Location
-              size={TAG_ICON_SIZE}
-              variant="Bulk"
-              color={styles.color}
-            />
-            <Text type="l2" weight="medium" color={styles.color}>
+          <HStack items="center" gap={theme.spacing.tiny}>
+            <Location size={TAG_ICON_SIZE} variant="Bulk" color={distStyles.color} />
+            <Text type="l2" weight="medium" color={distStyles.color}>
               {item.label}
             </Text>
           </HStack>
         );
       }
+      if (item.type === 'delivery-type') {
+        const label = item.deliveryTypes
+          .map((dt) => (dt === 'pickup' ? 'Pickup' : dt === 'delivery' ? 'Delivery' : dt))
+          .join(' & ');
+        const DeliveryIcon = item.deliveryTypes.includes('pickup') ? BoxIcon : Truck;
+        return (
+          <HStack items="center" gap={theme.spacing.tiny}>
+            <DeliveryIcon size={TAG_ICON_SIZE} variant="Bulk" color={theme.pallate.neutral['04']} />
+            <Text type="l2" weight="medium" color={theme.pallate.neutral['04']}>{label}</Text>
+          </HStack>
+        );
+      }
       const statusStyles = getStatusStyles(item.statusValue);
       const StatusIcon =
-        item.statusValue === 'ramai'
+        item.statusValue === 'busy'
           ? BatteryFull
-          : item.statusValue === 'sedang'
+          : item.statusValue === 'moderate'
             ? BatteryCharging
             : BatteryEmpty;
       return (
-        <HStack items="center" spacing={theme.spacing.tiny}>
-          <StatusIcon
-            size={TAG_ICON_SIZE}
-            variant="Bulk"
-            color={statusStyles.color}
-          />
-          <Text type="l2"  weight="medium" color={statusStyles.color}>
+        <HStack items="center" gap={theme.spacing.tiny}>
+          <StatusIcon size={TAG_ICON_SIZE} variant="Bulk" color={statusStyles.color} />
+          <Text type="l2" weight="medium" color={statusStyles.color}>
             {item.label}
           </Text>
         </HStack>
@@ -111,15 +148,13 @@ export const OutletCard = memo(({ onPress, outlet }: OutletCardProps) => {
     [],
   );
 
-  const tagSeparator = useCallback(
-    () => <Box style={styles.tagDot} />,
-    [],
-  );
-
+  const tagSeparator = useCallback(() => <Box style={styles.tagDot} />, []);
   const tagKeyExtractor = useCallback((item: OutletCardTagItem) => item.id, []);
 
+  if (!outlet) return <OutletCardSkeleton />;
+
   return (
-    <Pressable
+    <GesturePressable
       margin={{
         marginHorizontal: theme.spacing.standard,
         marginVertical: theme.spacing.standard,
@@ -145,11 +180,11 @@ export const OutletCard = memo(({ onPress, outlet }: OutletCardProps) => {
           }}
           fill
           items="center"
-          spacing={theme.spacing.standard}
+          gap={theme.spacing.standard}
         >
-          <VStack fill style={styles.content} spacing={theme.spacing.small}>
-            <HStack items="center" spacing={theme.spacing.small} fill>
-              {showBadge && outlet && (
+          <VStack fill style={styles.content} gap={theme.spacing.small}>
+            <HStack items="center" gap={theme.spacing.small} fill>
+              {showBadge && (
                 <OutletServiceBadge
                   services={outlet.services}
                   selectedBackgroundColor={theme.pallate.primary['01']}
@@ -160,11 +195,11 @@ export const OutletCard = memo(({ onPress, outlet }: OutletCardProps) => {
               )}
               <VStack fill>
                 <Text type="l1" weight="semibold" numberOfLines={1} fill>
-                  {displayName}
+                  {outlet.name}
                 </Text>
-                {displayAddress != null && displayAddress !== '' && (
+                {outlet.address != null && outlet.address !== '' && (
                   <Text type="l2" color={theme.pallate.neutral['04']} numberOfLines={1}>
-                    {displayAddress}
+                    {outlet.address}
                   </Text>
                 )}
               </VStack>
@@ -181,17 +216,14 @@ export const OutletCard = memo(({ onPress, outlet }: OutletCardProps) => {
               />
             )}
           </VStack>
-          <IconChevronDown color={accentColor} size={24} />
+          <IconChevronDown color={theme.pallate.neutral['05']} size={24} />
         </HStack>
       </Flex>
-    </Pressable>
+    </GesturePressable>
   );
 });
 
 const styles = StyleSheet.create({
-  cardShadow: {
-    borderRadius: CARD_BORDER_RADIUS,
-  },
   cardInner: {
     overflow: 'hidden',
   },
@@ -208,6 +240,13 @@ const styles = StyleSheet.create({
     backgroundColor: theme.pallate.neutral['05'],
     marginHorizontal: theme.spacing.small,
     alignSelf: 'center',
+  },
+  hoursBadge: {
+    backgroundColor: theme.pallate.neutral['02'],
+    borderRadius: 999,
+    paddingHorizontal: theme.spacing.small,
+    paddingVertical: 2,
+    flexShrink: 1,
   },
 });
 

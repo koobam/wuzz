@@ -86,7 +86,7 @@ const TrendingScreen = memo(() => {
         }} />;
       case 'title':
         return (
-          <VStack spacing={theme.spacing.small} padding={theme.spacing.large}>
+          <VStack gap={theme.spacing.small} padding={theme.spacing.large}>
             <Text type="s3" weight="bold" color={theme.pallate.neutral['01']}>{item.title}</Text>
           </VStack>
         );
@@ -133,7 +133,7 @@ const TrendingScreen = memo(() => {
           />
         </MaskedView>
         <VStack
-          spacing={theme.spacing.standard}
+          gap={theme.spacing.standard}
           padding={{ paddingHorizontal: theme.spacing.large, paddingBottom: theme.spacing.extraLarge }}
         >
           <HStack items="center" justify="center">
@@ -141,7 +141,7 @@ const TrendingScreen = memo(() => {
               onPress={() => {}}
               fill
               items="center"
-              spacing={theme.spacing.standard}
+              gap={theme.spacing.standard}
               requireExternalGestureToFail
             >
               <Box
@@ -175,8 +175,8 @@ const TrendingScreen = memo(() => {
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
             quos.
           </Text>
-          <HStack items="center" spacing={theme.spacing.medium}>
-            <GesturePressable items="center" spacing={theme.spacing.small} requireExternalGestureToFail>
+          <HStack items="center" gap={theme.spacing.medium}>
+            <GesturePressable items="center" gap={theme.spacing.small} requireExternalGestureToFail>
               <Heart
                 size={26}
                 fill={theme.pallate.neutral['01']}
@@ -186,7 +186,7 @@ const TrendingScreen = memo(() => {
                 12
               </Text>
             </GesturePressable>
-            <GesturePressable items="center" spacing={theme.spacing.small} requireExternalGestureToFail>
+            <GesturePressable items="center" gap={theme.spacing.small} requireExternalGestureToFail>
               <Repeat
                 size={26}
                 fill={theme.pallate.neutral['01']}
@@ -196,7 +196,7 @@ const TrendingScreen = memo(() => {
                 12
               </Text>
             </GesturePressable>
-            <GesturePressable items="center" spacing={theme.spacing.small} requireExternalGestureToFail>
+            <GesturePressable items="center" gap={theme.spacing.small} requireExternalGestureToFail>
               <Send2
                 size={26}
                 fill={theme.pallate.neutral['01']}

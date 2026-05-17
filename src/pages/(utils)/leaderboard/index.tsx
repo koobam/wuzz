@@ -87,7 +87,7 @@ const LeaderboardRow = memo(function LeaderboardRow({
   return (
     <Pressable
       items="center"
-      spacing={theme.spacing.small}
+      gap={theme.spacing.small}
       padding={{
         paddingHorizontal: theme.spacing.large,
         paddingVertical: theme.spacing.standard,
@@ -129,7 +129,7 @@ const LockedBackground = memo(function LockedBackground({
   return (
     <VStack fill gap={theme.spacing.standard} justify="center" items="center">
       <Icon icon="rank-lock" size={56} color={theme.pallate.neutral['03']} />
-      <VStack items="center" spacing={theme.spacing.tiny}>
+      <VStack items="center" gap={theme.spacing.tiny}>
         <Text type="b2" weight="semibold" color={theme.pallate.neutral['05']}>
           Tier {TIER_LABEL[tier]} terkunci
         </Text>
@@ -173,7 +173,7 @@ const ZoneDivider = memo(function ZoneDivider({
   return (
     <HStack
       items="center"
-      spacing={theme.spacing.small}
+      gap={theme.spacing.small}
       padding={{
         paddingHorizontal: theme.spacing.large,
         paddingVertical: theme.spacing.standard,
@@ -185,7 +185,7 @@ const ZoneDivider = memo(function ZoneDivider({
         backgroundColor={color}
         opacity={0.3}
       />
-      <VStack items="center" spacing={2}>
+      <VStack items="center" gap={2}>
         <Text type="b2" weight="bold" color={color}>
           {ZONE_LABEL[zone]}
         </Text>

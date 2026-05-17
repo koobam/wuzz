@@ -24,7 +24,7 @@ export const LaundryFooter = memo(function LaundryFooter({
           borderTopLeftRadius: theme.spacing.large,
           borderTopRightRadius: theme.spacing.large,
         }}
-        spacing={theme.spacing.standard}
+        gap={theme.spacing.standard}
       >
         <Text
           fill
@@ -49,7 +49,7 @@ export const LaundryFooter = memo(function LaundryFooter({
         </Pressable>
       </HStack>
       <VStack
-        spacing={theme.spacing.large}
+        gap={theme.spacing.large}
         margin={{
           marginTop: -theme.spacing.large,
         }}

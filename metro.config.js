@@ -12,6 +12,11 @@ const { assetExts, sourceExts } = defaultConfig.resolver;
 const config = {
   transformer: {
     babelTransformerPath: require.resolve('react-native-svg-transformer'),
+    getTransformOptions: async () => ({
+      transform: {
+        inlineRequires: true,
+      },
+    }),
   },
   resolver: {
     assetExts: assetExts.filter((ext) => ext !== 'svg'),

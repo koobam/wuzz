@@ -22,9 +22,9 @@ const DefaultNavbarContent = React.memo((_props: NativeStackHeaderProps) => {
         paddingHorizontal: theme.spacing.large,
       }}
       items="center"
-      spacing={theme.spacing.standard}
+      gap={theme.spacing.standard}
     >
-      <Pressable onPress={() => navigation.navigate(PROFILE_NAVIGATION_ROUTES.CHOOSE_USER_PROFILE)} items="center" spacing={theme.spacing.small}>
+      <Pressable onPress={() => navigation.navigate(PROFILE_NAVIGATION_ROUTES.CHOOSE_USER_PROFILE)} items="center" gap={theme.spacing.small}>
         <Text weight="bold" color={theme.pallate.neutral['01']}>janfalih_</Text>
         <IconChevronDown color={theme.pallate.neutral['01']} size={20} />
       </Pressable>
@@ -32,7 +32,7 @@ const DefaultNavbarContent = React.memo((_props: NativeStackHeaderProps) => {
       <Pressable height={50} padding={{
         paddingHorizontal: theme.spacing.medium,
         paddingVertical: theme.spacing.standard,
-      }} items="center" spacing={theme.spacing.tiny} style={{
+      }} items="center" gap={theme.spacing.tiny} style={{
         ...theme.elevations[5],
       }} backgroundColor={theme.pallate.neutral['05']} borderRadius={999}>
         <Setting size={24} color={theme.pallate.neutral['01']} />
@@ -41,7 +41,7 @@ const DefaultNavbarContent = React.memo((_props: NativeStackHeaderProps) => {
       <Pressable  height={50} width={50} padding={{
         paddingHorizontal: theme.spacing.medium,
         paddingVertical: theme.spacing.standard,
-      }} items="center" justify="center" spacing={theme.spacing.tiny} style={{
+      }} items="center" justify="center" gap={theme.spacing.tiny} style={{
         ...theme.elevations[5],
       }} backgroundColor={theme.pallate.neutral['05']} borderRadius={999}>
         <Setting2 variant="Bulk" size={24} color={theme.pallate.neutral['01']} />

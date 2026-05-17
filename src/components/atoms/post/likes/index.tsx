@@ -20,7 +20,7 @@ interface LikesProps {
 export const Likes = memo((props: LikesProps) => {
     const {people} = props;
     return(
-        <Pressable spacing={4} borderRadius={24} items="center">
+        <Pressable gap={4} borderRadius={24} items="center">
           <FlashList
             data={people}
             horizontal

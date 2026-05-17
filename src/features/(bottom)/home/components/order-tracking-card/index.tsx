@@ -26,7 +26,7 @@ export const OrderTrackingList = memo(({ onOrderPress }: OrderTrackingListProps)
         direction="column"
         shrink
         width={screenWidth * 0.85}
-        spacing={theme.spacing.standard}
+        gap={theme.spacing.standard}
         padding={theme.spacing.large}
         borderWidth={1}
         borderColor={theme.pallate.neutral['02']}
@@ -35,7 +35,7 @@ export const OrderTrackingList = memo(({ onOrderPress }: OrderTrackingListProps)
       >
             <VStack>
               <Text weight="semibold">Driver Menuju Lokasimu</Text>
-              <HStack spacing={theme.spacing.tiny} items="center">
+              <HStack gap={theme.spacing.tiny} items="center">
                 <Text color={theme.pallate.neutral['04']} type="l1">
                   Wuzz 1090 Supermall Karawaci
                 </Text>
@@ -50,7 +50,7 @@ export const OrderTrackingList = memo(({ onOrderPress }: OrderTrackingListProps)
                 </Text>
               </HStack>
             </VStack>
-          <HStack items="center" spacing={theme.spacing.small}>
+          <HStack items="center" gap={theme.spacing.small}>
             <Box
               width={25}
               height={25}
@@ -119,7 +119,7 @@ export const OrderTrackingList = memo(({ onOrderPress }: OrderTrackingListProps)
                 paddingVertical: theme.spacing.small,
               }}
               items="center"
-              spacing={theme.spacing.tiny}
+              gap={theme.spacing.tiny}
               borderRadius={10}
               backgroundColor={theme.pallate.neutral['03']}
             >

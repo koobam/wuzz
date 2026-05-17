@@ -11,7 +11,6 @@ import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import React, { Fragment, useEffect } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScanBarcode } from 'iconsax-react-native';
-import { Dimensions } from 'react-native';
 import {
   interpolateColor,
   useAnimatedStyle,
@@ -59,7 +58,7 @@ const AnimatedTabItem = React.memo(
     return (
       <Pressable
         onPress={onPress}
-        spacing={2}
+        gap={2}
         width={itemWidth}
         height={70}
         items="center"
@@ -174,7 +173,7 @@ export const BottomNavigationBar = React.memo((props: BottomTabBarProps) => {
           borderTopRightRadius: 20,
         }}
         items="center"
-        spacing={theme.spacing.small}
+        gap={theme.spacing.small}
       >
         {isAuthenticated ? (
           <Fragment>
@@ -214,7 +213,7 @@ export const BottomNavigationBar = React.memo((props: BottomTabBarProps) => {
             </PressableAnimated>
           </Fragment>
         ) : (
-          <HStack spacing={theme.spacing.small}>
+          <HStack gap={theme.spacing.small}>
             <Text
               type="l1"
               fill
@@ -325,7 +324,7 @@ export const BottomNavigationBar = React.memo((props: BottomTabBarProps) => {
                 width={SPECIAL_WIDTH}
                 direction="column"
                 onPress={onPress}
-                spacing={theme.spacing.tiny}
+                gap={theme.spacing.tiny}
                 margin={{
                   marginTop: -20,
                 }}

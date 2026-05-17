@@ -3,3 +3,5 @@ export { Auth } from './auth';
 export type { AppStateContextValue, AppVisibility, NetworkState } from './app-state';
 export type { AuthAction, AuthContextValue, AuthState, AuthUser } from './auth';
 export { BottomNavHeightProvider, useBottomNavHeight } from './bottom-nav-height';
+export { LocationProvider, useLocationState, useLocationActions } from './location';
+export type { LocationSource, LocationState, LocationActions } from './location';

@@ -53,7 +53,7 @@ import {
       return (
         <Pressable
           direction="row"
-          spacing={theme.spacing.medium}
+          gap={theme.spacing.medium}
           padding={theme.spacing.large}
           borderWidth={1}
           borderColor={theme.pallate.neutral['02']}
@@ -70,7 +70,7 @@ import {
           >
             <TruckFast size={28} color={theme.pallate.primary['03']} variant="Bulk" />
           </Flex>
-          <VStack fill spacing={4}>
+          <VStack fill gap={4}>
             <Text type="b2" weight="semibold">
               Your order is on the way!
             </Text>

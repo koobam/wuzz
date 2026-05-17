@@ -91,7 +91,7 @@ export const ShareProfileModal = memo(function ShareProfileModal({
         accessibilityRole="button"
         accessibilityLabel={item.label}
       >
-        <HStack items="center" spacing={theme.spacing.standard}>
+        <HStack items="center" gap={theme.spacing.standard}>
           {item.icon}
           <Text type="b1" weight="medium" color={theme.pallate.neutral['05']}>
             {item.label}
@@ -147,7 +147,7 @@ export const ShareProfileModal = memo(function ShareProfileModal({
         contentContainerStyle={contentContainerStyle}
         showsVerticalScrollIndicator={false}
       >
-        <VStack spacing={theme.spacing.small} padding={{ paddingTop: theme.spacing.small }}>
+        <VStack gap={theme.spacing.small} padding={{ paddingTop: theme.spacing.small }}>
           <Text
             type="s3"
             weight="bold"

@@ -19,7 +19,6 @@ export const Maps = (_props: MapsType) => {
     }
   }, []);
 
-  console.log('zoomLevel', zoomLevel);
 
   return (
     <VStack fill>
@@ -40,7 +39,7 @@ export const Maps = (_props: MapsType) => {
             paddingTop: theme.spacing.standard + top,
             paddingBottom: theme.spacing.large,
           }}
-          spacing={theme.spacing.standard}
+          gap={theme.spacing.standard}
         >
           <HStack padding={{
             paddingHorizontal: theme.spacing.large,
@@ -83,7 +82,7 @@ export const Maps = (_props: MapsType) => {
                 }}
                 borderRadius={30}
                 items="center"
-                spacing={theme.spacing.small}
+                gap={theme.spacing.small}
                 backgroundColor={index === 0 ? theme.pallate.neutral['05'] : theme.pallate.neutral['01']}
               >
                 {item.icon}

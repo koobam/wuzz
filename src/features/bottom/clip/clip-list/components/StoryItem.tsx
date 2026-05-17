@@ -96,7 +96,7 @@ export const StoryItem = memo(
           margin={{
             marginTop: -40,
           }}
-          spacing={theme.spacing.small}
+          gap={theme.spacing.small}
         >
           <Text type="l1" color={theme.pallate.neutral['01']} weight="bold">
             {item}
@@ -104,7 +104,7 @@ export const StoryItem = memo(
           <HStack
             items="center"
             justify="center"
-            spacing={theme.spacing.small}
+            gap={theme.spacing.small}
           >
             {[1, 2, 3].map((y, i) => (
               <Box

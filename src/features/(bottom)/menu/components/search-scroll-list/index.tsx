@@ -77,7 +77,7 @@ export const SearchScrollList = memo((props: SearchScrollListProps) => {
           paddingVertical: theme.spacing.standard,
           paddingHorizontal: theme.spacing.standard,
         }}
-        spacing={theme.spacing.standard}
+        gap={theme.spacing.standard}
         items="center"
       >
         <Image
@@ -85,7 +85,7 @@ export const SearchScrollList = memo((props: SearchScrollListProps) => {
           style={styles.resultRowImage}
           resizeMode="contain"
         />
-        <VStack spacing={theme.spacing.tiny}>
+        <VStack gap={theme.spacing.tiny}>
           <Box>
             <Text
               type="b2"

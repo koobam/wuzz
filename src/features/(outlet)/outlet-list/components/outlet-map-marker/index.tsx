@@ -28,7 +28,7 @@ export const OutletMapMarker = memo(({ marker }: OutletMapMarkerProps) => (
         paddingVertical: theme.spacing.small + 1,
         paddingHorizontal: theme.spacing.standard,
       }}
-      spacing={2}
+      gap={2}
       zIndex={1}
       borderRadius={999}
     >

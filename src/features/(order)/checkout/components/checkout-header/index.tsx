@@ -19,7 +19,7 @@ export const CheckoutHeader = memo(function CheckoutHeader({
         paddingBottom: theme.spacing.standard,
         paddingHorizontal: theme.spacing.large,
       }}
-      spacing={theme.spacing.standard}
+      gap={theme.spacing.standard}
     >
       <Pressable
         padding={{
@@ -31,7 +31,7 @@ export const CheckoutHeader = memo(function CheckoutHeader({
         borderWidth={1}
         borderColor={theme.pallate.neutral['02']}
         items="center"
-        spacing={theme.spacing.small}
+        gap={theme.spacing.small}
         borderRadius={999}
         backgroundColor={theme.pallate.neutral['01']}
       >

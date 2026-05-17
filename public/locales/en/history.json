@@ -1,0 +1,8 @@
+{
+    "empty": {
+        "title": "No orders yet",
+        "description": "Once your orders are completed, they will appear here.",
+        "cta": "Start an Order",
+        "ctaSecondary": "Need help?"
+    }
+}

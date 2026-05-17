@@ -22,7 +22,7 @@ export const PaymentSummaryRowItem = memo(
       isTotal && paymentMethod != null && paymentMethod.length > 0;
 
     return (
-      <VStack spacing={theme.spacing.standard}>
+      <VStack gap={theme.spacing.standard}>
         {isTotal && (
           <Dash
             dashColor={theme.pallate.neutral['03']}
@@ -34,11 +34,11 @@ export const PaymentSummaryRowItem = memo(
         <HStack
           justify="space-between"
           items="flex-end"
-          spacing={theme.spacing.standard}
+          gap={theme.spacing.standard}
         >
-          <VStack spacing={theme.spacing.small}>
+          <VStack gap={theme.spacing.small}>
             {showPaymentMethod && (
-              <HStack fill items="center" spacing={theme.spacing.small}>
+              <HStack fill items="center" gap={theme.spacing.small}>
                 <Flex
                   width={50}
                   height={30}
@@ -58,8 +58,8 @@ export const PaymentSummaryRowItem = memo(
             </Text>
           </VStack>
 
-          <VStack items="flex-end" spacing={theme.spacing.tiny}>
-            <HStack items="center" spacing={theme.spacing.tiny}>
+          <VStack items="flex-end" gap={theme.spacing.tiny}>
+            <HStack items="center" gap={theme.spacing.tiny}>
               {showIcon &&
                 (item.rowType === 'voucher' ? (
                   <TicketDiscount size={20} variant="Bulk" color={valueColor} />
@@ -103,7 +103,7 @@ export const PaymentSummarySection = memo(
     const keyExtractor = useCallback((item: PaymentSummaryRow) => item.id, []);
 
     return (
-      <VStack spacing={theme.spacing.standard}>
+      <VStack gap={theme.spacing.standard}>
         <Text type="s3" weight="medium" color={theme.pallate.neutral['05']}>
           Ringkasan Pembayaran
         </Text>

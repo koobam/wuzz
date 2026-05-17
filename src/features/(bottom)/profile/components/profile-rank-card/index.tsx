@@ -49,7 +49,7 @@ export const ProfileRankCard = memo(function ProfileRankCard({
         items="center"
         padding={cardPadding}
         backgroundColor={theme.pallate.neutral['01']}
-        spacing={theme.spacing.standard}
+        gap={theme.spacing.standard}
       >
         <Text
           fill
@@ -65,7 +65,7 @@ export const ProfileRankCard = memo(function ProfileRankCard({
           size="sm"
           rounded
           variant="default"
-          spacing={theme.spacing.tiny}
+          gap={theme.spacing.tiny}
         >
           <Text type="l2" weight="semibold" color={theme.pallate.neutral['04']}>
             Rank Detail
@@ -78,9 +78,9 @@ export const ProfileRankCard = memo(function ProfileRankCard({
         padding={cardPadding}
         justify="center"
         items="center"
-        spacing={theme.spacing.small}
+        gap={theme.spacing.small}
       >
-        <HStack items="center" spacing={theme.spacing.small}>
+        <HStack items="center" gap={theme.spacing.small}>
           <Icon icon="bronze" size={24} />
           <Text type="l1" weight="medium" color={theme.pallate.neutral['05']}>
             Bronze
@@ -121,7 +121,7 @@ export const ProfileRankCard = memo(function ProfileRankCard({
             </Box>
           </Flex>
         </Flex>
-        <HStack items="center" spacing={theme.spacing.small}>
+        <HStack items="center" gap={theme.spacing.small}>
           <Icon icon="silver" size={24} />
           <Text type="l1" weight="medium" color={theme.pallate.neutral['05']}>
             Silver

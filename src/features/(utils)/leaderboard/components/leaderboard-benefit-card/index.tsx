@@ -36,9 +36,9 @@ export const LeaderboardBenefitCard = memo(function LeaderboardBenefitCard({
     : `${xpMin.toLocaleString()}+ XP`;
 
   return (
-    <VStack style={styles.card} spacing={theme.spacing.standard}>
+    <VStack style={styles.card} gap={theme.spacing.standard}>
       <HStack items="center" justify="between">
-        <HStack items="center" spacing={theme.spacing.small}>
+        <HStack items="center" gap={theme.spacing.small}>
           <Icon icon={tier} size={28} />
           <VStack>
             <Text type="b2" weight="semibold" color={color}>
@@ -54,12 +54,12 @@ export const LeaderboardBenefitCard = memo(function LeaderboardBenefitCard({
         </Text>
       </HStack>
 
-      <VStack spacing={theme.spacing.small}>
+      <VStack gap={theme.spacing.small}>
         {benefits.map((benefit, index) => (
           <HStack
             key={index}
             items="flex-start"
-            spacing={theme.spacing.small}
+            gap={theme.spacing.small}
           >
             <VStack style={[styles.dot, { backgroundColor: color }]} />
             <Text fill type="l2" color={theme.pallate.neutral['05']}>

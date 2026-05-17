@@ -8,10 +8,13 @@ import {
   VStack,
   theme,
 } from '@components/atoms';
-import React, { useCallback } from 'react';
+import { EmptyHistory } from '@assets/index';
+import { EmptyStatePlaceholder } from '@components/molecules';
+import React, { useCallback, useMemo } from 'react';
 import { memo } from 'react';
 import { TabBarProps, Tabs } from 'react-native-collapsible-tab-view';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 import useOnLayout from '@hooks/utils/useOnLayout';
 import { TruckFast } from 'iconsax-react-native';
 import TabBar from '@components/molecules/tabbar';
@@ -19,7 +22,48 @@ import TabBar from '@components/molecules/tabbar';
 export const History = memo((props: any) => {
   const { navigation } = props;
   const { top } = useSafeAreaInsets();
+  const { t } = useTranslation('history');
   const [layout, onLayout] = useOnLayout();
+
+  const headerContainerStyle = useMemo(
+    () => ({
+      elevation: 0,
+      shadowColor: 'transparent',
+      shadowOffset: {
+        width: 0,
+        height: 0,
+      },
+      shadowOpacity: 0,
+      shadowRadius: 0,
+    }),
+    [],
+  );
+
+  const ongoingListContentStyle = useMemo(
+    () => ({
+      paddingTop: theme.spacing.standard,
+      paddingBottom: theme.spacing.standard,
+      paddingHorizontal: theme.spacing.large,
+    }),
+    [],
+  );
+
+  const historyListContentStyle = useMemo(
+    () => ({
+      paddingTop: theme.spacing.standard,
+      paddingBottom: theme.spacing.standard,
+      paddingHorizontal: theme.spacing.large,
+    }),
+    [],
+  );
+
+  const historyEmptyStateStyle = useMemo(
+    () => ({
+      flex: 1,
+      justifyContent: 'center' as const,
+    }),
+    [],
+  );
 
   const Header = useCallback(
     () => (
@@ -39,12 +83,12 @@ export const History = memo((props: any) => {
     [onLayout, top],
   );
 
-  const renderTabBar = useCallback((props: TabBarProps<string>) => {
+  const renderTabBar = useCallback((tabBarProps: TabBarProps<string>) => {
     return (
       <TabBar
-        tabNames={props.tabNames}
-        onPress={props.onTabPress}
-        activeIndex={props.indexDecimal}
+        tabNames={tabBarProps.tabNames}
+        onPress={tabBarProps.onTabPress}
+        activeIndex={tabBarProps.indexDecimal}
       />
     );
   }, []);
@@ -56,22 +100,28 @@ export const History = memo((props: any) => {
     [navigation],
   );
 
+  const handleCreateOrder = useCallback(() => {
+    navigation.navigate('home');
+  }, [navigation]);
+
+  const handleCoverageArea = useCallback(() => {}, []);
+
   const renderItem = useCallback(
     ({ item }: { item: number }) => (
       <Pressable
         direction="column"
-        spacing={theme.spacing.standard}
+        gap={theme.spacing.standard}
         padding={theme.spacing.large}
         borderWidth={1}
         borderColor={theme.pallate.neutral['02']}
         borderRadius={14}
         onPress={() => handleOrderPress(String(item))}
       >
-        <HStack items="center" spacing={theme.spacing.standard}>
+        <HStack items="center" gap={theme.spacing.standard}>
           <TruckFast size={24} color={theme.pallate.primary['03']} variant='Bulk' />
           <VStack>
             <Text weight="semibold" type="b1">Driver Menuju Ke Lokasimu</Text>
-            <HStack items="center" spacing={theme.spacing.tiny}>
+            <HStack items="center" gap={theme.spacing.tiny}>
               <Text color={theme.pallate.neutral['04']} type="l1">
                 Wuzz 1090 Supermall Karawaci
               </Text>
@@ -87,7 +137,7 @@ export const History = memo((props: any) => {
             </HStack>
           </VStack>
         </HStack>
-        <HStack items="center" spacing={theme.spacing.tiny}>
+        <HStack items="center" gap={theme.spacing.tiny}>
           <Box borderRadius={25} width={30} height={30} backgroundColor={theme.pallate.neutral['02']} />
           <Flex fill height={5} borderRadius={25} backgroundColor={theme.pallate.neutral['02']} />
           <Box borderRadius={25} width={30} height={30} backgroundColor={theme.pallate.neutral['02']} />
@@ -96,7 +146,7 @@ export const History = memo((props: any) => {
           <Flex fill height={5} borderRadius={25} backgroundColor={theme.pallate.neutral['02']} />
           <Box borderRadius={25} width={30} height={30} backgroundColor={theme.pallate.neutral['02']} />
         </HStack>
-        <HStack items="center" spacing={theme.spacing.tiny}>
+        <HStack items="center" gap={theme.spacing.tiny}>
           <VStack fill>
             <Text type="l1">Laundry Kiloan, +2 Lainnya</Text>
             <Text color={theme.pallate.neutral['04']} type="l1">3Kg Pakaian, 2 Sepatu, +2 Item</Text>
@@ -111,21 +161,38 @@ export const History = memo((props: any) => {
     [handleOrderPress],
   );
 
+  const renderItemSeparator = useCallback(
+    () => <Divider thickness={theme.spacing.standard} />,
+    [],
+  );
+
+  const renderHistoryEmpty = useCallback(
+    () => (
+      <EmptyStatePlaceholder
+        icon={<EmptyHistory />}
+        iconSize={200}
+        title={t('empty.title')}
+        description={t('empty.description')}
+        primaryButton={{
+          label: t('empty.cta'),
+          onPress: handleCreateOrder,
+        }}
+        secondaryButton={{
+          label: t('empty.ctaSecondary'),
+          onPress: handleCoverageArea,
+        }}
+        style={historyEmptyStateStyle}
+      />
+    ),
+    [handleCoverageArea, handleCreateOrder, historyEmptyStateStyle, t],
+  );
+
   return (
     <Tabs.Container
       renderHeader={Header}
       minHeaderHeight={layout.height}
       renderTabBar={renderTabBar}
-      headerContainerStyle={{
-        elevation: 0,
-        shadowColor: 'transparent',
-        shadowOffset: {
-          width: 0,
-          height: 0,
-        },
-        shadowOpacity: 0,
-        shadowRadius: 0,
-      }}
+      headerContainerStyle={headerContainerStyle}
     >
       <Tabs.Tab name="Ongoing">
         <Tabs.FlashList
@@ -136,26 +203,17 @@ export const History = memo((props: any) => {
             4,
             5,
           ]}
-          contentContainerStyle={{
-            paddingTop: theme.spacing.standard,
-            paddingBottom: theme.spacing.standard,
-            paddingHorizontal: theme.spacing.large,
-          }}
-          ItemSeparatorComponent={() => (
-            <Divider thickness={theme.spacing.standard} />
-          )}
+          contentContainerStyle={ongoingListContentStyle}
+          ItemSeparatorComponent={renderItemSeparator}
           renderItem={renderItem}
         />
       </Tabs.Tab>
       <Tabs.Tab name="History">
         <Tabs.FlashList
-          data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
-          contentContainerStyle={{
-            paddingHorizontal: theme.spacing.large,
-          }}
-          ItemSeparatorComponent={() => (
-            <Divider thickness={theme.spacing.standard} />
-          )}
+          data={[]}
+          contentContainerStyle={historyListContentStyle}
+          ItemSeparatorComponent={renderItemSeparator}
+          ListEmptyComponent={renderHistoryEmpty}
           renderItem={renderItem}
         />
       </Tabs.Tab>

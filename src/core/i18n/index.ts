@@ -18,10 +18,14 @@ const locales: Record<string, Record<string, unknown>> = {
     en: {
       common: require('../../../public/locales/en/common.json'),
       home: require('../../../public/locales/en/home.json'),
+      outlet: require('../../../public/locales/en/outlet.json'),
+      history: require('../../../public/locales/en/history.json'),
     },
     id: {
       common: require('../../../public/locales/id/common.json'),
       home: require('../../../public/locales/id/home.json'),
+      outlet: require('../../../public/locales/id/outlet.json'),
+      history: require('../../../public/locales/id/history.json'),
     },
   };
 

@@ -1,15 +1,16 @@
 import { memo } from 'react';
-import { Box, Flex, Icon, Pressable, Text, theme } from '@components/atoms';
+import { Box, Flex, Icon, Text, theme } from '@components/atoms';
 import type { CategoryCardProps } from './category-card.types';
+import GesturePressable from '@components/atoms/gesture-pressable';
 
 export const CategoryCard = memo(({ item, onPress }: CategoryCardProps) => (
-  <Pressable
+  <GesturePressable
     direction="column"
     fill
     onPress={onPress}
     justify="center"
     items="center"
-    spacing={theme.spacing.tiny}
+    gap={theme.spacing.tiny}
   >
     <Flex
       width={60}
@@ -17,9 +18,9 @@ export const CategoryCard = memo(({ item, onPress }: CategoryCardProps) => (
       items="center"
       justify="center"
       borderRadius={30}
-      backgroundColor={theme.pallate.neutral['02']}
+      backgroundColor={theme.pallate.neutral['03']}
     >
-      <Icon icon={item.icon} size={36} color={theme.pallate.neutral['04']} />
+      <Icon icon={item.icon} size={40} color={theme.pallate.neutral['04']} />
       {item.discount !== undefined && item.discount !== 0 && (
         <Box
           position={{
@@ -46,7 +47,7 @@ export const CategoryCard = memo(({ item, onPress }: CategoryCardProps) => (
     <Text type="l1" align="center">
       {item.name}
     </Text>
-  </Pressable>
+  </GesturePressable>
 ));
 
 CategoryCard.displayName = 'CategoryCard';

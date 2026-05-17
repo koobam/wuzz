@@ -8,8 +8,11 @@ export const ROOT_ROUTES = {
   STREAK: 'streak',
   LOGIN: 'login',
   REGISTER: 'register',
+  VERIFICATION: 'verification',
   ORDER_STATUS: 'orderstatus',
   HELP: 'help',
   WEBVIEW: 'webview',
   LEADERBOARD: 'leaderboard',
+  LOCATION_PERMISSION: 'locationpermission',
+  TEXT_BENCHMARK: 'textbenchmark',
 } as const;

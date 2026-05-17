@@ -1,7 +1,8 @@
 import React from 'react';
 import sv, {VariantProps} from 'style-variants';
-import Pressable, {PressableProps} from '../pressable';
 import theme from '../theme';
+import GesturePressable from '../gesture-pressable';
+import { GesturePressableProps } from '../gesture-pressable/gesture-pressable.types';
 
 const button = sv({
   base: {
@@ -40,7 +41,7 @@ const button = sv({
         backgroundColor: theme.pallate.neutral['03'],
       },
       outline: {
-        borderColor: theme.pallate.neutral['01'],
+        borderColor: theme.pallate.neutral['03'],
         borderWidth: 1,
       },
       link: {},
@@ -65,7 +66,7 @@ const button = sv({
 
 type ButtonVariantsProps = VariantProps<typeof button>;
 
-type ButtonProps = ButtonVariantsProps & PressableProps;
+type ButtonProps = ButtonVariantsProps & GesturePressableProps;
 
 export const Button = React.memo((props: ButtonProps) => {
   const {disabled, variant, size, rounded, style} = props;
@@ -79,7 +80,7 @@ export const Button = React.memo((props: ButtonProps) => {
   });
 
   return (
-    <Pressable
+    <GesturePressable
       {...props}
       style={buttonStyles}
       items="center"

@@ -4,6 +4,9 @@ import React_RCTAppDelegate
 import ReactAppDependencyProvider
 import RNBootSplash // ⬅️ add this import
 import HotUpdater
+// NitroFetch: jangan `import NitroFetch` di Swift — Clang module-nya expose .hpp
+// dan bakal kena dependency-scanner failure. NitroAutoPrefetcher Obj-C class
+// otomatis available di Swift lewat Wuzz-Bridging-Header.h
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
+    NitroAutoPrefetcher.prefetchOnStart()
+
     let delegate = ReactNativeDelegate()
     let factory = RCTReactNativeFactory(delegate: delegate)
     delegate.dependencyProvider = RCTAppDependencyProvider()

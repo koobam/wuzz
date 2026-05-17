@@ -1,0 +1,10 @@
+{
+    "list": {
+        "empty": {
+            "title": "Outlet tidak ditemukan",
+            "description": "Kami tidak menemukan outlet di sekitarmu.",
+            "tryAgain": "Coba Lagi",
+            "coverageArea": "Area Jangkauan"
+        }
+    }
+}

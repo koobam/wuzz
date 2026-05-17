@@ -63,7 +63,7 @@ export const SummaryItem = memo(({ item, onInfoPress }: SummaryItemProps) => {
   return (
     <Pressable
       onPress={handlePress}
-      spacing={theme.spacing.standard}
+      gap={theme.spacing.standard}
       items="center"
       padding={{
         paddingVertical: theme.spacing.small,
@@ -111,7 +111,7 @@ export const SummaryItem = memo(({ item, onInfoPress }: SummaryItemProps) => {
           {item.description.join(DESCRIPTION_SEPARATOR)}
         </Text>
         {(showItemKg || showItemStatus) && (
-          <HStack spacing={theme.spacing.tiny} items="center">
+          <HStack gap={theme.spacing.tiny} items="center">
             {showItemKg && (
               <Box
                 padding={{
@@ -151,7 +151,7 @@ export const SummaryItem = memo(({ item, onInfoPress }: SummaryItemProps) => {
           </HStack>
         )}
       </VStack>
-      <VStack items="flex-end" spacing={theme.spacing.tiny}>
+      <VStack items="flex-end" gap={theme.spacing.tiny}>
         <Text
           type="l2"
           weight="medium"

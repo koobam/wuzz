@@ -68,7 +68,7 @@ export const EmptyStatePlaceholder = memo(
           <HStack
             width="100%"
             padding={{ paddingHorizontal: theme.spacing.large }}
-            spacing={theme.spacing.standard}
+            gap={theme.spacing.standard}
             items="center"
             justify="center"
           >
@@ -99,14 +99,15 @@ export const EmptyStatePlaceholder = memo(
           paddingHorizontal: theme.spacing.large,
           paddingVertical: theme.spacing.extraLarge,
         }}
-        spacing={theme.spacing.standard}
+        gap={theme.spacing.standard}
         items="center"
+        justify="center"
         style={style}
       >
         <Box style={iconWrapStyle}>{icon}</Box>
         <Box>
           <Text
-            type="b2"
+            type="b1"
             weight="semibold"
             text={title}
             color={theme.pallate.neutral['05']}

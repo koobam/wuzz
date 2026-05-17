@@ -52,7 +52,7 @@ export const MenuCategoryList = memo((props: MenuCategoryListProps) => {
           onPress={() => onSelectCategory(item.id)}
           style={styles.categoryItem}
         >
-          <VStack spacing={theme.spacing.tiny} items="center" style={styles.categoryItemInner}>
+          <VStack gap={theme.spacing.tiny} items="center" style={styles.categoryItemInner}>
             <Box style={styles.dummyImage} />
             <Text
               type="l2"

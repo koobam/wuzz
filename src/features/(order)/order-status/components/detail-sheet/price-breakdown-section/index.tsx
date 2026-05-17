@@ -10,7 +10,7 @@ export const PriceBreakdownSection = memo(
       borderColor={theme.pallate.neutral['03']}
       borderRadius={theme.spacing.large}
       padding={theme.spacing.large}
-      spacing={theme.spacing.standard}
+      gap={theme.spacing.standard}
     >
       {prices.map((line, index) => (
         <HStack

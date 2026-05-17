@@ -55,7 +55,7 @@ export const ChangeLanguageModal = memo(props => {
           fill
           borderRadius={12}
           items="center"
-          spacing={12}
+          gap={12}
         >
           <VStack
             borderRadius={20}
@@ -96,10 +96,10 @@ export const ChangeLanguageModal = memo(props => {
       <VStack
         backgroundColor={theme.pallate.neutral['06']}
         padding={20}
-        spacing={20}
+        gap={20}
       >
-        <HStack spacing={10} fill items="center">
-          <VStack spacing={4} fill>
+        <HStack gap={10} fill items="center">
+          <VStack gap={4} fill>
             <Text
               type="s1"
               weight="bold"
@@ -115,7 +115,7 @@ export const ChangeLanguageModal = memo(props => {
           <HStack
             padding={{ paddingHorizontal: 20, paddingVertical: 10 }}
             borderRadius={40}
-            spacing={theme.spacing.small}
+            gap={theme.spacing.small}
             backgroundColor={theme.pallate.neutral['04']}
           >
             <Image

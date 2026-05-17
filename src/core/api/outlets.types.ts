@@ -33,4 +33,24 @@ export interface OutletsParams {
   cursor?: string;
   /** Page size (default 10, when not using lat/long) */
   num?: number;
+  /** Filter by category. Omit or 'all' for no filter. */
+  category?: 'laundry' | 'caffe' | 'all';
+}
+
+export interface NearestOutletParams {
+  lat: number;
+  long: number;
+}
+
+export type NearestOutletResponse = ApiResponse<NearestOutletData>;
+
+export interface NearestOutletData {
+  id: number
+  name: string
+  address: string
+  category: string
+  distance_in_km: number
+  current_status: string
+  delivery_types: string[]
+  hours: string[]
 }

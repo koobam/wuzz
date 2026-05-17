@@ -59,7 +59,7 @@ import Tab from '@components/molecules/tab';
       return (
         <Pressable padding={{
           paddingVertical: theme.spacing.standard,
-        }} spacing={theme.spacing.standard}>
+        }} gap={theme.spacing.standard}>
           <Flex width={40} height={40} backgroundColor={theme.pallate.neutral['01']} borderRadius={999} />
           <VStack fill>
             <Text type="s3" weight="medium" color={navigationTheme.colors.text}>Lorem ipsum dolor sit amet.</Text>

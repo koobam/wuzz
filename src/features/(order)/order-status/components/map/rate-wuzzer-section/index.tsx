@@ -43,7 +43,7 @@ export const RateWuzzerSection = memo(
 
     return (
       <VStack
-        spacing={theme.spacing.standard}
+        gap={theme.spacing.standard}
         padding={{
           paddingVertical: theme.spacing.standard,
           paddingHorizontal: theme.spacing.medium,
@@ -54,7 +54,7 @@ export const RateWuzzerSection = memo(
         <Text type="s2" weight="semibold" color={theme.pallate.neutral['05']}>
           Beri rating untuk {wuzzerName}
         </Text>
-        <HStack items="center" spacing={theme.spacing.small}>
+        <HStack items="center" gap={theme.spacing.small}>
           {Array.from({ length: STAR_COUNT }, (_, i) => {
             const value = i + 1;
             const isFilled = value <= selectedRating;

@@ -236,7 +236,7 @@ export const Laundry = memo(() => {
         />
         <VStack
           margin={{ marginTop: -theme.spacing.large * 2 }}
-          spacing={theme.spacing.large}
+          gap={theme.spacing.large}
         >
           <LaundryCard
             title={cardTitle}

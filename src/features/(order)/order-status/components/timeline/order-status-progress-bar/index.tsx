@@ -48,7 +48,7 @@ export const OrderStatusProgressBar = memo(
     }));
 
     return (
-      <HStack items="center" spacing={theme.spacing.small}>
+      <HStack items="center" gap={theme.spacing.small}>
         {ORDER_STATUSES.map((_, index) => {
           const isCompleted = index < currentIndex;
           const isActive = index === currentIndex;

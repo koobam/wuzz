@@ -5,13 +5,13 @@ import type { WhatWeDoStepCardProps } from './what-we-do-step-card.types';
 export const WhatWeDoStepCard = memo(
   ({ step, index }: WhatWeDoStepCardProps) => (
     <VStack
-      spacing={theme.spacing.small}
+      gap={theme.spacing.small}
       borderRadius={12}
       width={300}
       backgroundColor={theme.pallate.neutral['02']}
       padding={theme.spacing.large}
     >
-      <HStack spacing={theme.spacing.small} items="center">
+      <HStack gap={theme.spacing.small} items="center">
         <Flex
           width={30}
           height={30}

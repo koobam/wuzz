@@ -25,7 +25,7 @@ export const PurchaseListSection = memo(function PurchaseListSection() {
 
   const renderItem = useCallback(({ item }: { item: PurchaseItem }) => {
     return (
-      <HStack spacing={theme.spacing.standard} items="center">
+      <HStack gap={theme.spacing.standard} items="center">
         <Box
           width={60}
           height={60}
@@ -36,7 +36,7 @@ export const PurchaseListSection = memo(function PurchaseListSection() {
             <Text numberOfLines={1} type="b2" weight="medium">
               {item.name}
             </Text>
-            <HStack items="center" spacing={theme.spacing.small}>
+            <HStack items="center" gap={theme.spacing.small}>
               <Text type="l1" color={theme.pallate.neutral['04']}>
                 {item.type}
               </Text>
@@ -67,7 +67,7 @@ export const PurchaseListSection = memo(function PurchaseListSection() {
       margin={{
         marginHorizontal: theme.spacing.large,
       }}
-      spacing={theme.spacing.medium}
+      gap={theme.spacing.medium}
     >
       <Text weight="medium" type="s3">
         Daftar Pembelian

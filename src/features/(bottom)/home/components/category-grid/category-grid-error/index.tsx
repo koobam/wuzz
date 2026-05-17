@@ -1,22 +1,31 @@
-import { memo } from 'react';
-import { Text, theme } from '@components/atoms';
-import { StyleSheet } from 'react-native';
+import { memo, useCallback } from 'react';
+import { EmptyStatePlaceholder } from '@components/molecules';
+import { Error500 } from '@assets/index';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { RootStackParamList } from '@navigation/root/root.types';
+import { ROOT_ROUTES } from '@navigation/root/_routes';
 import type { CategoryGridErrorProps } from './category-grid-error.types';
 
-const styles = StyleSheet.create({
-  errorText: {
-    marginTop: theme.spacing.small,
-  },
-});
+type Nav = NativeStackNavigationProp<RootStackParamList>;
 
-export const CategoryGridError = memo(({ message }: CategoryGridErrorProps) => (
-  <Text
-    type="l2"
-    color={theme.pallate.danger['03']}
-    style={styles.errorText}
-  >
-    {message}
-  </Text>
-));
+export const CategoryGridError = memo(({ message, onRetry }: CategoryGridErrorProps) => {
+  const navigation = useNavigation<Nav>();
+
+  const handleHelp = useCallback(() => {
+    navigation.navigate(ROOT_ROUTES.HELP);
+  }, [navigation]);
+
+  return (
+    <EmptyStatePlaceholder
+      icon={<Error500 />}
+      iconSize={150}
+      title={message}
+      description="Terjadi kesalahan saat memuat layanan. Silakan coba lagi nanti."
+      primaryButton={onRetry ? { label: 'Coba Lagi', onPress: onRetry } : undefined}
+      secondaryButton={{ label: 'Bantuan', onPress: handleHelp }}
+    />
+  );
+});
 
 CategoryGridError.displayName = 'CategoryGridError';

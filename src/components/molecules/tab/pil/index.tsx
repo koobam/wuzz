@@ -54,7 +54,7 @@ import { TabBarPilPropsType, TabItemPilProps } from './pil.type';
         height={55}
         items="center"
         justify="center"
-        spacing={8}
+        gap={8}
       >
         <Icon size={18} icon="Box" />
         <ReanimatedText

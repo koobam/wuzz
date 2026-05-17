@@ -18,8 +18,8 @@ const renderStatItem = (
   onStreakPress?: () => void,
 ) => {
   const content = (
-    <VStack borderRadius={12} spacing={theme.spacing.tiny}>
-      <HStack items="center" spacing={theme.spacing.tiny}>
+    <VStack borderRadius={12} gap={theme.spacing.tiny}>
+      <HStack items="center" gap={theme.spacing.tiny}>
         {item.icon}
         <Text type="b2" weight="semibold" color={item.color}>
           {item.value}

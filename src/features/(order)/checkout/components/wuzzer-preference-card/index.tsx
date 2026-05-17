@@ -18,7 +18,7 @@ export const WuzzerPreferenceCard = memo(function WuzzerPreferenceCard() {
       borderWidth={1}
       borderColor={theme.pallate.neutral['02']}
       borderRadius={14}
-      spacing={theme.spacing.medium}
+      gap={theme.spacing.medium}
     >
       <VStack>
         <Text weight="medium" type="b1">

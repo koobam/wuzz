@@ -56,18 +56,9 @@ export const GesturePressable: React.FC<GesturePressableProps> = React.memo(
 
       let gesture = Gesture.Tap()
         .numberOfTaps(2)
-        .onBegin(() => {
-          'worklet';
-          console.log('[GesturePressable] DoubleTap: onBegin');
-        })
         .onEnd(() => {
           'worklet';
-          console.log('[GesturePressable] DoubleTap: onEnd');
           runOnJS(handleDoubleTap)();
-        })
-        .onFinalize(() => {
-          'worklet';
-          console.log('[GesturePressable] DoubleTap: onFinalize');
         });
 
       // Configure gesture relationships with scroll gesture handler
@@ -189,50 +180,27 @@ export const GesturePressable: React.FC<GesturePressableProps> = React.memo(
         .shouldCancelWhenOutside(false)
         .onBegin(() => {
           'worklet';
-          console.log('[GesturePressable] LongPress: onBegin');
-          if (shouldShrink) {
-            scale.value = withTiming(0.98, { duration: 80 });
-          }
-          if (shouldOpacity) {
-            opacityValue.value = withTiming(0.6, { duration: 80 });
-          }
+          if (shouldShrink) { scale.value = withTiming(0.98, { duration: 80 }); }
+          if (shouldOpacity) { opacityValue.value = withTiming(0.6, { duration: 80 }); }
         })
         .onStart(() => {
           'worklet';
-
-          console.log('[GesturePressable] LongPress: onStart - Long press activated!');
-          if (onLongPress !== undefined) {
-            runOnJS(handleLongPress)();
-          }
+          if (onLongPress !== undefined) { runOnJS(handleLongPress)(); }
         })
         .onEnd(() => {
           'worklet';
-          console.log('[GesturePressable] LongPress: onEnd');
-          if (shouldShrink) {
-            scale.value = withTiming(1, { duration: 80 });
-          }
-          if (shouldOpacity) {
-            opacityValue.value = withTiming(1, { duration: 80 });
-          }
+          if (shouldShrink) { scale.value = withTiming(1, { duration: 80 }); }
+          if (shouldOpacity) { opacityValue.value = withTiming(1, { duration: 80 }); }
         })
         .onTouchesCancelled(() => {
           'worklet';
-          if (shouldShrink) {
-            scale.value = withTiming(1, { duration: 80 });
-          }
-          if (shouldOpacity) {
-            opacityValue.value = withTiming(1, { duration: 80 });
-          }
+          if (shouldShrink) { scale.value = withTiming(1, { duration: 80 }); }
+          if (shouldOpacity) { opacityValue.value = withTiming(1, { duration: 80 }); }
         })
         .onFinalize(() => {
           'worklet';
-          console.log('[GesturePressable] LongPress: onFinalize', { shouldShrink, shouldOpacity });
-          if (shouldShrink) {
-            scale.value = withTiming(1, { duration: 80 });
-          }
-          if (shouldOpacity) {
-            opacityValue.value = withTiming(1, { duration: 80 });
-          }
+          if (shouldShrink) { scale.value = withTiming(1, { duration: 80 }); }
+          if (shouldOpacity) { opacityValue.value = withTiming(1, { duration: 80 }); }
         });
 
       // Configure gesture relationships with scroll gesture handler

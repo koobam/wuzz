@@ -28,7 +28,7 @@ export const StreakContent = memo(function StreakContent({
   const config = useMemo(() => STREAK_STATUS_CONFIG[status], [status]);
 
   return (
-    <VStack spacing={theme.spacing.large} fill>
+    <VStack gap={theme.spacing.large} fill>
       <Text
         type="s1"
         weight="bold"
@@ -39,10 +39,10 @@ export const StreakContent = memo(function StreakContent({
         padding={theme.spacing.large}
         borderRadius={16}
         backgroundColor={theme.pallate.neutral['01']}
-        spacing={theme.spacing.standard}
+        gap={theme.spacing.standard}
         items="center"
       >
-        <HStack items="center" spacing={theme.spacing.standard}>
+        <HStack items="center" gap={theme.spacing.standard}>
           <VStack
             width={FLAME_SIZE + theme.spacing.standard}
             height={FLAME_SIZE + theme.spacing.standard}
@@ -61,7 +61,7 @@ export const StreakContent = memo(function StreakContent({
           />
           <Text type="b1" color={theme.pallate.neutral['04']} text="hari" />
         </HStack>
-        <VStack spacing={theme.spacing.small} fill>
+        <VStack gap={theme.spacing.small} fill>
           <Text
             type="b1"
             weight="semibold"

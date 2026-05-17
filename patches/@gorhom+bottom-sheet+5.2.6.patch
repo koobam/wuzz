@@ -1,3 +1,51 @@
+diff --git a/node_modules/@gorhom/bottom-sheet/lib/commonjs/hooks/useBoundingClientRect.js b/node_modules/@gorhom/bottom-sheet/lib/commonjs/hooks/useBoundingClientRect.js
+index b4a90b7..648e90a 100644
+--- a/node_modules/@gorhom/bottom-sheet/lib/commonjs/hooks/useBoundingClientRect.js
++++ b/node_modules/@gorhom/bottom-sheet/lib/commonjs/hooks/useBoundingClientRect.js
+@@ -45,17 +45,13 @@ function useBoundingClientRect(ref, handler) {
+       return;
+     }
+ 
+-    // @ts-ignore 👉 https://github.com/facebook/react/commit/53b1f69ba
+-    if (ref.current.unstable_getBoundingClientRect !== null) {
+-      // @ts-ignore https://github.com/facebook/react/commit/53b1f69ba
++    if (typeof ref.current.unstable_getBoundingClientRect === 'function') {
+       const layout = ref.current.unstable_getBoundingClientRect();
+       handler(layout);
+       return;
+     }
+ 
+-    // @ts-ignore once it `unstable_getBoundingClientRect` gets stable 🤞.
+-    if (ref.current.getBoundingClientRect !== null) {
+-      // @ts-ignore once it `unstable_getBoundingClientRect` gets stable.
++    if (typeof ref.current.getBoundingClientRect === 'function') {
+       const layout = ref.current.getBoundingClientRect();
+       handler(layout);
+     }
+diff --git a/node_modules/@gorhom/bottom-sheet/lib/module/hooks/useBoundingClientRect.js b/node_modules/@gorhom/bottom-sheet/lib/module/hooks/useBoundingClientRect.js
+index a723aed..49dd9aa 100644
+--- a/node_modules/@gorhom/bottom-sheet/lib/module/hooks/useBoundingClientRect.js
++++ b/node_modules/@gorhom/bottom-sheet/lib/module/hooks/useBoundingClientRect.js
+@@ -41,17 +41,13 @@ export function useBoundingClientRect(ref, handler) {
+       return;
+     }
+ 
+-    // @ts-ignore 👉 https://github.com/facebook/react/commit/53b1f69ba
+-    if (ref.current.unstable_getBoundingClientRect !== null) {
+-      // @ts-ignore https://github.com/facebook/react/commit/53b1f69ba
++    if (typeof ref.current.unstable_getBoundingClientRect === 'function') {
+       const layout = ref.current.unstable_getBoundingClientRect();
+       handler(layout);
+       return;
+     }
+ 
+-    // @ts-ignore once it `unstable_getBoundingClientRect` gets stable 🤞.
+-    if (ref.current.getBoundingClientRect !== null) {
+-      // @ts-ignore once it `unstable_getBoundingClientRect` gets stable.
++    if (typeof ref.current.getBoundingClientRect === 'function') {
+       const layout = ref.current.getBoundingClientRect();
+       handler(layout);
+     }
 diff --git a/node_modules/@gorhom/bottom-sheet/src/hooks/useBoundingClientRect.ts b/node_modules/@gorhom/bottom-sheet/src/hooks/useBoundingClientRect.ts
 index cc85c8c..3f80410 100644
 --- a/node_modules/@gorhom/bottom-sheet/src/hooks/useBoundingClientRect.ts

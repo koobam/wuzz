@@ -18,7 +18,7 @@ export const HomeNavbar = React.memo((_props: NativeStackHeaderProps) => {
         paddingBottom: theme.spacing.standard,
       }}
       items="center"
-      spacing={theme.spacing.standard}
+      gap={theme.spacing.standard}
       backgroundColor={theme.pallate.neutral['05']}
     >
       {/* Add your custom navbar content here */}

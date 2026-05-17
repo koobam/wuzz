@@ -67,7 +67,7 @@ export const OutletServiceBadge = memo(function OutletServiceBadge({
 
   const icons =
     variant === 'both' ? (
-      <HStack items="center" spacing={theme.spacing.tiny}>
+      <HStack items="center" gap={theme.spacing.tiny}>
         <Coffee variant="Bulk" size={BADGE_ICON_SIZE} color={contentColor} />
         {iconOnly ? (
           <Box
@@ -99,7 +99,7 @@ export const OutletServiceBadge = memo(function OutletServiceBadge({
         paddingVertical: theme.spacing.small,
       }}
     >
-      <HStack items="center" spacing={theme.spacing.tiny}>
+      <HStack items="center" gap={theme.spacing.tiny}>
         {icons}
         {!iconOnly && (
           <Text type="l2" weight="medium" color={contentColor}>

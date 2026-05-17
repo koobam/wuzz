@@ -60,7 +60,7 @@ const TabItem = memo(function TabItem({ tier, index, isActive, isLocked, onTabPr
   return (
     <Pressable style={{
       opacity: isActive ? 1 : 0.5,
-    }} padding={theme.spacing.standard} direction="column" items="center" justify="center" spacing={theme.spacing.tiny} width={TAB_WIDTH} onPress={handlePress}>
+    }} padding={theme.spacing.standard} direction="column" items="center" justify="center" gap={theme.spacing.tiny} width={TAB_WIDTH} onPress={handlePress}>
       {isLocked ? (
         <Icon icon="rank-lock" size={60} color={theme.pallate.neutral['03']} />
       ) : (

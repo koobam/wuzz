@@ -87,7 +87,7 @@ const ShareProfileQRScreen = memo(function ShareProfileQRScreen({
           paddingHorizontal: theme.spacing.large,
         }}
         items="center"
-        spacing={theme.spacing.standard}
+        gap={theme.spacing.standard}
       >
         <Pressable
           onPress={handleBackPress}
@@ -148,7 +148,7 @@ const ShareProfileQRScreen = memo(function ShareProfileQRScreen({
           <VStack
             width="100%"
             margin={{ marginTop: theme.spacing.extraLarge }}
-            spacing={theme.spacing.small}
+            gap={theme.spacing.small}
           >
             <Text
               type="l2"
@@ -185,7 +185,7 @@ const ShareProfileQRScreen = memo(function ShareProfileQRScreen({
                 accessibilityRole="button"
                 accessibilityLabel="Salin kode referral"
               >
-                <HStack items="center" spacing={theme.spacing.tiny}>
+                <HStack items="center" gap={theme.spacing.tiny}>
                   <Copy
                     size={18}
                     color={theme.pallate.neutral['01']}
@@ -203,7 +203,7 @@ const ShareProfileQRScreen = memo(function ShareProfileQRScreen({
           <VStack
             width="100%"
             margin={{ marginTop: theme.spacing.extraLarge }}
-            spacing={theme.spacing.standard}
+            gap={theme.spacing.standard}
           >
             <Text
               type="b1"
@@ -215,7 +215,7 @@ const ShareProfileQRScreen = memo(function ShareProfileQRScreen({
             <VStack
               borderRadius={12}
               backgroundColor={theme.pallate.neutral['02']}
-              spacing={0}
+              gap={0}
               style={styles.referralListWrap}
             >
               {MOCK_REFERRAL_LIST.length === 0 ? (
@@ -237,7 +237,7 @@ const ShareProfileQRScreen = memo(function ShareProfileQRScreen({
                   <HStack
                     key={item.id}
                     items="center"
-                    spacing={theme.spacing.standard}
+                    gap={theme.spacing.standard}
                     padding={{
                       paddingVertical: theme.spacing.standard,
                       paddingHorizontal: theme.spacing.large,
@@ -264,7 +264,7 @@ const ShareProfileQRScreen = memo(function ShareProfileQRScreen({
                         {getInitials(item.name)}
                       </Text>
                     </VStack>
-                    <VStack spacing={theme.spacing.tiny} fill>
+                    <VStack gap={theme.spacing.tiny} fill>
                       <Text
                         type="b2"
                         weight="medium"

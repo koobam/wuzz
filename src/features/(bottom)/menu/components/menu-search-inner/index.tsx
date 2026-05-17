@@ -40,7 +40,7 @@ export const MenuSearchInner = memo((props: MenuSearchInnerProps) => {
           }}
           items="center"
           justify="center"
-          spacing={theme.spacing.standard}
+          gap={theme.spacing.standard}
           backgroundColor={theme.pallate.coffee['03']}
         >
           <Flex fill>

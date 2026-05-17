@@ -148,14 +148,14 @@ export const AddOnChecklist = memo(function AddOnChecklist({
   return (
     <VStack
       padding={{ paddingHorizontal: theme.spacing.large }}
-      spacing={theme.spacing.standard}
+      gap={theme.spacing.standard}
     >
       <HStack items="center" justify="space-between">
         <VStack fill>
           <Text type="s3" weight="semibold" color={theme.pallate.neutral['05']}>
             {title}
           </Text>
-          <HStack items="center" spacing={theme.spacing.small}>
+          <HStack items="center" gap={theme.spacing.small}>
             <Text type="l1" color={theme.pallate.neutral['04']}>
               {optionalOrRequiredLabel}
             </Text>
@@ -166,7 +166,7 @@ export const AddOnChecklist = memo(function AddOnChecklist({
           </HStack>
         </VStack>
       </HStack>
-      <VStack spacing={theme.spacing.standard}>
+      <VStack gap={theme.spacing.standard}>
         {options.map(opt => {
           const checked = selectedIds.has(opt.id);
           return (
@@ -176,7 +176,7 @@ export const AddOnChecklist = memo(function AddOnChecklist({
               direction="row"
               items="center"
               padding={theme.spacing.standard}
-              spacing={theme.spacing.standard}
+              gap={theme.spacing.standard}
               borderRadius={theme.spacing.standard}
               backgroundColor={theme.pallate.neutral['02']}
               borderColor={checked ? theme.pallate.primary['03'] : theme.pallate.neutral['03']}

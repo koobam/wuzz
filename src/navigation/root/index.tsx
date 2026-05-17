@@ -1,4 +1,5 @@
-import React, { Fragment, useCallback, useMemo } from 'react';
+import React, { Suspense, useCallback, useMemo } from 'react';
+import { ActivityIndicator, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import theme, { navigationTheme } from '@components/atoms/theme';
@@ -50,20 +51,20 @@ export const Root = React.memo(() => {
   }, []);
 
   return (
-    <Fragment>
-      <AuthProvider>
-        <NavigationContainer
-          ref={navigationRef}
-          onReady={onNavigationReady}
-          theme={navigationTheme}
-        >
+    <AuthProvider>
+      <NavigationContainer
+        ref={navigationRef}
+        onReady={onNavigationReady}
+        theme={navigationTheme}
+      >
+        <Suspense fallback={<View style={{ flex: 1 }}><ActivityIndicator style={{ flex: 1 }} /></View>}>
           <Stack.Navigator {...rootNavigationConfigs.default}>
             {screens}
           </Stack.Navigator>
-        </NavigationContainer>
-        <Toast topOffset={top + theme.spacing.standard} />
-      </AuthProvider>
-    </Fragment>
+        </Suspense>
+      </NavigationContainer>
+      <Toast topOffset={top + theme.spacing.standard} />
+    </AuthProvider>
   );
 });
 

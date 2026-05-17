@@ -11,4 +11,6 @@ export type CategoryGridProps = {
   isError?: boolean;
   /** Error object or message; used when isError is true. */
   error?: Error | { message?: string } | null;
+  /** Called when the user taps "Coba Lagi" in the error state. */
+  onRetry?: () => void;
 };

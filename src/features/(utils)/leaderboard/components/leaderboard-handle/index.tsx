@@ -62,7 +62,7 @@ export const LeaderboardHandleContent = memo(function LeaderboardHandleContent({
       }}
     >
       {/* Left: tier icon + league name */}
-      <HStack fill items="center" spacing={theme.spacing.small}>
+      <HStack fill items="center" gap={theme.spacing.small}>
         <Box
           borderRadius={999}
           backgroundColor={lightColor}
@@ -80,7 +80,7 @@ export const LeaderboardHandleContent = memo(function LeaderboardHandleContent({
         <Text type="l2" weight="semibold" color={theme.pallate.neutral['04']}>
           Peringkat
         </Text>
-        <HStack items="center" spacing={theme.spacing.tiny}>
+        <HStack items="center" gap={theme.spacing.tiny}>
           <Text type="s2" weight="bold" color={theme.pallate[tier]['04']}>
             #{rank}
           </Text>

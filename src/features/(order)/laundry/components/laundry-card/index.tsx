@@ -29,7 +29,7 @@ export const LaundryCard = memo(function LaundryCard({
       borderColor={theme.pallate.neutral['02']}
       borderRadius={theme.spacing.large}
       padding={theme.spacing.large}
-      spacing={theme.spacing.large}
+      gap={theme.spacing.large}
       items="center"
     >
       <VStack fill>

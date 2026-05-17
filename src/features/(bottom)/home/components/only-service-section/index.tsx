@@ -9,7 +9,6 @@ import {
   theme,
   VStack,
 } from '@components/atoms';
-import { ONLY_SERVICE_ITEMS } from '../../utils';
 import type { OnlyServiceSectionProps, OnlyServiceCardProps } from './only-service-section.types';
 
 const OnlyServiceCard = memo(
@@ -20,7 +19,7 @@ const OnlyServiceCard = memo(
       onPress={onPress}
       justify="center"
       items="center"
-      spacing={theme.spacing.small}
+      gap={theme.spacing.small}
       borderRadius={20}
       padding={theme.spacing.medium}
       backgroundColor={theme.pallate.neutral['02']}
@@ -28,7 +27,7 @@ const OnlyServiceCard = memo(
       <Flex width={50} height={50} borderRadius={20} items="center" justify="center">
         <Icon
           icon={item.icon ?? 'bag'}
-          size={45}
+          size={60}
           color={theme.pallate.neutral['04']}
         />
         {item.promo !== undefined && item.promo !== '' && (
@@ -68,11 +67,11 @@ const OnlyServiceCard = memo(
 OnlyServiceCard.displayName = 'OnlyServiceCard';
 
 export const OnlyServiceSection = memo(
-  ({ onServicePress, items: itemsProp }: OnlyServiceSectionProps) => {
-    const items = itemsProp ?? ONLY_SERVICE_ITEMS;
+  ({ onServicePress, items }: OnlyServiceSectionProps) => {
+    if (!items || items.length === 0) return null;
     return (
       <VStack
-        spacing={theme.spacing.standard}
+        gap={theme.spacing.standard}
         padding={{
           paddingHorizontal: theme.spacing.large,
           paddingBottom: theme.spacing.large,
@@ -86,12 +85,12 @@ export const OnlyServiceSection = memo(
             Cuci, kering, atau setrika saja—sesuai kebutuhan.
           </Text>
         </VStack>
-        <HStack items="stretch" spacing={theme.spacing.small}>
-          {items.map(item => (
+        <HStack items="stretch" gap={theme.spacing.small}>
+          {items?.map(item => (
             <Flex key={item.id} fill>
               <OnlyServiceCard
                 item={item}
-                onPress={item.onPress ?? (() => onServicePress(item))}
+                onPress={() => onServicePress(item.id)}
               />
             </Flex>
           ))}

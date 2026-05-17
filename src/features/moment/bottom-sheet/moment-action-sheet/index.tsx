@@ -86,7 +86,7 @@ export const MomentActionSheet = memo((props: MomentActionSheetProps) => {
         padding={{
           paddingHorizontal: theme.spacing.large,
         }}
-        spacing={theme.spacing.large}
+        gap={theme.spacing.large}
       >
         {item.title && (
           <VStack>
@@ -113,7 +113,7 @@ export const MomentActionSheet = memo((props: MomentActionSheetProps) => {
             <Fragment key={val.key}>
               <Pressable
                 items="center"
-                spacing={theme.spacing.large}
+                gap={theme.spacing.large}
                 padding={{
                   paddingHorizontal: theme.spacing.large,
                   paddingVertical: theme.spacing.large,

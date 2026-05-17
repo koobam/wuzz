@@ -16,14 +16,16 @@ import {
   ServiceSection,
   TermsAndPrivacySection,
 } from '@features/(bottom)/home/components';
-import { useOutletListData } from '@features/(outlet)/outlet-list';
-import type { OnlyServiceItem } from '@features/(bottom)/home/utils';
 import {
   useFetchLaundryServices,
   useFetchLaundryServicesAlacarte,
   useFetchMoods,
+  useFetchNearestOutlet,
 } from '@services/index';
 import { LaundryService } from '@core/api';
+import { useLocationState } from '@services/contexts';
+import { useAuthState } from '@hooks/utils/useAuth';
+import type { OutletStatus } from '@features/(outlet)/outlet-list';
 
 const styles = StyleSheet.create({
   overflowHidden: { overflow: 'hidden' },
@@ -33,16 +35,29 @@ export const Home = memo((props: HomeType) => {
   const { navigation } = props;
   const { top } = useSafeAreaInsets();
   const screenWidth = Dimensions.get('screen').width;
-  const { outletList } = useOutletListData();
-  const defaultOutlet = outletList[0] ?? null;
+  const { coords } = useLocationState();
+  const { isAuthenticated } = useAuthState();
+
+  const handleLoginPress = useCallback(() => {
+    navigation.getParent()?.navigate('login' as never);
+  }, [navigation]);
+  const {
+    data: nearestOutlet,
+    isFetching: isFetchingOutlet,
+    isError: isOutletError,
+    error: errorOutlet,
+  } = useFetchNearestOutlet({
+    lat: coords?.lat ?? 0,
+    long: coords?.long ?? 0,
+  });
   const {
     data: laundryServiceQueries,
     isLoading: isLoadingLaundryServices,
     isError: isErrorLaundryServices,
     error: errorLaundryServices,
+    refetch: refetchLaundryServices,
   } = useFetchLaundryServices();
 
-  console.log(errorLaundryServices);
   const { data: alacarteData } = useFetchLaundryServicesAlacarte();
   const {
     data: moodsData,
@@ -51,7 +66,7 @@ export const Home = memo((props: HomeType) => {
     error: errorMoods,
   } = useFetchMoods();
   const moods = moodsData?.moods ?? null;
-  
+
   const handleOutletPress = useCallback(() => {
     navigation.navigate('outletlist');
   }, [navigation]);
@@ -84,30 +99,31 @@ export const Home = memo((props: HomeType) => {
     [navigation],
   );
 
-  const onlyServiceItems = useMemo((): Array<
-    OnlyServiceItem & { onPress: () => void }
-  > => {
-    const services = alacarteData?.laundry_services ?? [];
-    return services.map(service => {
-      const promo =
-        service.discount > 0
-          ? service.discount_type === 'percentage'
-            ? `${service.discount}%`
-            : String(service.discount)
-          : undefined;
-      const item: OnlyServiceItem = {
-        id: String(service.id),
-        name: service.name,
-        icon: service.icon,
-        promo,
-        serviceType: service.service_type,
-      };
-      return {
-        ...item,
-        onPress: () => handleOnlyServicePress(item),
-      };
-    });
-  }, [alacarteData?.laundry_services, handleOnlyServicePress]);
+  const onlyServiceItems = useMemo(() => {
+    if (!alacarteData?.laundry_services) return [];
+    return alacarteData.laundry_services.map((service) => ({
+      id: service.id,
+      name: service.name,
+      icon: service.icon,
+      serviceType: service.service_type,
+    }));
+  }, [alacarteData]);
+
+  const nearestOutletData = useMemo(() => {
+    if (!nearestOutlet) return undefined;
+    return {
+      id: nearestOutlet.id,
+      name: nearestOutlet.name,
+      address: nearestOutlet.address,
+      distanceKm: nearestOutlet.distance_in_km,
+      status: nearestOutlet.current_status as OutletStatus,
+      services: ['laundry' as const],
+      deliveryTypes: nearestOutlet.delivery_types,
+      hours: nearestOutlet.hours?.length >= 2
+        ? [nearestOutlet.hours[0], nearestOutlet.hours[1]] as [string, string]
+        : undefined,
+    };
+  }, [nearestOutlet]);
 
   return (
     <VStack as={<ScrollView />} fill>
@@ -117,21 +133,14 @@ export const Home = memo((props: HomeType) => {
           borderBottomLeftRadius: 40,
         }}
       >
-        <HomeHeader topInset={top} />
+        <HomeHeader topInset={top} isAuthenticated={isAuthenticated} onLoginPress={handleLoginPress} />
         <HomeBanner screenWidth={screenWidth} />
         <OutletCard
           onPress={handleOutletPress}
-          outlet={
-            defaultOutlet
-              ? {
-                  name: defaultOutlet.name,
-                  address: defaultOutlet.address,
-                  status: defaultOutlet.status,
-                  services: defaultOutlet.services,
-                  distanceKm: defaultOutlet.distanceKm,
-                }
-              : undefined
-          }
+          isError={isOutletError}
+          isLoading={isFetchingOutlet}
+          error={errorOutlet}
+          outlet={nearestOutletData}
         />
       </VStack>
 
@@ -141,13 +150,15 @@ export const Home = memo((props: HomeType) => {
         isLoading={isLoadingLaundryServices}
         isError={isErrorLaundryServices}
         error={errorLaundryServices}
+        onRetry={refetchLaundryServices}
       />
+      {}
       <OnlyServiceSection
         onServicePress={handleOnlyServicePress}
         items={onlyServiceItems}
       />
       <ProcessingSection />
-       <OrderTrackingList onOrderPress={handleOrderPress} />
+      <OrderTrackingList onOrderPress={handleOrderPress} />
       <MoodSection
         moods={moods}
         isLoading={isLoadingMoods}

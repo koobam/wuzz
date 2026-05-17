@@ -3,20 +3,18 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { CommonActions } from '@react-navigation/native';
 import {
-  detailsStepSchema,
+  detailsStepBaseSchema,
   DetailsStepFormData,
   phoneStepSchema,
   emailStepSchema,
 } from '@features/(auth)/register/schemas';
-import { z } from 'zod';
 import { RegisterConfig } from '../config';
 import { RootStackParamList } from '@navigation/root/root.types';
-import { ROOT_ROUTES } from '@navigation/root/_routes';
+import { useRegisterMutation } from '@services/mutations';
+import { Keyboard } from 'react-native';
 
 export type RegisterFormData = DetailsStepFormData & {
-  confirmPassword?: string;
   phone?: string;
   email?: string;
 };
@@ -28,65 +26,67 @@ interface UseRegisterFormParams {
 export const useRegisterForm = ({ config }: UseRegisterFormParams) => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const registerMutation = useRegisterMutation();
 
   const registerSchema = useMemo(() => {
-    const baseSchema = detailsStepSchema.extend({
-      confirmPassword: z.string().optional(),
-    });
 
     if (config.verificationMethod === 'phone') {
-      return baseSchema.extend({
-        phone: phoneStepSchema.shape.phone.optional(),
-      });
+      return detailsStepBaseSchema
+        .extend({ phone: phoneStepSchema.shape.phone.optional() })
+
+    } else {
+      return detailsStepBaseSchema
+        .extend({ email: emailStepSchema.shape.email.optional() })
     }
-    return baseSchema.extend({
-      email: emailStepSchema.shape.email.optional(),
-    });
   }, [config.verificationMethod]);
 
   const defaultValues = useMemo(() => {
     const base = {
       fullName: '',
       username: '',
-      password: '',
-      confirmPassword: '',
+      birthDate: '',
+
     };
 
     if (config.verificationMethod === 'phone') {
       return { ...base, phone: '' };
+    } else {
+      return { ...base, email: '' };
     }
-    return { ...base, email: '' };
   }, [config.verificationMethod]);
 
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     defaultValues,
-    mode: 'onChange',
-    shouldUnregister: false,
+    mode: 'onChange', // Validate on every change for real-time feedback
+    shouldUnregister: false, // Keep field values even when Controllers unmount
   });
 
-  const { control, handleSubmit, formState, trigger, getValues } = form;
+  const { control, handleSubmit, formState, trigger, getValues, setError, clearErrors, watch } = form;
   const { errors, isSubmitting } = formState;
 
-  const isLoading = isSubmitting;
-
-  const checkPasswordsMatch = useCallback(() => {
-    const password = getValues('password');
-    const confirm = getValues('confirmPassword');
-    return password === confirm && !!confirm;
-  }, [getValues]);
+  const isLoading = isSubmitting || registerMutation.isPending;
 
   const onSubmit = useCallback(
-    (_data: RegisterFormData) => {
-      // TODO: call register API then navigate; or navigate to verification when screen exists
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: ROOT_ROUTES.BOTTOM }],
-        }),
+    (data: RegisterFormData) => {
+      registerMutation.mutate(
+        {
+          name: data.fullName,
+          username: data.username,
+          date_of_birth: data.birthDate,
+          phone: config.verificationMethod === 'phone' ? data.phone : undefined,
+          email: config.verificationMethod === 'email' ? data.email : undefined,
+        },
+        {
+          onSuccess: () => {
+            navigation.popToTop();
+            Keyboard.dismiss();
+            navigation.navigate('verification', { phone: data.phone });
+          },
+        }
       );
     },
-    [navigation],
+    [config.verificationMethod, navigation, registerMutation]
   );
 
   return {
@@ -95,8 +95,11 @@ export const useRegisterForm = ({ config }: UseRegisterFormParams) => {
     isLoading,
     trigger,
     getValues,
+    watch,
+    setError,
+    clearErrors,
     handleSubmit,
     onSubmit,
-    checkPasswordsMatch,
   };
 };
+

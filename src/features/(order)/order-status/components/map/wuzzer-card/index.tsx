@@ -67,7 +67,7 @@ export const WuzzerCard = memo(
     const initials = getInitials(wuzzer.name);
 
     return (
-      <VStack spacing={theme.spacing.standard}>
+      <VStack gap={theme.spacing.standard}>
         <Text type="s2" weight="medium" color={theme.pallate.neutral['05']}>
           Wuzzer yang menjemput
         </Text>
@@ -76,9 +76,9 @@ export const WuzzerCard = memo(
           borderWidth={1}
           borderColor={theme.pallate.neutral['02']}
           borderRadius={30}
-          spacing={theme.spacing.standard}
+          gap={theme.spacing.standard}
         >
-          <HStack items="center" spacing={theme.spacing.standard}>
+          <HStack items="center" gap={theme.spacing.standard}>
             <Flex
               width={AVATAR_SIZE}
               height={AVATAR_SIZE}
@@ -115,7 +115,7 @@ export const WuzzerCard = memo(
                 {wuzzer.vehicle}
               </Text>
             </VStack>
-            <HStack spacing={theme.spacing.small}>
+            <HStack gap={theme.spacing.small}>
               <Button
                 rounded
                 size="fixed"
@@ -149,8 +149,8 @@ export const WuzzerCard = memo(
             dashLength={4}
             dashThickness={1}
           />
-          <HStack items="center" justify="space-between" spacing={theme.spacing.tiny}>
-            <HStack items="center" spacing={theme.spacing.tiny}>
+          <HStack items="center" justify="space-between" gap={theme.spacing.tiny}>
+            <HStack items="center" gap={theme.spacing.tiny}>
             <IconStarFilled
               size={18}
               color={theme.pallate.secondary['03']}

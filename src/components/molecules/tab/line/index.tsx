@@ -47,7 +47,7 @@ const TabItemLine = (props: TabItemLineProps) => {
       height={48}
       items="center"
       justify="center"
-      spacing={8}
+      gap={8}
     >
       {/* Optionally replace or remove icon if not needed */}
       <ReanimatedText

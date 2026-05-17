@@ -8,7 +8,7 @@ export const PrivacySection = memo(() => (
       paddingHorizontal: theme.spacing.large,
       paddingBottom: theme.spacing.large,
     }}
-    spacing={theme.spacing.large}
+    gap={theme.spacing.large}
   >
     <VStack>
       <Text type="s2" weight="semibold">
@@ -18,13 +18,13 @@ export const PrivacySection = memo(() => (
         Kami Jaga Privasimu, Seperti Jaga Pakaian Sendiri.
       </Text>
     </VStack>
-    <HStack spacing={theme.spacing.small}>
+    <HStack gap={theme.spacing.small}>
       <VStack
         borderRadius={30}
         justify="space-between"
         padding={theme.spacing.large}
         backgroundColor={theme.pallate.neutral['02']}
-        spacing={theme.spacing.small}
+        gap={theme.spacing.small}
         fill
       >
         <Box1
@@ -50,7 +50,7 @@ export const PrivacySection = memo(() => (
         justify="space-between"
         padding={theme.spacing.large}
         backgroundColor={theme.pallate.neutral['02']}
-        spacing={theme.spacing.small}
+        gap={theme.spacing.small}
         fill
       >
         <Lock

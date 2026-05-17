@@ -89,9 +89,9 @@ export const WeightEstimateSlider = memo(function WeightEstimateSlider({
   return (
     <VStack
       padding={{ paddingHorizontal: theme.spacing.large }}
-      spacing={theme.spacing.medium}
+      gap={theme.spacing.medium}
     >
-      <HStack items="center" spacing={theme.spacing.small}>
+      <HStack items="center" gap={theme.spacing.small}>
         <WeightMeter
           size={28}
           color={theme.pallate.neutral['05']}
@@ -107,7 +107,7 @@ export const WeightEstimateSlider = memo(function WeightEstimateSlider({
         </VStack>
       </HStack>
 
-      <HStack items="flex-end" spacing={theme.spacing.medium}>
+      <HStack items="flex-end" gap={theme.spacing.medium}>
         <VStack items="center">
           <Text type="b1" weight="semibold" color={theme.pallate.neutral['05']}>
             {minKgDisplay}kg
@@ -119,7 +119,7 @@ export const WeightEstimateSlider = memo(function WeightEstimateSlider({
 
         <View style={styles.sliderWrap} onLayout={handleLayout}>
           <GestureDetector gesture={panGesture}>
-            <VStack spacing={theme.spacing.tiny}>
+            <VStack gap={theme.spacing.tiny}>
               <View style={styles.tooltipRow}>
                 <Animated.View
                   style={[

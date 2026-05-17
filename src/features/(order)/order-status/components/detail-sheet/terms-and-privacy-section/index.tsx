@@ -20,12 +20,12 @@ const TERMS_CARDS = [
 export const TermsAndPrivacySection = memo(() => (
   <VStack
     padding={{ paddingHorizontal: theme.spacing.large }}
-    spacing={theme.spacing.standard}
+    gap={theme.spacing.standard}
   >
     <Text type="s3" weight="medium" color={theme.pallate.neutral['05']}>
       Ketentuan & Privasi
     </Text>
-    <HStack spacing={theme.spacing.small}>
+    <HStack gap={theme.spacing.small}>
       {TERMS_CARDS.map((card) => {
         const Icon = card.icon;
         return (
@@ -35,7 +35,7 @@ export const TermsAndPrivacySection = memo(() => (
             justify="space-between"
             padding={theme.spacing.large}
             backgroundColor={theme.pallate.neutral['02']}
-            spacing={theme.spacing.small}
+            gap={theme.spacing.small}
             fill
             height={220}
           >

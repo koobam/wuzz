@@ -31,7 +31,7 @@
 //   const {onPressPrev, onPressNext, isLast} = props;
 //   return (
 //   <HStack
-//     spacing={theme.spacing.small}
+//     gap={theme.spacing.small}
 //     position={{
 //       bottom: 0,
 //       right: 50,

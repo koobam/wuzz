@@ -118,7 +118,7 @@ export const ProfileHeader = memo(function ProfileHeader({
         }} borderRadius={{
           borderTopRightRadius: 999,
           borderBottomRightRadius: 999,
-        }} items="center" height={32} spacing={theme.spacing.small}>
+        }} items="center" height={32} gap={theme.spacing.small}>
           <Box position={{left:-45}}>
           <Icon icon="outfit" size={55} color={theme.pallate.neutral['05']} />
           </Box>

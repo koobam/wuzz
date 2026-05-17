@@ -30,7 +30,7 @@ export const WhatWeDoSection = memo(({ steps }: WhatWeDoSectionProps) => {
   );
 
   return (
-    <VStack spacing={theme.spacing.standard}>
+    <VStack gap={theme.spacing.standard}>
       <Text
         type="s3"
         padding={{ paddingHorizontal: theme.spacing.large }}

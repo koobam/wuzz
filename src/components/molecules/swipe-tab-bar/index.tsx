@@ -214,7 +214,6 @@ export const TabBar = memo(function TabBar({
       { length: tabs },
       (_, i) => TAB_BAR_INNER_PADDING + (width * i),
     );
-    console.log('outputRange', outputRange);
     return { inputRange, outputRange };
   });
 

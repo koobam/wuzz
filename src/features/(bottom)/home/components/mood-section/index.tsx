@@ -57,7 +57,7 @@ const MoodItem = memo((props: MoodItemProps) => {
       }}
       fill
       self={alignSelf}
-      spacing={theme.spacing.tiny}
+      gap={theme.spacing.tiny}
       borderRadius={50}
       margin={{
         marginHorizontal: theme.spacing.tiny,
@@ -98,7 +98,7 @@ export const MoodSection = memo((props: MoodSectionProps) => {
 
   return (
     <VStack
-      spacing={theme.spacing.standard}
+      gap={theme.spacing.standard}
       padding={{
         paddingHorizontal: theme.spacing.large,
         paddingBottom: theme.spacing.large,
@@ -107,7 +107,7 @@ export const MoodSection = memo((props: MoodSectionProps) => {
       <Flex direction="column" items="center" justify="center">
         <HStack
           style={styles.moodBadge}
-          spacing={theme.spacing.small}
+          gap={theme.spacing.small}
           height={44}
           items="center"
           justify="center"

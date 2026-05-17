@@ -31,7 +31,7 @@ export const OrderSummaryRow = memo(
     );
 
     return (
-      <VStack spacing={theme.spacing.standard}>
+      <VStack gap={theme.spacing.standard}>
         <Text type="s2" weight="medium" color={theme.pallate.neutral['05']}>
           Ringkasan pesanan
         </Text>

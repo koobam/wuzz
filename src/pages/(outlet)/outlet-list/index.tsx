@@ -6,6 +6,8 @@ import {
   theme,
   VStack,
 } from '@components/atoms';
+import { EmptyStatePlaceholder } from '@components/molecules';
+import { EmptyOutlet } from '@assets/index';
 import {
   getOutletTags,
   OutletListCard,
@@ -17,39 +19,30 @@ import type { OutletListItem, ServiceFilter } from '@features/(outlet)/outlet-li
 import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import Mapbox, { Camera, MapView, UserLocation } from '@rnmapbox/maps';
 import { ArrowDown2, Location, Setting4 } from 'iconsax-react-native';
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Dimensions } from 'react-native';
+import { memo, useCallback, useMemo, useState } from 'react';
+import { Dimensions, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 import { IconChevronLeft } from 'tabler-icons-react-native';
 
 const OutletList = memo((props: any) => {
   const { navigation } = props;
+  const { t } = useTranslation('outlet');
   const { top, bottom } = useSafeAreaInsets();
   const { height } = Dimensions.get('window');
   const bottomSheetRatio = 0.75;
   const bottomSheetHeight = height * bottomSheetRatio - (bottom + top);
 
-  const { outletList, mapMarkers, mapBounds } = useOutletListData();
   const [serviceFilter, setServiceFilter] = useState<ServiceFilter>('all');
+  const { outletList, mapMarkers, mapBounds, refetch } = useOutletListData(null, serviceFilter);
   const [selectedOutletId, setSelectedOutletId] = useState<number | null>(
     () => outletList[0]?.id ?? null,
   );
 
-  const filteredOutlets = useMemo(() => {
-    if (serviceFilter === 'all') return outletList;
-    return outletList.filter((o) => o.services.includes(serviceFilter));
-  }, [outletList, serviceFilter]);
-
-  useEffect(() => {
-    const isSelectedInList = filteredOutlets.some((o) => o.id === selectedOutletId);
-    if (!isSelectedInList && filteredOutlets.length > 0) {
-      setSelectedOutletId(filteredOutlets[0].id);
-    }
-  }, [filteredOutlets, selectedOutletId]);
-
   const listContentStyle = useMemo(
     () => ({
       paddingBottom: bottom + theme.spacing.standard,
+      flexGrow: 1,
     }),
     [bottom],
   );
@@ -110,7 +103,7 @@ const OutletList = memo((props: any) => {
             paddingHorizontal: theme.spacing.medium,
           }}
           items="center"
-          spacing={theme.spacing.small}
+          gap={theme.spacing.small}
           borderRadius={999}
           backgroundColor={theme.pallate.neutral['01']}
         >
@@ -129,7 +122,7 @@ const OutletList = memo((props: any) => {
             paddingHorizontal: theme.spacing.medium,
           }}
           items="center"
-          spacing={theme.spacing.small}
+          gap={theme.spacing.small}
           borderRadius={999}
           backgroundColor={theme.pallate.neutral['01']}
         >
@@ -144,9 +137,7 @@ const OutletList = memo((props: any) => {
         </Pressable>
       </HStack>
       <MapView
-        style={{
-          flex: 1,
-        }}
+        style={styles.map}
         styleURL={Mapbox.StyleURL.Outdoors}
         scrollEnabled={true}
         pitchEnabled={false}
@@ -156,7 +147,6 @@ const OutletList = memo((props: any) => {
         scaleBarEnabled={false}
         logoEnabled={false}
       >
-        {/* Show a route polyline on the map */}
         <Camera
           bounds={{
             ne: [mapBounds.maxLng, mapBounds.maxLat],
@@ -199,7 +189,7 @@ const OutletList = memo((props: any) => {
           paddingHorizontal: theme.spacing.medium,
         }}
         items="center"
-        spacing={theme.spacing.small}
+        gap={theme.spacing.small}
         borderRadius={999}
         backgroundColor={theme.pallate.neutral['01']}
       >
@@ -222,17 +212,26 @@ const OutletList = memo((props: any) => {
         }}
         topInset={top + theme.spacing.standard + 60}
         snapPoints={['75%', '100%']}
-        handleIndicatorStyle={{
-          backgroundColor: theme.pallate.neutral['03'],
-          height: 7,
-          width: 38,
-        }}
+        handleIndicatorStyle={styles.bottomSheetIndicator}
         enableDynamicSizing={false}
       >
         <BottomSheetFlatList<OutletListItem>
-          data={filteredOutlets}
+          data={outletList}
           keyExtractor={(item: OutletListItem) => String(item.id)}
           ListHeaderComponent={filterHeader}
+          ListEmptyComponent={
+            <EmptyStatePlaceholder
+              icon={<EmptyOutlet width={220} height={220} />}
+              title={t('list.empty.title')}
+              description={t('list.empty.description')}
+              primaryButton={{ label: t('list.empty.tryAgain'), onPress: refetch }}
+              style={styles.emptyState}
+              secondaryButton={{
+                label: t('list.empty.coverageArea'),
+                onPress: () => {}
+              }}
+            />
+          }
           ItemSeparatorComponent={itemSeparator}
           contentContainerStyle={listContentStyle}
           renderItem={renderOutletItem}
@@ -240,6 +239,16 @@ const OutletList = memo((props: any) => {
       </BottomSheet>
     </VStack>
   );
+});
+
+const styles = StyleSheet.create({
+  map: { flex: 1 },
+  bottomSheetIndicator: {
+    backgroundColor: theme.pallate.neutral['03'],
+    height: 7,
+    width: 38,
+  },
+  emptyState: { height: 400, justifyContent: 'center' },
 });
 
 export default OutletList;

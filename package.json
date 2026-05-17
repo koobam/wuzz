@@ -27,14 +27,17 @@
     "@hot-updater/react-native": "0.27.0",
     "@lukemorales/query-key-factory": "^1.3.4",
     "@react-native-clipboard/clipboard": "^1.14.1",
+    "@react-native-community/datetimepicker": "^9.1.0",
+    "@react-native-community/geolocation": "^3.4.0",
     "@react-native/new-app-screen": "0.82.0",
     "@react-navigation/bottom-tabs": "^7.4.8",
     "@react-navigation/native": "^7.1.18",
     "@react-navigation/native-stack": "^7.3.27",
-    "@rnmapbox/maps": "^10.2.6",
+    "@rnmapbox/maps": "^10.3.0",
     "@shopify/flash-list": "^2.2.3",
     "@shopify/react-native-skia": "^2.5.1",
-    "@tanstack/react-query": "^5.90.7",
+    "@tanstack/react-query": "^5.100.1",
+    "@tanstack/react-query-persist-client": "^5.100.1",
     "axios": "^1.13.2",
     "babel-plugin-module-resolver": "^5.0.2",
     "deprecated-react-native-prop-types": "^5.0.0",
@@ -52,11 +55,15 @@
     "react-native-dash": "^0.0.11",
     "react-native-device-info": "^14.1.1",
     "react-native-gesture-handler": "^2.28.0",
+    "react-native-haptic-feedback": "^3.0.0",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-localize": "^3.7.0",
     "react-native-mmkv": "^3.3.3",
     "react-native-network-info": "^5.2.2",
+    "react-native-nitro-fetch": "^1.3.0",
+    "react-native-nitro-modules": "^0.35.6",
     "react-native-pager-view": "^6.9.1",
+    "react-native-permissions": "^5.5.1",
     "react-native-qrcode-svg": "^6.3.2",
     "react-native-reanimated": "4.3.0",
     "react-native-safe-area-context": "^5.6.1",
@@ -70,6 +77,8 @@
     "react-native-worklets": "0.8.0",
     "style-variants": "^0.1.1",
     "tabler-icons-react-native": "^3.1.0",
+    "wuzz-nitro-text": "file:./packages/wuzz-nitro-text",
+    "wuzz-shimmer": "file:./packages/wuzz-shimmer",
     "zod": "^3.24.1"
   },
   "devDependencies": {
@@ -103,5 +112,9 @@
   },
   "engines": {
     "node": ">=20"
+  },
+  "overrides": {
+    "fast-xml-parser": "^5.8.0",
+    "kysely": "^0.29.0"
   }
 }

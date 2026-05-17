@@ -52,7 +52,7 @@ export const OrderStatusBottomSheetContent = memo(
 
     return (
       <VStack
-        spacing={theme.spacing.extraLarge}
+        gap={theme.spacing.extraLarge}
         padding={{
           paddingHorizontal: theme.spacing.large,
         }}

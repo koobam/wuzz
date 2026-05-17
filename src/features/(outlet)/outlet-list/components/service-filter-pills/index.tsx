@@ -27,7 +27,7 @@ export const ServiceFilterPills = memo(({ value, onChange }: ServiceFilterPillsP
         paddingHorizontal: theme.spacing.large,
         paddingBottom: theme.spacing.standard,
       }}
-      spacing={theme.spacing.small}
+      gap={theme.spacing.small}
     >
       {FILTER_OPTIONS.map((filter) => {
         const isActive = value === filter;
@@ -46,7 +46,7 @@ export const ServiceFilterPills = memo(({ value, onChange }: ServiceFilterPillsP
             backgroundColor={backgroundColor}
             items="center"
             justify="center"
-            spacing={theme.spacing.small}
+            gap={theme.spacing.small}
             accessibilityRole="button"
             accessibilityState={{ selected: isActive }}
             accessibilityLabel={`Filter ${label}`}

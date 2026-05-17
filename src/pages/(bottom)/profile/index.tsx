@@ -194,14 +194,14 @@ const Profile: React.FC<ProfileType> = memo((_props: ProfileType) => {
       >
         <ProfileHeader topInset={top} scrollY={scrollY} />
         <VStack
-          spacing={theme.spacing.large}
+          gap={theme.spacing.large}
           padding={{
             paddingHorizontal: theme.spacing.large,
             paddingTop: theme.spacing.extraLarge,
             paddingBottom: theme.spacing.extraLarge * 2,
           }}
         >
-          <VStack spacing={theme.spacing.large}>
+          <VStack gap={theme.spacing.large}>
             <ProfileRankCard
               onDetailPress={handleDetailLevelPress}
               progress={350}

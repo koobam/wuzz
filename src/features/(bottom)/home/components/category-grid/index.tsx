@@ -13,6 +13,7 @@ export const CategoryGrid = memo(
     isLoading = false,
     isError = false,
     error,
+    onRetry,
   }: CategoryGridProps) => {
     const { t } = useTranslation("home");
     const items = itemsProp;
@@ -31,7 +32,7 @@ export const CategoryGrid = memo(
 
     return (
       <VStack
-        spacing={theme.spacing.standard}
+        gap={theme.spacing.standard}
         padding={{
           paddingHorizontal: theme.spacing.large,
           paddingBottom: theme.spacing.large,
@@ -48,7 +49,7 @@ export const CategoryGrid = memo(
         {isLoading ? (
           <CategoryGridLoading />
         ) : (
-          <HStack items="flex-start" spacing={theme.spacing.standard}>
+          <HStack items="flex-start" gap={theme.spacing.standard}>
             {items.map((item) => (
               <CategoryCard
                 key={item.name}
@@ -58,9 +59,9 @@ export const CategoryGrid = memo(
             ))}
           </HStack>
         )}
-        {isError && errorMessage ? (
-          <CategoryGridError message={errorMessage} />
-        ) : null}
+        {errorMessage && (
+          <CategoryGridError message={errorMessage} onRetry={onRetry} />
+        )}
       </VStack>
     );
   },

@@ -31,7 +31,7 @@ const StreakScreen = memo(function StreakScreen({
           paddingHorizontal: theme.spacing.large,
         }}
         items="center"
-        spacing={theme.spacing.standard}
+        gap={theme.spacing.standard}
       >
         <Pressable
           onPress={handleBackPress}

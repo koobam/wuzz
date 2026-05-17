@@ -185,7 +185,7 @@ const OrderStatus = memo(() => {
             marginBottom: -theme.spacing.large,
           }}
           padding={theme.spacing.standard}
-          spacing={theme.spacing.standard}
+          gap={theme.spacing.standard}
           borderWidth={1}
           borderRadius={20}
           borderColor={theme.pallate.neutral['02']}
@@ -205,7 +205,7 @@ const OrderStatus = memo(() => {
               style={detailHandleStyles.image}
             />
           </Box>
-          <VStack fill spacing={theme.spacing.tiny}>
+          <VStack fill gap={theme.spacing.tiny}>
             <Text type="b2" weight="medium" color={theme.pallate.neutral['05']}>
               {item.itemsSummary}
             </Text>

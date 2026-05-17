@@ -269,4 +269,6 @@ export const Input = forwardRef<TextInput, InputProps>((props, ref) => {
 Input.displayName = 'Input';
 
 export default Input;
+export { DateInput } from './DateInput';
+export type { DateInputProps, DateInputRef } from './DateInput';
 

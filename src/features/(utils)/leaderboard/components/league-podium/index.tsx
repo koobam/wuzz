@@ -141,7 +141,7 @@ const PlayerCard = memo(function PlayerCard({
 
   return (
     <VStack
-      spacing={theme.spacing.small}
+      gap={theme.spacing.small}
       width={100}
       items="center"
       justify="center"

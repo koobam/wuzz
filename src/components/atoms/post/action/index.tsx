@@ -36,7 +36,7 @@ const Action = memo((props: ActionProps) => {
       />
       <Pressable
         backgroundColor={theme.pallate.neutral['04']}
-        spacing={4}
+        gap={4}
         padding={{
           paddingVertical: 8,
           paddingRight: 12,
@@ -76,8 +76,8 @@ const Action = memo((props: ActionProps) => {
         </Text>
       </Pressable>
       <Divider thickness={{sm: 14, md: 20, lg: 20}} horizontal />
-      <HStack items="center" fill spacing={{sm: 14, md: 20, lg: 20}}>
-        <Pressable spacing={4} items="center">
+      <HStack items="center" fill gap={{sm: 14, md: 20, lg: 20}}>
+        <Pressable gap={4} items="center">
           <Box borderRadius={12} width={24} height={24} backgroundColor={theme.pallate.neutral['01']} />
           <Text
             type={{sm: 'l2', md: 'l1', lg: 'l1'}}

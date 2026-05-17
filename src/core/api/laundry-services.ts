@@ -7,6 +7,12 @@ import {
   LaundryServicesResponse,
 } from './laundry-services.types';
 
+export const LAUNDRY_SERVICES_ENDPOINTS = {
+  regular: '/app/laundry-services/regular',
+  alacarte: '/app/laundry-services/alacarte',
+  detail: (id: string) => `/app/laundry-services/regular/${id}`,
+} as const;
+
 const listQuery = (params?: LaundryServicesParams): StringifiableRecord => {
   const q: StringifiableRecord = {};
   if (params?.num != null) q.num = String(params.num);
@@ -18,18 +24,24 @@ const listQuery = (params?: LaundryServicesParams): StringifiableRecord => {
 
 export const laundryServicesRegular = (
   params?: LaundryServicesParams,
+  prefetchKey?: string,
+  signal?: AbortSignal,
 ): Promise<LaundryServicesResponse> =>
-  request(apiUrl('/app/laundry-services/regular', listQuery(params)));
+  request(apiUrl(LAUNDRY_SERVICES_ENDPOINTS.regular, listQuery(params)), { prefetchKey, signal });
 
 export const laundryServicesAlacarte = (
   params?: LaundryServicesParams,
+  prefetchKey?: string,
+  signal?: AbortSignal,
 ): Promise<LaundryServicesResponse> =>
-  request(apiUrl('/app/laundry-services/alacarte', listQuery(params)));
+  request(apiUrl(LAUNDRY_SERVICES_ENDPOINTS.alacarte, listQuery(params)), { prefetchKey, signal });
 
 /** @deprecated Use laundryServicesRegular or laundryServicesAlacarte */
 export const laundryServices = laundryServicesRegular;
 
 export const laundryServiceDetail = (
   id: string,
+  prefetchKey?: string,
+  signal?: AbortSignal,
 ): Promise<LaundryServiceDetailResponse> =>
-  request(apiUrl(`/app/laundry-services/${id}`));
+  request(apiUrl(LAUNDRY_SERVICES_ENDPOINTS.detail(id)), { prefetchKey, signal });

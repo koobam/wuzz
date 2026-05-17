@@ -27,7 +27,7 @@ export const ListHeader = memo(
         <HStack
           items="center"
           justify="space-between"
-          spacing={theme.spacing.small}
+          gap={theme.spacing.small}
           padding={{
             paddingHorizontal: theme.spacing.large,
             paddingTop: top,

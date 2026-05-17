@@ -5,7 +5,7 @@ import type { StatusStepCardProps } from './status-step-card.types';
 
 export const StatusStepCard = memo(
   ({ title, description }: StatusStepCardProps) => (
-    <HStack items="center" spacing={theme.spacing.standard}>
+    <HStack items="center" gap={theme.spacing.standard}>
       <Flex
         padding={theme.spacing.standard}
         backgroundColor={theme.pallate.primary['01']}

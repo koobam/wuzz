@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 });
 
 export const WuzzerReviewCard = memo(({ review }: WuzzerReviewCardProps) => (
-  <VStack style={styles.card} spacing={theme.spacing.tiny}>
+  <VStack style={styles.card} gap={theme.spacing.tiny}>
     <HStack items="center" justify="space-between">
       <Text
         type="l1"
@@ -37,7 +37,7 @@ export const WuzzerReviewCard = memo(({ review }: WuzzerReviewCardProps) => (
         </Text>
       )}
     </HStack>
-    <HStack items="center" spacing={theme.spacing.tiny}>
+    <HStack items="center" gap={theme.spacing.tiny}>
       <IconStarFilled size={14} color={theme.pallate.secondary['03']} />
       <Text type="l2" color={theme.pallate.neutral['04']}>
         {review.rating.toFixed(1)}

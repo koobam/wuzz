@@ -1,0 +1,13 @@
+{
+  "uiViewClassName": "ShimmerView",
+  "supportsRawText": false,
+  "bubblingEventTypes": {},
+  "directEventTypes": {},
+  "validAttributes": {
+    "duration": true,
+    "borderRadius": true,
+    "shimmerColor": true,
+    "highlightOpacity": true,
+    "hybridRef": true
+  }
+}

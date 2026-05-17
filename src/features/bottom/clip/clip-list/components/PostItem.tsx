@@ -27,13 +27,13 @@ export const PostItem = memo(
     const POST_HEIGHT = POST_WIDTH * POST_CONSTANTS.HEIGHT_RATIO;
 
     return (
-      <VStack spacing={theme.spacing.standard}>
+      <VStack gap={theme.spacing.standard}>
         <HStack
           items="center"
           justify="center"
           padding={{ paddingHorizontal: theme.spacing.large }}
         >
-          <Pressable fill items="center" spacing={theme.spacing.small}>
+          <Pressable fill items="center" gap={theme.spacing.small}>
             <Box
               borderRadius={999}
               width={40}
@@ -80,10 +80,10 @@ export const PostItem = memo(
         {/* Action Buttons Love, Repost, Reply, Share */}
         <HStack
           items="center"
-          spacing={theme.spacing.medium}
+          gap={theme.spacing.medium}
           padding={{ paddingHorizontal: theme.spacing.large }}
         >
-          <Pressable items="center" spacing={theme.spacing.small}>
+          <Pressable items="center" gap={theme.spacing.small}>
             <Heart
               size={26}
               fill={theme.pallate.neutral['01']}
@@ -93,7 +93,7 @@ export const PostItem = memo(
               12
             </Text>
           </Pressable>
-          <Pressable items="center" spacing={theme.spacing.small}>
+          <Pressable items="center" gap={theme.spacing.small}>
             <Repeat
               size={26}
               fill={theme.pallate.neutral['01']}
@@ -103,7 +103,7 @@ export const PostItem = memo(
               12
             </Text>
           </Pressable>
-          <Pressable items="center" spacing={theme.spacing.small}>
+          <Pressable items="center" gap={theme.spacing.small}>
             <Send2
               size={26}
               fill={theme.pallate.neutral['01']}

@@ -55,7 +55,7 @@ export const PhoneModal = memo((props: PhoneModalProps) => {
           fill
           borderRadius={12}
           items="center"
-          spacing={12}>
+          gap={12}>
           <VStack borderRadius={25} items="center" justify="center" width={50} height={50} backgroundColor={theme.pallate.neutral['04']}>
           </VStack>
           <VStack fill>
@@ -76,8 +76,8 @@ export const PhoneModal = memo((props: PhoneModalProps) => {
             paddingTop: theme.spacing.large,
             paddingBottom: theme.spacing.standard,
           }}
-          spacing={theme.spacing.standard}>
-          <HStack spacing={theme.spacing.standard} fill items="center">
+          gap={theme.spacing.standard}>
+          <HStack gap={theme.spacing.standard} fill items="center">
             <VStack fill>
               <Text
                 type="s2"
@@ -144,7 +144,6 @@ export const PhoneModal = memo((props: PhoneModalProps) => {
           keyExtractor={props => props.iso3}
           renderItem={renderItem}
           onEndReached={() => {
-            console.log('handle on end reached');
             onEndReached();
           }}
         />

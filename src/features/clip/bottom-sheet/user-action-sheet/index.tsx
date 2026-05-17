@@ -86,7 +86,7 @@ export const UserActionSheet = memo((props: UserActionSheetProps) => {
         padding={{
           paddingHorizontal: theme.spacing.large,
         }}
-        spacing={theme.spacing.large}
+        gap={theme.spacing.large}
       >
         {item.title && (
           <VStack>
@@ -113,7 +113,7 @@ export const UserActionSheet = memo((props: UserActionSheetProps) => {
             <Fragment key={val.key}>
               <Pressable
                 items="center"
-                spacing={theme.spacing.large}
+                gap={theme.spacing.large}
                 padding={{
                   paddingHorizontal: theme.spacing.large,
                   paddingVertical: theme.spacing.large,

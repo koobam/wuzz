@@ -99,7 +99,7 @@ const TabItem = (props: TabItemProps) => {
       height={55}
       items="center"
       justify="center"
-      spacing={8}
+      gap={8}
     >
       {iconContent}
       <ReanimatedText

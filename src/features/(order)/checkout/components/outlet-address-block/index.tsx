@@ -24,7 +24,7 @@ export const OutletAddressBlock = memo(function OutletAddressBlock({
         paddingHorizontal: theme.spacing.large,
         paddingVertical: theme.spacing.standard,
       }}
-      spacing={theme.spacing.standard}
+      gap={theme.spacing.standard}
     >
       <VStack items="center" justify="center">
         <Flex
@@ -69,7 +69,7 @@ export const OutletAddressBlock = memo(function OutletAddressBlock({
           </>
         )}
       </VStack>
-      <VStack fill justify="center" spacing={theme.spacing.small}>
+      <VStack fill justify="center" gap={theme.spacing.small}>
         <Pressable
           direction="column"
           borderWidth={1}

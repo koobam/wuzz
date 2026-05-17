@@ -13,7 +13,7 @@ export const PickupTimeSection = memo(function PickupTimeSection({
         paddingHorizontal: theme.spacing.large,
         paddingVertical: theme.spacing.standard,
       }}
-      spacing={theme.spacing.medium}
+      gap={theme.spacing.medium}
     >
       <Text weight="medium" type="s3">
         Waktu Penjemputan
@@ -24,7 +24,7 @@ export const PickupTimeSection = memo(function PickupTimeSection({
           onPress={() => onSelectPickup(option)}
           items="center"
           fill
-          spacing={theme.spacing.standard}
+          gap={theme.spacing.standard}
         >
           <Flex
             width={25}

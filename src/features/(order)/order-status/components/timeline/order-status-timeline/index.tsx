@@ -16,7 +16,7 @@ export const OrderStatusTimeline = memo(
     const stepConfig = ORDER_STATUS_STEP_CONFIG[currentStatus];
 
     return (
-      <VStack spacing={theme.spacing.standard}>
+      <VStack gap={theme.spacing.standard}>
         <StatusStepCard
           title={stepConfig.title}
           description={stepConfig.description}

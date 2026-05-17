@@ -173,7 +173,7 @@ export const MenuBanner = memo(({ width }: MenuBannerProps) => {
       <HStack
         items="center"
         justify="center"
-        spacing={theme.spacing.tiny}
+        gap={theme.spacing.tiny}
         margin={{ marginTop: theme.spacing.standard }}
       >
         {MENU_BANNER_IMAGES.map((_, index) => (

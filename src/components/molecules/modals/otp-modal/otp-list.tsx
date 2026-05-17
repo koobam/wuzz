@@ -27,7 +27,7 @@ const OtpList = memo(({loading, item, bottomSheetRef}: OtpListProps) => (
     fill
     borderRadius={12}
     items="center"
-    spacing={12}>
+    gap={12}>
     <VStack
       borderRadius={25}
       items="center"

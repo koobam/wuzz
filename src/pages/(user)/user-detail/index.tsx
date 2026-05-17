@@ -72,7 +72,7 @@ const Header = () => {
 
   return (
       <VStack
-        spacing={theme.spacing.large}
+        gap={theme.spacing.large}
         padding={{
           paddingHorizontal: theme.spacing.large,
           paddingTop: theme.spacing.large,
@@ -90,7 +90,7 @@ const Header = () => {
           }}
           borderRadius={18}
           borderColor={theme.pallate.neutral['01']}
-          spacing={theme.spacing.standard}
+          gap={theme.spacing.standard}
           backgroundColor={theme.pallate.neutral['05']}
           pointerEvents="none"
         >
@@ -111,7 +111,7 @@ const Header = () => {
           dashThickness={0.5}
           style={{ width: '100%' }}
         />
-        <HStack justify="center" items="center" spacing={theme.spacing.small}>
+        <HStack justify="center" items="center" gap={theme.spacing.small}>
           <Box width={25} height={25} backgroundColor={theme.pallate.neutral['01']} borderRadius={999} />
           <Text
             type="b2"
@@ -143,12 +143,12 @@ const Header = () => {
       >
       </VStackAnimated> */}
         <VStack
-          spacing={theme.spacing.standard}
+          gap={theme.spacing.standard}
           pointerEvents="box-none"
         >
           <HStack
             items="center"
-            spacing={theme.spacing.standard}
+            gap={theme.spacing.standard}
             pointerEvents="box-none"
           >
             <Flex
@@ -192,12 +192,12 @@ const Header = () => {
           </HStack>
           <HStack
             items="center"
-            spacing={theme.spacing.standard}
+            gap={theme.spacing.standard}
             pointerEvents="box-none"
           >
             <SmartPressable 
               items="baseline" 
-              spacing={theme.spacing.small}
+              gap={theme.spacing.small}
               onPress={() => console.log('✅ Followers PRESSED')}
             >
               <Text weight="bold" color={navigationTheme.colors.text}>
@@ -209,7 +209,7 @@ const Header = () => {
             </SmartPressable>
             <SmartPressable 
               items="baseline" 
-              spacing={theme.spacing.small}
+              gap={theme.spacing.small}
               onPress={() => console.log('✅ Following PRESSED')}
             >
               <Text weight="bold" color={navigationTheme.colors.text}>
@@ -221,7 +221,7 @@ const Header = () => {
             </SmartPressable>
             <SmartPressable 
               items="baseline" 
-              spacing={theme.spacing.small}
+              gap={theme.spacing.small}
               onPress={() => console.log('✅ Moments PRESSED')}
             >
               <Text weight="bold" color={navigationTheme.colors.text}>
@@ -234,12 +234,12 @@ const Header = () => {
           </HStack>
 
           <HStack
-            spacing={theme.spacing.standard}
+            gap={theme.spacing.standard}
             pointerEvents="box-none"
           >
             <SmartPressable
               items="center"
-              spacing={theme.spacing.small}
+              gap={theme.spacing.small}
               padding={{
                 paddingHorizontal: theme.spacing.medium,
                 paddingVertical: theme.spacing.standard,
@@ -267,7 +267,7 @@ const Header = () => {
             <SmartPressable
               fill
               items="center"
-              spacing={theme.spacing.small}
+              gap={theme.spacing.small}
               padding={{
                 paddingHorizontal: theme.spacing.medium,
                 paddingVertical: theme.spacing.standard,
@@ -314,7 +314,7 @@ const UserDetail: React.FC<UserDetailType> = memo(() => {
     const POST_HEIGHT = (POST_WIDTH * 4) / 3;
     
     return (
-      <VStack spacing={theme.spacing.standard}>
+      <VStack gap={theme.spacing.standard}>
         <HStack
           items="center"
           justify="center"
@@ -324,7 +324,7 @@ const UserDetail: React.FC<UserDetailType> = memo(() => {
             onPress={() => {}}
             fill
             items="center"
-            spacing={theme.spacing.small}
+            gap={theme.spacing.small}
           >
             <Box
               borderRadius={999}
@@ -353,10 +353,10 @@ const UserDetail: React.FC<UserDetailType> = memo(() => {
         {/* Action Buttons */}
         <HStack
           items="center"
-          spacing={theme.spacing.medium}
+          gap={theme.spacing.medium}
           padding={{ paddingHorizontal: theme.spacing.large }}
         >
-          <Pressable items="center" spacing={theme.spacing.small}>
+          <Pressable items="center" gap={theme.spacing.small}>
             <Heart
               size={26}
               fill={theme.pallate.neutral['01']}
@@ -366,7 +366,7 @@ const UserDetail: React.FC<UserDetailType> = memo(() => {
               12
             </Text>
           </Pressable>
-          <Pressable items="center" spacing={theme.spacing.small}>
+          <Pressable items="center" gap={theme.spacing.small}>
             <Repeat
               size={26}
               fill={theme.pallate.neutral['01']}
@@ -376,7 +376,7 @@ const UserDetail: React.FC<UserDetailType> = memo(() => {
               12
             </Text>
           </Pressable>
-          <Pressable items="center" spacing={theme.spacing.small}>
+          <Pressable items="center" gap={theme.spacing.small}>
             <Send2
               size={26}
               fill={theme.pallate.neutral['01']}

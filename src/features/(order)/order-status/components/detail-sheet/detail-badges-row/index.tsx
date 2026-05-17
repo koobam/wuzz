@@ -25,14 +25,14 @@ export const DetailBadgesRow = memo(({ item }: DetailBadgesRowProps) => {
   return (
     <HStack
       fill
-      spacing={theme.spacing.small}
+      gap={theme.spacing.small}
       items="center"
       justify="space-between"
     >
       {showKg && (
         <HStack
           fill
-          spacing={theme.spacing.small}
+          gap={theme.spacing.small}
           items="center"
           justify="center"
           height={50}
@@ -57,7 +57,7 @@ export const DetailBadgesRow = memo(({ item }: DetailBadgesRowProps) => {
       {showTier && TierIcon != null && (
         <HStack
           fill
-          spacing={theme.spacing.small}
+          gap={theme.spacing.small}
           items="center"
           justify="center"
           borderRadius={8}

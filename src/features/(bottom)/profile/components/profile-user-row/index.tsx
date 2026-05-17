@@ -71,9 +71,9 @@ export const ProfileUserRow = memo(function ProfileUserRow({
   return (
     <VStack
       borderColor={theme.pallate.neutral['03']}
-      spacing={theme.spacing.standard}
+      gap={theme.spacing.standard}
     >
-      <HStack items="center" spacing={theme.spacing.standard}>
+      <HStack items="center" gap={theme.spacing.standard}>
         {onAvatarPress ? (
           <Pressable
             onPress={handleAvatarPress}
@@ -85,7 +85,7 @@ export const ProfileUserRow = memo(function ProfileUserRow({
         ) : (
           avatar
         )}
-        <VStack spacing={theme.spacing.small} fill>
+        <VStack gap={theme.spacing.small} fill>
           <Text
             color={theme.pallate.neutral['05']}
             weight="semibold"
@@ -105,7 +105,7 @@ export const ProfileUserRow = memo(function ProfileUserRow({
           />
         </VStack>
       </HStack>
-      <HStack spacing={theme.spacing.small} items="center">
+      <HStack gap={theme.spacing.small} items="center">
         <Pressable
           fill
           onPress={handleEditPress}
@@ -120,7 +120,7 @@ export const ProfileUserRow = memo(function ProfileUserRow({
           accessibilityRole="button"
           accessibilityLabel="Edit profil"
         >
-          <HStack items="center" spacing={theme.spacing.small}>
+          <HStack items="center" gap={theme.spacing.small}>
             <Setting2
               color={theme.pallate.neutral['05']}
               variant="Linear"
@@ -145,7 +145,7 @@ export const ProfileUserRow = memo(function ProfileUserRow({
           accessibilityRole="button"
           accessibilityLabel="Bagikan profil"
         >
-          <HStack items="center" spacing={theme.spacing.small}>
+          <HStack items="center" gap={theme.spacing.small}>
             <Send2
               color={theme.pallate.neutral['01']}
               variant="Linear"

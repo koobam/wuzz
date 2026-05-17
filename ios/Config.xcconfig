@@ -8,3 +8,8 @@ IOS_BUNDLE_ID_SUFFIX =
 #include? "tmp.xcconfig"
 
 ASSETCATALOG_COMPILER_APPICON_NAME = $(APP_ICON_NAME)
+
+// Swift bridging header — gives Swift access to NitroAutoPrefetcher (Obj-C facade)
+// without `import NitroFetch`, which would trigger Clang to scan the pod's
+// umbrella header (full of .hpp files) and fail.
+SWIFT_OBJC_BRIDGING_HEADER = $(SRCROOT)/Wuzz/Wuzz-Bridging-Header.h

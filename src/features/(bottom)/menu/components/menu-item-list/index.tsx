@@ -196,13 +196,13 @@ export const MenuItemList = memo((props: MenuItemListProps) => {
         <Pressable key={item.id} padding={{
           paddingVertical: theme.spacing.standard,
           paddingHorizontal: theme.spacing.small,
-        }} spacing={theme.spacing.standard} items="center">
+        }} gap={theme.spacing.standard} items="center">
           <Image
             source={MenuEmptyPlaceholder}
             style={styles.menuPlaceholder}
             resizeMode="contain"
           />
-          <VStack spacing={theme.spacing.small}>
+          <VStack gap={theme.spacing.small}>
             <Box>
               <Text
                 type="b2"

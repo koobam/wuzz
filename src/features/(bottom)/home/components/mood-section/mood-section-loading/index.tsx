@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 });
 
 export const MoodSectionLoading = memo(() => (
-  <VStack spacing={0}>
+  <VStack gap={0}>
     <HStack items="center" justify="space-between" style={styles.row}>
       <Shimmer
         width={ITEM_TOP_WIDTH}

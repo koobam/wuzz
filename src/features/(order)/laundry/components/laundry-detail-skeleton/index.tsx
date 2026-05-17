@@ -22,7 +22,7 @@ export const LaundryDetailSkeleton = memo(function LaundryDetailSkeleton() {
         />
       <VStack
         margin={{ marginTop: -theme.spacing.large * 2 }}
-        spacing={theme.spacing.large}
+        gap={theme.spacing.large}
         padding={{ paddingBottom: theme.spacing.large }}
       >
         <HStack
@@ -33,18 +33,18 @@ export const LaundryDetailSkeleton = memo(function LaundryDetailSkeleton() {
           items="center"
           backgroundColor={theme.pallate.neutral['01']}
         >
-          <VStack fill spacing={theme.spacing.small}>
+          <VStack fill gap={theme.spacing.small}>
             <Shimmer width="70%" height={18} borderRadius={4} />
             <Shimmer width="90%" height={14} borderRadius={4} />
           </VStack>
-          <VStack width={72} items="flex-end" spacing={theme.spacing.tiny}>
+          <VStack width={72} items="flex-end" gap={theme.spacing.tiny}>
             <Shimmer width="100%" height={16} borderRadius={4} />
             <Shimmer width={64} height={20} borderRadius={4} />
           </VStack>
         </HStack>
 
-        <VStack padding={{ paddingHorizontal: theme.spacing.large }} spacing={theme.spacing.standard}>
-          <HStack spacing={theme.spacing.standard} items="stretch">
+        <VStack padding={{ paddingHorizontal: theme.spacing.large }} gap={theme.spacing.standard}>
+          <HStack gap={theme.spacing.standard} items="stretch">
             {['shimmer-1', 'shimmer-2', 'shimmer-3'].map((key) => (
               <Shimmer
                 key={key}
@@ -55,8 +55,8 @@ export const LaundryDetailSkeleton = memo(function LaundryDetailSkeleton() {
           </HStack>
         </VStack>
 
-        <VStack spacing={theme.spacing.standard}>
-          <VStack padding={{ paddingHorizontal: theme.spacing.large }} spacing={theme.spacing.small}>
+        <VStack gap={theme.spacing.standard}>
+          <VStack padding={{ paddingHorizontal: theme.spacing.large }} gap={theme.spacing.small}>
             <Shimmer width={160} height={18} borderRadius={4} />
             <Shimmer width={220} height={14} borderRadius={4} />
           </VStack>
@@ -78,7 +78,7 @@ export const LaundryDetailSkeleton = memo(function LaundryDetailSkeleton() {
                 style={{ backgroundColor: theme.pallate.neutral['03'] }}
                 borderRadius={theme.spacing.small}
               />
-              <VStack fill spacing={theme.spacing.tiny}>
+              <VStack fill gap={theme.spacing.tiny}>
                 <Shimmer width="60%" height={15} borderRadius={4} />
                 <Shimmer width="85%" height={18} borderRadius={4} />
               </VStack>

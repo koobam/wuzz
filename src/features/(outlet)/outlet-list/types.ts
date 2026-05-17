@@ -2,7 +2,7 @@ export type OutletService = 'coffee' | 'laundry';
 
 export type ServiceFilter = 'all' | 'coffee' | 'laundry';
 
-export type OutletStatus = 'ramai' | 'sepi' | 'sedang';
+export type OutletStatus = 'busy' | 'moderate' | 'quiet';
 
 export type OutletTagKind =
   | 'distance'

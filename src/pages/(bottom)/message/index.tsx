@@ -14,7 +14,7 @@ const Message = () => {
       <Pressable
         direction="column"
         width={USER_SIZE}
-        spacing={theme.spacing.standard}
+        gap={theme.spacing.standard}
         items="center"
       >
         <Box
@@ -38,12 +38,12 @@ const Message = () => {
         padding={{
           paddingBottom: theme.spacing.large,
         }}
-        spacing={theme.spacing.large}
+        gap={theme.spacing.large}
       >
         {/* Search Bar */}
         <Pressable borderRadius={30} shrink={false} items="center" padding={{
           paddingHorizontal: theme.spacing.large,
-        }} spacing={theme.spacing.small} height={52} backgroundColor={theme.pallate.neutral['05']} margin={{ marginHorizontal: theme.spacing.large }}>
+        }} gap={theme.spacing.small} height={52} backgroundColor={theme.pallate.neutral['05']} margin={{ marginHorizontal: theme.spacing.large }}>
           <SearchNormal1 size={20} color={theme.pallate.neutral['03']} />
           <Text type="l1" color={theme.pallate.neutral['03']}>
             Search
@@ -77,7 +77,7 @@ const Message = () => {
     return (
       <HStack
         items="center"
-        spacing={theme.spacing.standard}
+        gap={theme.spacing.standard}
         padding={{
           paddingHorizontal: theme.spacing.large,
           paddingVertical: theme.spacing.standard,

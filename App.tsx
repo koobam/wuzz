@@ -6,42 +6,47 @@
  */
 
 import { queryClient } from '@core/query-client';
+import { queryPersister } from '@core/query-persister';
 import Root from '@navigation/root';
 import Mapbox from '@rnmapbox/maps';
-import { AppState, BottomNavHeightProvider } from '@services/contexts';
+import { AppState, BottomNavHeightProvider, LocationProvider } from '@services/contexts';
 import { QuerySyncWithAppState } from '@services/contexts/app-state';
-import { QueryClientProvider } from '@tanstack/react-query';
+// import { LocationWatcher } from '@components/organisms/location-watcher';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import {
   StatusBar,
   StyleSheet,
-  Text,
   useColorScheme,
-  View,
 } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { HotUpdater } from '@hot-updater/react-native';
 import '@core/i18n';
+import { prefetchHomeData } from '@features/(bottom)/home/prefetch';
 
 require('./ReactotronConfig');
-// Initialize Mapbox with access token (set MAPBOX_ACCESS_TOKEN in .env)
+
+prefetchHomeData();
 Mapbox.setAccessToken(
   'pk.eyJ1Ijoia29vYmFtIiwiYSI6ImNtZWxtajNncjBmeWMyd3FyM3V3NzUwMzUifQ.eusnZIscj38jvv9zmm1tHA',
 );
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
-  const appVersion =  HotUpdater.getAppVersion();
-  console.log('appVersion', appVersion);
   return (
     <SafeAreaProvider>
       <AppState.Provider>
-        <QueryClientProvider client={queryClient}>
+        <PersistQueryClientProvider
+          client={queryClient}
+          persistOptions={{ persister: queryPersister }}
+        >
           <QuerySyncWithAppState />
           <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-          <AppContent />
-        </QueryClientProvider>
+          <LocationProvider>
+            <AppContent />
+          </LocationProvider>
+        </PersistQueryClientProvider>
       </AppState.Provider>
     </SafeAreaProvider>
   );
@@ -53,6 +58,7 @@ function AppContent() {
       <BottomSheetModalProvider>
         <BottomNavHeightProvider>
           <Root />
+          {/* <LocationWatcher /> */}
         </BottomNavHeightProvider>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
@@ -62,26 +68,10 @@ function AppContent() {
 export default HotUpdater.wrap({
   baseURL:
     'https://ichexcegvboekweqmkmy.supabase.co/functions/v1/update-server',
-  updateStrategy: 'appVersion', // or "fingerprint"
+  updateStrategy: 'appVersion',
   updateMode: 'auto',
 })(App);
 
 const styles = StyleSheet.create({
   flex1: { flex: 1 },
-});
-
-const updateFallbackStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  text: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
 });

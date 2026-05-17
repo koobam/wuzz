@@ -24,6 +24,7 @@ export type TextPaddingType =
   | number;
 
 export interface TextProps extends RNTextProps {
+  lineHeight?: number;
   weight?: TextWeight;
   /**
    * Override font family (e.g. 'FredokaOne-Regular' for display/brand text).

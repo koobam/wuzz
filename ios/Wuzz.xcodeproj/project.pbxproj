@@ -19,6 +19,7 @@
 		5BE109150EA84777928A4FA3 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF20AC8A0B4446DE83F7C3F5 /* Poppins-Medium.ttf */; };
 		5EEACA885CB948F0B8D6CD8C /* Poppins-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 336953C8544D4B858285B2EC /* Poppins-ExtraBold.ttf */; };
 		5F10A16D08CA422497003F74 /* Poppins-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB50175E036E4847B78A57B0 /* Poppins-ThinItalic.ttf */; };
+		5FEB63C15B5570F9BE976B42 /* libPods-Wuzz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 548B6C3908A560A60830D072 /* libPods-Wuzz.a */; };
 		615A563544A84CEF893E53BE /* Poppins-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F6FE500ED0C24EAF88387A7C /* Poppins-MediumItalic.ttf */; };
 		6854C681842F48EBB2EF08AD /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21416C2069D64C92B17623B9 /* Poppins-Light.ttf */; };
 		6857216CD5164462AF5EF840 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4DD1B710509041F0BA3356EC /* Poppins-SemiBold.ttf */; };
@@ -35,7 +36,6 @@
 		C17B1A9E825C43FFABF1254F /* Poppins-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8B6C2D425A2E49FB9DDF7D74 /* Poppins-Italic.ttf */; };
 		C3E6FDB2F0CF4D3E83223C10 /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 619161B13BCD46D0B36C4278 /* Poppins-Bold.ttf */; };
 		C5D1F25456C9483E93478E1D /* Poppins-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A368460A68714C3DBDA36D92 /* Poppins-BlackItalic.ttf */; };
-		E39C51590DB7F099A88F34BA /* libPods-Wuzz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D827BE66B6C6E7155EC9C6E0 /* libPods-Wuzz.a */; };
 		F857C52FCFCE45A3B822F8D2 /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2AD363C85E464B39880F191D /* Poppins-Thin.ttf */; };
 /* End PBXBuildFile section */
 
@@ -47,12 +47,14 @@
 		1D34875026F5406EA02B09C7 /* Poppins-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-BoldItalic.ttf"; path = "../public/fonts/Poppins-BoldItalic.ttf"; sourceTree = "<group>"; };
 		21416C2069D64C92B17623B9 /* Poppins-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Light.ttf"; path = "../public/fonts/Poppins-Light.ttf"; sourceTree = "<group>"; };
 		2485B9972BA74A7DB8797758 /* BootSplash.storyboard */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = BootSplash.storyboard; path = Wuzz/BootSplash.storyboard; sourceTree = "<group>"; };
+		25B2E438ABE08E3A787E3541 /* Pods-Wuzz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wuzz.release.xcconfig"; path = "Target Support Files/Pods-Wuzz/Pods-Wuzz.release.xcconfig"; sourceTree = "<group>"; };
 		2AD363C85E464B39880F191D /* Poppins-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Thin.ttf"; path = "../public/fonts/Poppins-Thin.ttf"; sourceTree = "<group>"; };
 		336953C8544D4B858285B2EC /* Poppins-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraBold.ttf"; path = "../public/fonts/Poppins-ExtraBold.ttf"; sourceTree = "<group>"; };
 		3D612CEF2F93B194005CB60F /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3D612CF32F93B231005CB60F /* GoogleService-Info.Staging.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.Staging.plist"; sourceTree = "<group>"; };
 		3E878F9CBF794AF58BA841C1 /* icomoon.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = icomoon.ttf; path = ../public/icons/icomoon.ttf; sourceTree = "<group>"; };
 		4DD1B710509041F0BA3356EC /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-SemiBold.ttf"; path = "../public/fonts/Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
+		548B6C3908A560A60830D072 /* libPods-Wuzz.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Wuzz.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		619161B13BCD46D0B36C4278 /* Poppins-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Bold.ttf"; path = "../public/fonts/Poppins-Bold.ttf"; sourceTree = "<group>"; };
 		6A7E64CF42AF49BB8DC0DCD5 /* Poppins-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-LightItalic.ttf"; path = "../public/fonts/Poppins-LightItalic.ttf"; sourceTree = "<group>"; };
 		74BA1ACF4D6C44CC859051DA /* Poppins-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraBoldItalic.ttf"; path = "../public/fonts/Poppins-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
@@ -62,6 +64,7 @@
 		7A8B9C0E1E2F3A4B5C6D7E8F /* Config-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Debug.xcconfig"; sourceTree = "<group>"; };
 		7A8B9C0F1E2F3A4B5C6D7E8F /* Config-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Wuzz/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		834D1B2BB8FC8433779CF5F8 /* Pods-Wuzz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wuzz.debug.xcconfig"; path = "Target Support Files/Pods-Wuzz/Pods-Wuzz.debug.xcconfig"; sourceTree = "<group>"; };
 		8B6C2D425A2E49FB9DDF7D74 /* Poppins-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Italic.ttf"; path = "../public/fonts/Poppins-Italic.ttf"; sourceTree = "<group>"; };
 		A1B2C3D4E5F64738291A2B3C4E /* FredokaOne-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "FredokaOne-Regular.ttf"; path = "../public/fonts/FredokaOne-Regular.ttf"; sourceTree = "<group>"; };
 		A368460A68714C3DBDA36D92 /* Poppins-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-BlackItalic.ttf"; path = "../public/fonts/Poppins-BlackItalic.ttf"; sourceTree = "<group>"; };
@@ -70,9 +73,6 @@
 		BF20AC8A0B4446DE83F7C3F5 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Medium.ttf"; path = "../public/fonts/Poppins-Medium.ttf"; sourceTree = "<group>"; };
 		C04D5E2FBCA04A2385B318A5 /* Poppins-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLight.ttf"; path = "../public/fonts/Poppins-ExtraLight.ttf"; sourceTree = "<group>"; };
 		C23EB7464BF8483A88281E66 /* Poppins-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-SemiBoldItalic.ttf"; path = "../public/fonts/Poppins-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
-		D36C630725804C414EE6FE45 /* Pods-Wuzz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wuzz.release.xcconfig"; path = "Target Support Files/Pods-Wuzz/Pods-Wuzz.release.xcconfig"; sourceTree = "<group>"; };
-		D6781A50A0CE3F1D57D4DF1B /* Pods-Wuzz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wuzz.debug.xcconfig"; path = "Target Support Files/Pods-Wuzz/Pods-Wuzz.debug.xcconfig"; sourceTree = "<group>"; };
-		D827BE66B6C6E7155EC9C6E0 /* libPods-Wuzz.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Wuzz.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB50175E036E4847B78A57B0 /* Poppins-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ThinItalic.ttf"; path = "../public/fonts/Poppins-ThinItalic.ttf"; sourceTree = "<group>"; };
 		E7A913423FBE418E89B159CC /* selection.json */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = selection.json; path = ../public/icons/selection.json; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -85,7 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E39C51590DB7F099A88F34BA /* libPods-Wuzz.a in Frameworks */,
+				5FEB63C15B5570F9BE976B42 /* libPods-Wuzz.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,7 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				D827BE66B6C6E7155EC9C6E0 /* libPods-Wuzz.a */,
+				548B6C3908A560A60830D072 /* libPods-Wuzz.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -153,8 +153,8 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				D6781A50A0CE3F1D57D4DF1B /* Pods-Wuzz.debug.xcconfig */,
-				D36C630725804C414EE6FE45 /* Pods-Wuzz.release.xcconfig */,
+				834D1B2BB8FC8433779CF5F8 /* Pods-Wuzz.debug.xcconfig */,
+				25B2E438ABE08E3A787E3541 /* Pods-Wuzz.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -194,13 +194,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Wuzz" */;
 			buildPhases = (
-				FD163E8D1163D1D75AAEFF49 /* [CP] Check Pods Manifest.lock */,
+				0F875F732C6F4229BDE84945 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				1802D893EC29AB5C1741F8F6 /* [CP] Embed Pods Frameworks */,
-				99D3925437BBABFE295CCFF1 /* [CP] Copy Pods Resources */,
+				C68B9CCAC2FB22E84A3AF6B0 /* [CP] Embed Pods Frameworks */,
+				6A6F7A27A17CB81FEF1B3602 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -297,49 +297,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		1802D893EC29AB5C1741F8F6 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Wuzz/Pods-Wuzz-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Wuzz/Pods-Wuzz-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Wuzz/Pods-Wuzz-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		99D3925437BBABFE295CCFF1 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Wuzz/Pods-Wuzz-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Wuzz/Pods-Wuzz-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Wuzz/Pods-Wuzz-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FD163E8D1163D1D75AAEFF49 /* [CP] Check Pods Manifest.lock */ = {
+		0F875F732C6F4229BDE84945 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -359,6 +317,40 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6A6F7A27A17CB81FEF1B3602 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Wuzz/Pods-Wuzz-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Wuzz/Pods-Wuzz-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Wuzz/Pods-Wuzz-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C68B9CCAC2FB22E84A3AF6B0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Wuzz/Pods-Wuzz-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Wuzz/Pods-Wuzz-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Wuzz/Pods-Wuzz-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -381,7 +373,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 49PW5HVT72;
+				DEVELOPMENT_TEAM = YM3M279K65;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Wuzz/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
@@ -409,7 +401,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 49PW5HVT72;
+				DEVELOPMENT_TEAM = YM3M279K65;
 				INFOPLIST_FILE = Wuzz/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
 				INFOPLIST_KEY_NSContactsUsageDescription = "Digunakan untuk memilih kontak saat berbagi profil.";

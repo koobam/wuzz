@@ -25,6 +25,9 @@ target 'Wuzz' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  # NitroFetch (Swift) imports React-RCTNetwork; enable modular headers only for this pod
+  pod 'React-RCTNetwork', :path => '../node_modules/react-native/Libraries/Network', :modular_headers => true
+
   pre_install do |installer|
     $RNMapboxMaps.pre_install(installer)
   end
@@ -40,6 +43,7 @@ target 'Wuzz' do
   end
 
   post_install do |installer|
+    $RNMapboxMaps.post_install(installer)
     # See https://github.com/rnmapbox/maps/pull/2878
     installer.pods_project.targets.each do |target|
       target.build_configurations.each do |config|
@@ -52,6 +56,5 @@ target 'Wuzz' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
-    $RNMapboxMaps.post_install(installer)
   end
 end

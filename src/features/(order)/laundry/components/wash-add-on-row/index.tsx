@@ -37,7 +37,7 @@ export const WashAddOnRow = memo(function WashAddOnRow({
   return (
     <HStack
       padding={{ paddingHorizontal: theme.spacing.large }}
-      spacing={theme.spacing.standard}
+      gap={theme.spacing.standard}
       items="stretch"
     >
       {WASH_ADD_ON_OPTIONS.map((opt) => (

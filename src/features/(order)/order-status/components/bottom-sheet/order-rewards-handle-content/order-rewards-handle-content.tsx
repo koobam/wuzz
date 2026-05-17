@@ -47,10 +47,10 @@ export const OrderRewardsHandleContent = memo(
         borderColor={theme.pallate.neutral['03']}
         borderRadius={theme.spacing.large}
         padding={theme.spacing.large}
-        spacing={theme.spacing.standard}
+        gap={theme.spacing.standard}
       >
-        <HStack justify="space-between" items="center" spacing={theme.spacing.small}>
-          <HStack spacing={theme.spacing.tiny} items="center">
+        <HStack justify="space-between" items="center" gap={theme.spacing.small}>
+          <HStack gap={theme.spacing.tiny} items="center">
             <Flex
               width={TIER_ICON_SIZE}
               height={TIER_ICON_SIZE}
@@ -68,7 +68,7 @@ export const OrderRewardsHandleContent = memo(
                 <Text fill type="l3" color={theme.pallate.neutral['04']} align="center">
                   {benefitCopy}
                 </Text>
-              <HStack spacing={theme.spacing.tiny} items="center">
+              <HStack gap={theme.spacing.tiny} items="center">
                 <Flex
                   width={TIER_ICON_SIZE}
                   height={TIER_ICON_SIZE}
@@ -91,7 +91,7 @@ export const OrderRewardsHandleContent = memo(
           )}
         </HStack>
         <HStack
-          spacing={theme.spacing.standard}
+          gap={theme.spacing.standard}
           items="center"
           justify="space-between"
         >

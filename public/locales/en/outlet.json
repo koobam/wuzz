@@ -1,0 +1,10 @@
+{
+    "list": {
+        "empty": {
+            "title": "No outlets found",
+            "description": "We couldn't find any outlets near you.",
+            "tryAgain": "Try Again",
+            "coverageArea": "Coverage Area"
+        }
+    }
+}

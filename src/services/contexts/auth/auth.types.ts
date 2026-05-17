@@ -1,13 +1,9 @@
-export interface AuthUser {
-  id: string;
-  email?: string;
-  name?: string;
-}
+import { User } from "@core/api/auth/user.types";
 
 export interface AuthContextValue {
-  user: AuthUser | null;
+  user: User | null;
   isAuthenticated: boolean;
-  setUser: (user: AuthUser | null) => void;
+  setUser: (user: User | null) => void;
 }
 
 /** Read-only auth state (use with useAuthState to avoid re-renders from action refs). */

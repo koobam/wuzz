@@ -1,0 +1,23 @@
+{
+  "$schema": "https://nitro.margelo.com/nitro.schema.json",
+  "cxxNamespace": ["wuzz", "shimmer"],
+  "ios": {
+    "iosModuleName": "WuzzShimmer"
+  },
+  "android": {
+    "androidNamespace": ["com", "wuzz", "shimmer"],
+    "androidCxxLibName": "WuzzShimmer"
+  },
+  "autolinking": {
+    "ShimmerView": {
+      "ios": {
+        "language": "swift",
+        "implementationClassName": "HybridShimmerView"
+      },
+      "android": {
+        "language": "kotlin",
+        "implementationClassName": "HybridShimmerView"
+      }
+    }
+  }
+}

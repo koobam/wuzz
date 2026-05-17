@@ -187,7 +187,7 @@ function MenuGroupCard({
             accessibilityRole="button"
             accessibilityLabel={item.label}
           >
-            <HStack items="center" spacing={theme.spacing.standard}>
+            <HStack items="center" gap={theme.spacing.standard}>
               {item.icon}
               <Text
                 type="l1"
@@ -215,9 +215,9 @@ export const ProfileMenuSection = memo(function ProfileMenuSection({
   );
 
   return (
-    <VStack spacing={theme.spacing.large}>
+    <VStack gap={theme.spacing.large}>
       {MENU_GROUPS.map((group) => (
-        <VStack key={group.title} spacing={theme.spacing.standard}>
+        <VStack key={group.title} gap={theme.spacing.standard}>
           <Text
             type="l1"
             weight="semibold"

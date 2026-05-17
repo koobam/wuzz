@@ -1,7 +1,7 @@
 import { mergeQueryKeys } from '@lukemorales/query-key-factory';
 import { laundryServicesQueries } from './laundry-services.queries';
+import { usernameQueries } from './username.queries';
 
-export const queries = mergeQueryKeys(laundryServicesQueries);
+const queries = mergeQueryKeys(laundryServicesQueries, usernameQueries);
 
-export { laundryServicesQueries };
-
+export default queries;

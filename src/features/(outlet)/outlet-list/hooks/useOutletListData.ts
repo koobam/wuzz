@@ -1,7 +1,7 @@
 import type { OutletsParams } from '@api/outlets.types';
 import { useFetchOutlets } from '@hooks/apis/outlets';
 import { useMemo } from 'react';
-import type { OutletListItem } from '../types';
+import type { OutletListItem, ServiceFilter } from '../types';
 import {
   mapOutletApiToListItem,
   outletListItemToMapMarker,
@@ -22,13 +22,26 @@ export type OutletListData = {
   refetch: () => void;
 };
 
+const SERVICE_FILTER_MAP: Record<ServiceFilter, OutletsParams['category']> = {
+  all: 'all',
+  coffee: 'caffe',
+  laundry: 'laundry',
+};
+
 const DEFAULT_CENTER: OutletsParams = {
   lat: -6.13572,
   long: 106.501244,
 };
 
-export const useOutletListData = (params?: OutletsParams | null): OutletListData => {
-  const queryParams = params ?? DEFAULT_CENTER;
+export const useOutletListData = (
+  params?: OutletsParams | null,
+  serviceFilter: ServiceFilter = 'all',
+): OutletListData => {
+  const queryParams: OutletsParams = {
+    ...(params ?? DEFAULT_CENTER),
+    category: SERVICE_FILTER_MAP[serviceFilter],
+  };
+
   const { data, isLoading, isError, refetch } = useFetchOutlets(queryParams);
 
   const outletList = useMemo(() => {

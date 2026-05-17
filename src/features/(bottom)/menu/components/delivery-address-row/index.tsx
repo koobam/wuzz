@@ -20,9 +20,9 @@ export const DeliveryAddressRow = memo((props: DeliveryAddressRowProps) => {
       }}
       items="center"
       justify="space-between"
-      spacing={theme.spacing.tiny}
+      gap={theme.spacing.tiny}
     >
-      <Pressable items="center" spacing={theme.spacing.standard}>
+      <Pressable items="center" gap={theme.spacing.standard}>
         <Location
           size={22}
           color={theme.pallate.secondary['03']}

@@ -33,7 +33,7 @@ const WebViewScreen = memo(({ navigation, route }: WebViewScreenProps) => {
           paddingBottom: theme.spacing.standard,
         }}
         items="center"
-        spacing={theme.spacing.standard}
+        gap={theme.spacing.standard}
       >
         <Pressable
           onPress={handleBack}
@@ -42,7 +42,7 @@ const WebViewScreen = memo(({ navigation, route }: WebViewScreenProps) => {
             paddingHorizontal: theme.spacing.medium,
           }}
           items="center"
-          spacing={theme.spacing.small}
+          gap={theme.spacing.small}
           borderRadius={999}
           style={styles.backButton}
           backgroundColor={theme.pallate.neutral['01']}

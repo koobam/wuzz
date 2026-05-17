@@ -5,7 +5,7 @@ import type { OrderStatusLocationCardProps } from './order-status-location-card.
 export const OrderStatusLocationCard = memo(
   ({ title, description, icon }: OrderStatusLocationCardProps) => (
     <HStack
-      spacing={theme.spacing.standard}
+      gap={theme.spacing.standard}
       items="center"
     >
       <Flex

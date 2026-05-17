@@ -62,8 +62,8 @@ export const HomeBanner = memo(({ screenWidth }: HomeBannerProps) => {
           }}
           as={
             <LinearGradient
-              colors={['transparent', theme.pallate.neutral['01']]}
-              locations={[0, 1]}
+              colors={['transparent', 'transparent', theme.pallate.neutral['01']]}
+              locations={[0, 0.5, 1]}
             />
           }
           height={screenWidth}
@@ -76,7 +76,7 @@ export const HomeBanner = memo(({ screenWidth }: HomeBannerProps) => {
           marginTop: theme.spacing.large * 3.5 * -1,
           marginHorizontal: theme.spacing.large,
         }}
-        spacing={theme.spacing.small}
+        gap={theme.spacing.small}
       >
         {BANNER_IMAGES.map((_, index) => (
           <BannerDot
@@ -90,11 +90,11 @@ export const HomeBanner = memo(({ screenWidth }: HomeBannerProps) => {
       </HStack>
       <Flex direction="column" items="center" justify="space-between">
         <Box
-          as={<WoozlyMascot width={100} height={100} />}
-          width={100}
-          height={100}
+          as={<WoozlyMascot width={80} height={80} />}
+          width={80}
+          height={80}
           position={{
-            top: -70,
+            top: -40,
             right: theme.spacing.large,
           }}
           zIndex={2}

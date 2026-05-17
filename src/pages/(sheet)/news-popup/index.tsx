@@ -188,12 +188,12 @@ const NewsPopup = memo(() => {
                 paddingTop: theme.spacing.medium,
                 paddingBottom: theme.spacing.extraLarge,
             }}
-            spacing={theme.spacing.large}
+            gap={theme.spacing.large}
             style={styles.modalContent}
           >
             <Flex self="center" width={40} height={5} backgroundColor={theme.pallate.neutral['05']} borderRadius={2.5} />
 
-            <VStack spacing={theme.spacing.tiny}>
+            <VStack gap={theme.spacing.tiny}>
               {newsItem.category && (
                 <Text
                   type="b2"
@@ -263,13 +263,13 @@ const NewsPopup = memo(() => {
 
             {newsItem.repostedBy && newsItem.repostedBy.length > 0 && (
               <VStack
-                spacing={theme.spacing.small}
+                gap={theme.spacing.small}
                 padding={{
                   paddingTop: theme.spacing.standard,
                   paddingBottom: theme.spacing.small,
                 }}
               >
-                <HStack items="center" spacing={theme.spacing.small}>
+                <HStack items="center" gap={theme.spacing.small}>
                   {newsItem.repostedBy.slice(0, 3).map((user, i) => (
                     <Box
                       key={user.id}
@@ -322,7 +322,7 @@ const NewsPopup = memo(() => {
 
             {/* Action Buttons: Like, Repost, Share */}
             <HStack
-              spacing={theme.spacing.large}
+              gap={theme.spacing.large}
               justify="center"
               padding={{
                 paddingTop: theme.spacing.standard,

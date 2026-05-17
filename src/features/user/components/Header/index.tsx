@@ -42,7 +42,7 @@ export const Header = (): React.ReactElement => {
       >
         <Pressable
           onPress={() => {}}
-          spacing={theme.spacing.small}
+          gap={theme.spacing.small}
           backgroundColor={theme.pallate.neutral['05']}
           padding={{
             paddingHorizontal: theme.spacing.medium,
@@ -63,7 +63,7 @@ export const Header = (): React.ReactElement => {
           </Text>
         </Pressable>
         <Pressable
-          spacing={theme.spacing.small}
+          gap={theme.spacing.small}
           backgroundColor={theme.pallate.neutral['05']}
           padding={{
             paddingHorizontal: theme.spacing.medium,
@@ -90,7 +90,7 @@ export const Header = (): React.ReactElement => {
         </Pressable>
       </HStack>
       <VStack
-        spacing={theme.spacing.extraLarge}
+        gap={theme.spacing.extraLarge}
         padding={{
           paddingHorizontal: theme.spacing.large,
           paddingTop: theme.spacing.extraLarge * 2,
@@ -113,7 +113,7 @@ export const Header = (): React.ReactElement => {
           borderWidth={1}
           borderColor={theme.pallate.neutral['01']}
           fill
-          spacing={theme.spacing.standard}
+          gap={theme.spacing.standard}
           backgroundColor={theme.pallate.neutral['05']}
         >
           <Text type="b2" italic color={theme.pallate.neutral['01']}>
@@ -128,7 +128,7 @@ export const Header = (): React.ReactElement => {
             dashThickness={0.5}
             style={{ width: '100%' }}
           />
-          <HStack justify="center" items="center" spacing={theme.spacing.small}>
+          <HStack justify="center" items="center" gap={theme.spacing.small}>
             <Box width={25} height={25} backgroundColor={theme.pallate.neutral['01']} borderRadius={999} />
             <Text
               type="b2"
@@ -159,8 +159,8 @@ export const Header = (): React.ReactElement => {
           backgroundColor={theme.pallate.neutral['06']}
         >
         </VStackAnimated> */}
-        <VStack spacing={theme.spacing.standard}>
-          <HStack items="center" spacing={theme.spacing.standard}>
+        <VStack gap={theme.spacing.standard}>
+          <HStack items="center" gap={theme.spacing.standard}>
             <Flex
               width={50}
               height={50}
@@ -221,11 +221,11 @@ export const Header = (): React.ReactElement => {
               </Text>
             </VStack>
           </HStack>
-          <HStack spacing={theme.spacing.small}>
+          <HStack gap={theme.spacing.small}>
             <Pressable
               fill
               items="center"
-              spacing={theme.spacing.small}
+              gap={theme.spacing.small}
               padding={{
                 paddingHorizontal: theme.spacing.medium,
                 paddingVertical: theme.spacing.standard,
@@ -251,7 +251,7 @@ export const Header = (): React.ReactElement => {
             <Pressable
               fill
               items="center"
-              spacing={theme.spacing.small}
+              gap={theme.spacing.small}
               padding={{
                 paddingHorizontal: theme.spacing.medium,
                 paddingVertical: theme.spacing.standard,

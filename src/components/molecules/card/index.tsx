@@ -28,12 +28,12 @@ const NewsCard = memo((props: NewsCardProps) => {
       direction="column"
       onPress={onPress}
       onLongPress={onLongPress}
-      spacing={theme.spacing.small}
+      gap={theme.spacing.small}
       padding={theme.spacing.large}
       sharedTransitionTag="card"
       simultaneousWithExternalGesture
     >
-      <HStack items="center" spacing={theme.spacing.small}>
+      <HStack items="center" gap={theme.spacing.small}>
         <Text type="l1" color={theme.pallate.neutral['02']}>
           {category}
         </Text>
@@ -58,7 +58,7 @@ const NewsCard = memo((props: NewsCardProps) => {
         {title}
       </Text>
       {repostedBy && repostedBy.length > 0 && (
-        <HStack items="center" spacing={theme.spacing.small}>
+        <HStack items="center" gap={theme.spacing.small}>
           {repostedBy.slice(0, 3).map((user, i) => (
             <Box
               key={user.id}
@@ -109,7 +109,7 @@ const PostCard = memo((props: PostCardProps) => {
   const POST_HEIGHT = (POST_WIDTH * 4) / 3;
 
   return (
-    <VStack spacing={theme.spacing.standard}>
+    <VStack gap={theme.spacing.standard}>
       <HStack
         items="center"
         justify="center"
@@ -119,7 +119,7 @@ const PostCard = memo((props: PostCardProps) => {
           onPress={onPress}
           fill
           items="center"
-          spacing={theme.spacing.small}
+          gap={theme.spacing.small}
           requireExternalGestureToFail
         >
           <Box
@@ -180,12 +180,12 @@ const PostCard = memo((props: PostCardProps) => {
       {/* Action Buttons Love, Repost, Reply, Share */}
       <HStack
         items="center"
-        spacing={theme.spacing.medium}
+        gap={theme.spacing.medium}
         padding={{ paddingHorizontal: theme.spacing.large }}
       >
         <GesturePressable
           items="center"
-          spacing={theme.spacing.small}
+          gap={theme.spacing.small}
           requireExternalGestureToFail
         >
           <Heart
@@ -199,7 +199,7 @@ const PostCard = memo((props: PostCardProps) => {
         </GesturePressable>
         <GesturePressable
           items="center"
-          spacing={theme.spacing.small}
+          gap={theme.spacing.small}
           requireExternalGestureToFail
         >
           <Repeat
@@ -213,7 +213,7 @@ const PostCard = memo((props: PostCardProps) => {
         </GesturePressable>
         <GesturePressable
           items="center"
-          spacing={theme.spacing.small}
+          gap={theme.spacing.small}
           requireExternalGestureToFail
         >
           <Send2
@@ -249,16 +249,16 @@ const VideosCard = memo((props: VideosCardProps) => {
     <GesturePressable
       direction="column"
       onPress={onPress}
-      spacing={theme.spacing.medium}
+      gap={theme.spacing.medium}
       padding={theme.spacing.large}
       requireExternalGestureToFail
     >
       <HStack
         items="center"
-        spacing={theme.spacing.standard}
+        gap={theme.spacing.standard}
         justify="space-between"
       >
-        <HStack items="center" spacing={theme.spacing.standard}>
+        <HStack items="center" gap={theme.spacing.standard}>
           {userAvatar && (
             <Box
               width={40}
@@ -352,13 +352,13 @@ const VideosCard = memo((props: VideosCardProps) => {
       )}
       <HStack
         items="center"
-        spacing={theme.spacing.medium}
+        gap={theme.spacing.medium}
         justify="space-between"
       >
-        <HStack items="center" spacing={theme.spacing.medium}>
+        <HStack items="center" gap={theme.spacing.medium}>
           <GesturePressable
             items="center"
-            spacing={theme.spacing.small}
+            gap={theme.spacing.small}
             requireExternalGestureToFail
           >
             <Heart

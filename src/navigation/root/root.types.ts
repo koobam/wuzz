@@ -19,7 +19,9 @@ export type RootStackParamList = {
   // (auth) group
   login: undefined;
   onboarding: undefined;
-  verification: any;
+  verification: {
+    phone?: string;
+  };
   register: undefined;
 
   // (bottom) group
@@ -68,4 +70,6 @@ export type RootStackParamList = {
     title?: string;
   };
   leaderboard: undefined;
+  locationpermission: undefined;
+  textbenchmark: undefined;
 };

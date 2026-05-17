@@ -1,0 +1,19 @@
+diff --git a/node_modules/react-native-nitro-fetch/ios/NitroDevToolsReporter.mm b/node_modules/react-native-nitro-fetch/ios/NitroDevToolsReporter.mm
+index d3122d0..6fa5f73 100644
+--- a/node_modules/react-native-nitro-fetch/ios/NitroDevToolsReporter.mm
++++ b/node_modules/react-native-nitro-fetch/ios/NitroDevToolsReporter.mm
+@@ -3,12 +3,9 @@
+ // RCTInspectorNetworkReporter is bundled in React-RCTNetwork. In RN < 0.76
+ // or when the header isn't visible (release-optimized module maps, OSS forks),
+ // we compile to a no-op so the module still builds.
+-#if __has_include(<React/RCTInspectorNetworkReporter.h>)
+-#import <React/RCTInspectorNetworkReporter.h>
+-#define NITRO_HAS_NETWORK_REPORTER 1
+-#else
++// RN 0.82 changed requestId from NSString * to NSNumber * — all call sites
++// are incompatible. Force disable until nitro-fetch updates its API.
+ #define NITRO_HAS_NETWORK_REPORTER 0
+-#endif
+ 
+ // During cold-start prefetch, RN's RCTInspectorNetworkReporter class may not
+ // be realized yet (its underlying C++ NetworkReporter singleton is brought up

@@ -21,7 +21,7 @@ export const TransactionIdRow = memo(
           }}
           borderRadius={8}
           items="center"
-          spacing={theme.spacing.small}
+          gap={theme.spacing.small}
           backgroundColor={theme.pallate.neutral['02']}
           onPress={handleCopyPress}
         >

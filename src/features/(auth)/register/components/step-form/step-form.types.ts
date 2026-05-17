@@ -1,11 +1,13 @@
+import type { ReactNode, RefObject } from 'react';
 import type { Control } from 'react-hook-form';
 import type { RegisterFormData } from '../../hooks';
 import type { VerificationMethod } from '../../config';
+import type { DateInputRef } from '@components/atoms';
 
 export type StepFormStep = {
   id: string;
   title: string;
-  subtitle: string;
+  subtitle: ReactNode;
 };
 
 export type StepFormProps = {
@@ -14,6 +16,9 @@ export type StepFormProps = {
   errors: Record<string, { message?: string } | undefined>;
   isLoading: boolean;
   checkPasswordsMatch: () => boolean;
+  isUsernameAvailable?: boolean;
+  isCheckingUsername?: boolean;
   verificationMethod: VerificationMethod;
   isActive?: boolean;
+  dateInputRef?: RefObject<DateInputRef | null>;
 };

@@ -13,9 +13,9 @@ export const CustomerNoteSection = memo(({ note }: CustomerNoteSectionProps) => 
       padding={{
         paddingVertical: theme.spacing.standard,
       }}
-      spacing={theme.spacing.small}
+      gap={theme.spacing.small}
     >
-      <HStack spacing={theme.spacing.small} items="center">
+      <HStack gap={theme.spacing.small} items="center">
         <DocumentText
           size={20}
           variant="Linear"

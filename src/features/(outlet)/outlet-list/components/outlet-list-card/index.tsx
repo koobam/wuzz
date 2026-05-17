@@ -190,9 +190,9 @@ export const OutletListCard = memo(
               padding={tagPadding}
               backgroundColor={tagBg}
               items="center"
-              spacing={theme.spacing.small}
+              gap={theme.spacing.small}
             >
-              <HStack items="center" spacing={theme.spacing.tiny}>
+              <HStack items="center" gap={theme.spacing.tiny}>
                 <TruckFast
                   variant="Linear"
                   size={TAG_ICON_SIZE}
@@ -203,7 +203,7 @@ export const OutletListCard = memo(
                 </Text>
               </HStack>
               <Box style={styles.tagDot} />
-              <HStack items="center" spacing={theme.spacing.tiny}>
+              <HStack items="center" gap={theme.spacing.tiny}>
                 <Box1
                   variant="Linear"
                   size={TAG_ICON_SIZE}
@@ -223,7 +223,7 @@ export const OutletListCard = memo(
             padding={tagPadding}
             backgroundColor={tagBg}
             items="center"
-            spacing={theme.spacing.tiny}
+            gap={theme.spacing.tiny}
           >
             {renderTagIcon(item)}
             <Text type="l2" color={labelColor}>
@@ -265,15 +265,15 @@ export const OutletListCard = memo(
         />
         <VStack
           style={styles.card}
-          spacing={theme.spacing.standard}
+          gap={theme.spacing.standard}
           padding={cardPadding}
         >
           <HStack
             padding={headerPadding}
             items="center"
-            spacing={theme.spacing.standard}
+            gap={theme.spacing.standard}
           >
-            <VStack fill spacing={theme.spacing.tiny}>
+            <VStack fill gap={theme.spacing.tiny}>
               <Text
                 type="b2"
                 weight="semibold"
@@ -282,8 +282,8 @@ export const OutletListCard = memo(
               >
                 {name}
               </Text>
-              <HStack items="center" spacing={theme.spacing.small}>
-                <HStack items="center" spacing={theme.spacing.tiny}>
+              <HStack items="center" gap={theme.spacing.small}>
+                <HStack items="center" gap={theme.spacing.tiny}>
                   <Location
                     variant="Bulk"
                     size={ADDRESS_ICON_SIZE}

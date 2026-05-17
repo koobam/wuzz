@@ -54,10 +54,10 @@ export const ServiceTypeRow = memo(function ServiceTypeRow({
   return (
     <VStack
       padding={{ paddingHorizontal: theme.spacing.large }}
-      spacing={theme.spacing.standard}
+      gap={theme.spacing.standard}
     >
       <HStack
-        spacing={theme.spacing.standard}
+        gap={theme.spacing.standard}
         items="stretch"
       >
         {options.map((option) => (
@@ -72,7 +72,7 @@ export const ServiceTypeRow = memo(function ServiceTypeRow({
         ))}
       </HStack>
       {selectedOption?.selectedCopy != null && (
-        <HStack items="center" spacing={theme.spacing.tiny}>
+        <HStack items="center" gap={theme.spacing.tiny}>
           <InfoCircle
             size={16}
             color={theme.pallate.neutral['04']}
