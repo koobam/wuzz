@@ -137,10 +137,15 @@ export const History = memo((props: any) => {
             5,
           ]}
           contentContainerStyle={{
-            paddingTop: theme.spacing.standard,
+            // NOTE: do not set paddingTop here. react-native-collapsible-tab-view
+            // injects paddingTop = headerHeight + tabBarHeight to push content below
+            // the collapsible header/tab bar, but our style is spread AFTER theirs in
+            // FlashList.tsx, so any paddingTop we set overrides it and the first items
+            // get clipped under the tab bar on Android. Use a spacer for top gap instead.
             paddingBottom: theme.spacing.standard,
             paddingHorizontal: theme.spacing.large,
           }}
+          ListHeaderComponent={() => <Box height={theme.spacing.standard} />}
           ItemSeparatorComponent={() => (
             <Divider thickness={theme.spacing.standard} />
           )}
@@ -151,8 +156,15 @@ export const History = memo((props: any) => {
         <Tabs.FlashList
           data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
           contentContainerStyle={{
+            // NOTE: do not set paddingTop here. react-native-collapsible-tab-view
+            // injects paddingTop = headerHeight + tabBarHeight to push content below
+            // the collapsible header/tab bar, but our style is spread AFTER theirs in
+            // FlashList.tsx, so any paddingTop we set overrides it and the first items
+            // get clipped under the tab bar on Android. Use a spacer for top gap instead.
+            paddingBottom: theme.spacing.standard,
             paddingHorizontal: theme.spacing.large,
           }}
+          ListHeaderComponent={() => <Box height={theme.spacing.standard} />}
           ItemSeparatorComponent={() => (
             <Divider thickness={theme.spacing.standard} />
           )}

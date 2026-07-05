@@ -5,3 +5,4 @@ export * from './useOnLayout';
 export * from './useCountdown';
 export * from './useAnimalese';
 export * from './useScreenSize';
+export * from './useCurrentLocation';

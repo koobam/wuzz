@@ -1,5 +1,5 @@
 import type { OutletsParams } from '@api/outlets.types';
-import { useFetchOutlets } from '@hooks/apis/outlets';
+import { useFetchNearestOutlet, useFetchOutlets } from '@hooks/apis/outlets';
 import { useMemo } from 'react';
 import type { OutletListItem } from '../types';
 import {
@@ -22,9 +22,10 @@ export type OutletListData = {
   refetch: () => void;
 };
 
+/** Fallback lokasi saat koordinat user belum tersedia: Monas, Jakarta. */
 const DEFAULT_CENTER: OutletsParams = {
-  lat: -6.13572,
-  long: 106.501244,
+  lat: -6.175392,
+  long: 106.827153,
 };
 
 export const useOutletListData = (params?: OutletsParams | null): OutletListData => {
@@ -69,4 +70,27 @@ export const useOutletListData = (params?: OutletsParams | null): OutletListData
     isError,
     refetch,
   };
+};
+
+export type NearestOutletData = {
+  outlet: OutletListItem | null;
+  isLoading: boolean;
+  isError: boolean;
+  error: unknown;
+  refetch: () => void;
+};
+
+/** Single nearest outlet from GET /outlets/nearest, mapped to OutletListItem. */
+export const useNearestOutlet = (
+  params?: OutletsParams | null,
+): NearestOutletData => {
+  const queryParams = params ?? DEFAULT_CENTER;
+  const { data, isLoading, isError, error, refetch } = useFetchNearestOutlet(queryParams);
+
+  const outlet = useMemo(
+    () => (data ? mapOutletApiToListItem(data) : null),
+    [data],
+  );
+
+  return { outlet, isLoading, isError, error, refetch };
 };

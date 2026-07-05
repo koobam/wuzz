@@ -1,52 +1,57 @@
 import { memo } from 'react';
-import { Box, Flex, Icon, Pressable, Text, theme } from '@components/atoms';
+import { StyleSheet } from 'react-native';
+import { Icon, Pressable, Text, theme } from '@components/atoms';
 import type { CategoryCardProps } from './category-card.types';
 
-export const CategoryCard = memo(({ item, onPress }: CategoryCardProps) => (
-  <Pressable
-    direction="column"
-    fill
-    onPress={onPress}
-    justify="center"
-    items="center"
-    spacing={theme.spacing.tiny}
-  >
-    <Flex
-      width={60}
-      height={60}
-      items="center"
+const ICON_SIZE = 55;
+
+const styles = StyleSheet.create({
+  shadow: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 5,
+  },
+  // Pull the icon up so it pokes above the card's top edge (no overflow clipping).
+  icon: {
+    marginTop: -ICON_SIZE / 1.7 - theme.spacing.tiny,
+  },
+});
+
+export const CategoryCard = memo(
+  ({ item, backgroundColor, rotation = 0, width, overlap, index, onPress }: CategoryCardProps) => (
+    <Pressable
+      direction="column"
+      onPress={onPress}
       justify="center"
-      borderRadius={30}
-      backgroundColor={theme.pallate.neutral['02']}
+      items="center"
+      // Disable the press-dim: its opacity layer renders the card offscreen at
+      // its own bounds, which would clip the icon poking above the top edge.
+      // Scale (shrink) still provides press feedback without clipping.
+      opacity={0}
+      width={width}
+      rotation={rotation}
+      margin={index === 0 ? undefined : { marginLeft: -overlap }}
+      padding={theme.spacing.medium}
+      borderWidth={2}
+      borderColor={theme.pallate.neutral['01']}
+      borderRadius={25}
+      backgroundColor={backgroundColor}
+      spacing={theme.spacing.tiny}
+      style={[styles.shadow, { zIndex: index }]}
     >
-      <Icon icon={item.icon} size={36} color={theme.pallate.neutral['04']} />
-      {item.discount !== undefined && item.discount !== 0 && (
-        <Box
-          position={{
-            top: 0,
-            right: -5,
-          }}
-          backgroundColor={
-            item.discount_type === 'percentage'
-              ? theme.pallate.danger['03']
-              : theme.pallate.primary['03']
-          }
-          padding={{
-            paddingHorizontal: theme.spacing.small,
-            paddingVertical: 3,
-          }}
-          borderRadius={10}
-        >
-          <Text type="l2" weight="semibold" color={theme.pallate.neutral['01']}>
-            {item.discount}
-          </Text>
-        </Box>
-      )}
-    </Flex>
-    <Text type="l1" align="center">
-      {item.name}
-    </Text>
-  </Pressable>
-));
+      <Icon
+        icon={item.icon}
+        size={ICON_SIZE}
+        color={theme.pallate.neutral['01']}
+        style={styles.icon}
+      />
+      <Text type="b2" color={theme.pallate.neutral['01']} weight="bold">
+        {item.name}
+      </Text>
+    </Pressable>
+  ),
+);
 
 CategoryCard.displayName = 'CategoryCard';

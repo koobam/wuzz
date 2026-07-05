@@ -5,10 +5,14 @@ import {
   LaundryServiceDetailResponse,
   LaundryServicesParams,
   LaundryServicesResponse,
+  ServiceCategory,
 } from './laundry-services.types';
 
-const listQuery = (params?: LaundryServicesParams): StringifiableRecord => {
-  const q: StringifiableRecord = {};
+const listQuery = (
+  category: ServiceCategory,
+  params?: LaundryServicesParams,
+): StringifiableRecord => {
+  const q: StringifiableRecord = { service_category: category };
   if (params?.num != null) q.num = String(params.num);
   if (params?.include_tiers != null) {
     q.include_tiers = String(params.include_tiers);
@@ -16,20 +20,17 @@ const listQuery = (params?: LaundryServicesParams): StringifiableRecord => {
   return q;
 };
 
-export const laundryServicesRegular = (
+/**
+ * List services, filtered by category (`regular` or `alacarte`).
+ * GET /services?service_category=<category>
+ */
+export const laundryServices = (
+  category: ServiceCategory,
   params?: LaundryServicesParams,
 ): Promise<LaundryServicesResponse> =>
-  request(apiUrl('/app/laundry-services/regular', listQuery(params)));
-
-export const laundryServicesAlacarte = (
-  params?: LaundryServicesParams,
-): Promise<LaundryServicesResponse> =>
-  request(apiUrl('/app/laundry-services/alacarte', listQuery(params)));
-
-/** @deprecated Use laundryServicesRegular or laundryServicesAlacarte */
-export const laundryServices = laundryServicesRegular;
+  request(apiUrl('/services', listQuery(category, params)));
 
 export const laundryServiceDetail = (
   id: string,
 ): Promise<LaundryServiceDetailResponse> =>
-  request(apiUrl(`/app/laundry-services/${id}`));
+  request(apiUrl(`/services/${id}`));

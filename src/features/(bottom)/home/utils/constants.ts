@@ -13,6 +13,7 @@ export type ProductAddOnType = 'single' | 'multiple';
 export type OnlyServiceItem = {
   id: string;
   name: string;
+  description?: string;
   icon?: string;
   promo?: string;
   /** Untuk navigasi ke layar laundry (dari API alacarte). */

@@ -25,11 +25,9 @@ export const HomeHeader = memo(({ topInset }: HomeHeaderProps) => {
       items="center"
       spacing={theme.spacing.small}
     >
-      <Flex fill>
-        <Text type="h2" weight="stylized" color={theme.pallate.neutral['01']}>
+        <Text fill type="h2" weight="extrabold" italic color={theme.pallate.neutral['01']}>
           Wuzz
         </Text>
-      </Flex>
       {isAuthenticated ? (
         <>
           <Pressable

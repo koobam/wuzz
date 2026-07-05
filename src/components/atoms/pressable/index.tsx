@@ -16,6 +16,8 @@ export interface PressableProps extends PressableContainer {
   androidDisableSound?: boolean;
   shrink?: boolean;
   opacity?: number;
+  /** Tilt in degrees, merged into the same transform as the press-scale. */
+  rotation?: number;
   containerStyle?: ViewStyle;
 }
 
@@ -25,6 +27,7 @@ export const Pressable: React.FC<PressableProps> = React.memo(props => {
     androidDisableSound,
     shrink = true,
     opacity = true,
+    rotation,
     containerStyle,
     style,
     ref,
@@ -42,7 +45,12 @@ export const Pressable: React.FC<PressableProps> = React.memo(props => {
           style={({ pressed }) => [
             {
               opacity: pressed && opacity ? 0.6 : 1,
-              transform: [{ scale: pressed && shrink ? 0.98 : 1 }],
+              transform: rotation
+                ? [
+                    { scale: pressed && shrink ? 0.98 : 1 },
+                    { rotate: `${rotation}deg` },
+                  ]
+                : [{ scale: pressed && shrink ? 0.98 : 1 }],
             },
             style as ViewStyle,
           ]}

@@ -1,7 +1,6 @@
 import {
   laundryServiceDetail,
-  laundryServicesAlacarte,
-  laundryServicesRegular,
+  laundryServices,
 } from '@api/laundry-services';
 import type {
   LaundryServiceDetailResponse,
@@ -20,7 +19,7 @@ export const laundryServicesQueryKeys = createQueryKeyStore({
         params?.num,
         params?.include_tiers,
       ],
-      queryFn: () => laundryServicesRegular(params),
+      queryFn: () => laundryServices('regular', params),
     }),
     listAlacarte: (params?: LaundryServicesParams) => ({
       queryKey: [
@@ -29,7 +28,7 @@ export const laundryServicesQueryKeys = createQueryKeyStore({
         params?.num,
         params?.include_tiers,
       ],
-      queryFn: () => laundryServicesAlacarte(params),
+      queryFn: () => laundryServices('alacarte', params),
     }),
     detail: (id: string) => ({
       queryKey: ['fetchLaundryServiceDetail', id],

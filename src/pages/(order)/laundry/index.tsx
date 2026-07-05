@@ -2,6 +2,7 @@ import { BannerTestingApp } from '@assets/index';
 import type {
   LaundryServiceAddon,
   LaundryServiceDetailErrorResponse,
+  LaundryServiceSection,
 } from '@core/api/laundry-services.types';
 import { VStack, Text, theme } from '@components/atoms';
 import type { ChecklistOption, LaundryChecklistSection } from '@features/(order)/laundry';
@@ -68,26 +69,20 @@ function mapAddonsToOptions(addons: LaundryServiceAddon[]): ChecklistOption[] {
 }
 
 function buildChecklistSectionsFromService(
-  addons: LaundryServiceAddon[] | undefined,
+  sections: LaundryServiceSection[] | undefined,
 ): LaundryChecklistSection[] {
-  if (!addons?.length) return [];
-  return [
-    {
-      id: 'addons',
-      title: ADD_ON_SECTION_TITLE,
-      options: mapAddonsToOptions(addons),
-      selectionMode: 'multiple',
-      canOptOut: true,
-    },
-    {
-      id: 'addons',
-      title: ADD_ON_SECTION_TITLE,
-      options: mapAddonsToOptions(addons),
-      selectionMode: 'multiple',
-      canOptOut: true,
-    },
-  ];
+  if (!sections?.length) return [];
+  return sections.map((section, index) => ({
+    id: `section-${index}`,
+    title: section.title || ADD_ON_SECTION_TITLE,
+    options: mapAddonsToOptions(section.addons),
+    selectionMode: section.type,
+    canOptOut: true,
+  }));
 }
+
+// Set true untuk menampilkan kembali section "Perkiraan Berat" (WeightEstimateSlider)
+const SHOW_WEIGHT_ESTIMATE = false;
 
 type LaundryRouteProp = RouteProp<RootStackParamList, 'laundry'>;
 
@@ -107,18 +102,17 @@ export const Laundry = memo(() => {
 
   const laundryType = useMemo(() => {
     const fromService = serviceDetail?.service_type;
-    if (fromService === 'kiloan') return 'multiple' as const;
-    if (fromService === 'satuan') return 'single' as const;
+    if (fromService) return fromService; // API already returns 'multiple' | 'single'
     if (paramType === 'kiloan') return 'multiple' as const;
     if (paramType === 'satuan') return 'single' as const;
     return undefined;
   }, [serviceDetail?.service_type, paramType]);
 
   const checklistSections = useMemo(() => {
-    const fromApi = buildChecklistSectionsFromService(serviceDetail?.addons);
+    const fromApi = buildChecklistSectionsFromService(serviceDetail?.sections);
     if (fromApi.length > 0) return fromApi;
     return getLaundryChecklistSections(laundryType);
-  }, [serviceDetail?.addons, laundryType]);
+  }, [serviceDetail?.sections, laundryType]);
 
   const mainSectionId = checklistSections[0]?.id ?? 'main';
 
@@ -127,13 +121,11 @@ export const Laundry = memo(() => {
     scrollHandler,
     headerBackgroundStyle,
     headerPositionStyle,
-    headerShadowStyle,
   } = useLaundryHeaderScroll({ safeAreaTop: top });
   const stretchyHeaderStyle = useStretchyBannerStyle({ scrollY, width });
   const {
     selectedServiceId,
     sectionSelections,
-    weightKg,
     handleWeightChange,
     handleServiceSelect,
     handleSectionSelectionChange,
@@ -147,19 +139,16 @@ export const Laundry = memo(() => {
 
   const priceLabel = useMemo(() => {
     if (!serviceDetail) return formPriceLabel;
-    const unit = serviceDetail.unit?.toLowerCase();
-    const isPerKg = unit === 'kg';
-    const baseTotal = isPerKg
-      ? serviceDetail.price * weightKg
-      : serviceDetail.price;
-    const addonIds = sectionSelections['addons'] ?? [];
-    const addons = serviceDetail.addons ?? [];
-    const addonTotal = addonIds.reduce(
-      (sum, id) => sum + (addons.find((a) => String(a.id) === id)?.price ?? 0),
+    const isPerKg = serviceDetail.unit?.toLowerCase() === 'kg';
+    const allAddons = serviceDetail.sections?.flatMap((s) => s.addons) ?? [];
+    const selectedAddonIds = Object.values(sectionSelections).flat();
+    const addonTotal = selectedAddonIds.reduce(
+      (sum, id) => sum + (allAddons.find((a) => String(a.id) === id)?.price ?? 0),
       0,
     );
-    return formatPriceRupiah(baseTotal + addonTotal);
-  }, [serviceDetail, formPriceLabel, weightKg, sectionSelections]);
+    const total = formatPriceRupiah(serviceDetail.price + addonTotal);
+    return isPerKg ? `${total}/${serviceDetail.unit}` : total;
+  }, [serviceDetail, formPriceLabel, sectionSelections]);
 
   const handleBackPress = useCallback(() => {
     navigation.goBack();
@@ -172,7 +161,7 @@ export const Laundry = memo(() => {
           title="Loading..."
           onBackPress={handleBackPress}
           onHelpPress={() => {}}
-          style={[headerPositionStyle, headerBackgroundStyle]}
+          style={headerPositionStyle}
         />
         <LaundryDetailSkeleton />
       </VStack>
@@ -204,7 +193,7 @@ export const Laundry = memo(() => {
   const cardDescription =
     serviceDetail?.description ??
     (laundryType === 'single' ? 'Cuci per item, pilih jenis pakaian.' : undefined);
-  const basePricePerKg = serviceDetail?.service_type === 'kiloan' ? serviceDetail.price : undefined;
+  const basePricePerKg = serviceDetail?.service_type === 'multiple' ? serviceDetail.price : undefined;
   const priceUnit = serviceDetail?.unit;
   const showKgLabel = laundryType !== 'single';
   const minKg = serviceDetail?.min_kg;
@@ -217,7 +206,7 @@ export const Laundry = memo(() => {
         title={serviceDetail?.name ?? ''}
         onBackPress={handleBackPress}
         onHelpPress={() => {}}
-        style={[headerPositionStyle, headerBackgroundStyle, headerShadowStyle]}
+        style={[headerPositionStyle, headerBackgroundStyle]}
       />
       <Animated.ScrollView
         style={styles.scrollFill}
@@ -246,12 +235,15 @@ export const Laundry = memo(() => {
             priceUnit={priceUnit}
             showKgLabel={showKgLabel}
           />
-          <ServiceTypeRow
-            selectedId={selectedServiceId}
-            onSelect={handleServiceSelect}
-            hideKgLabel={laundryType === 'single'}
-          />
-          {laundryType === 'multiple' && (
+          {laundryType !== 'single' && (
+            <ServiceTypeRow
+              tiers={serviceDetail?.tiers}
+              selectedId={selectedServiceId}
+              onSelect={handleServiceSelect}
+              hideKgLabel={false}
+            />
+          )}
+          {SHOW_WEIGHT_ESTIMATE && laundryType === 'multiple' && (
             <WeightEstimateSlider
               minKg={minKg}
               maxKg={maxKg}

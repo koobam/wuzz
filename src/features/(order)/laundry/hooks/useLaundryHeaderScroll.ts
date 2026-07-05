@@ -32,13 +32,6 @@ export function useLaundryHeaderScroll({
     ),
   }));
 
-  const headerShadowStyle = useMemo(() => ({
-    shadowColor: theme.pallate.neutral['05'],
-    shadowRadius: theme.spacing.small,
-    shadowOpacity: 0.08,
-    shadowOffset: { width: 0, height: 2 },
-  }), []);
-
   const headerPositionStyle = useMemo(
     () => ({
       position: 'absolute' as const,
@@ -48,7 +41,6 @@ export function useLaundryHeaderScroll({
       paddingHorizontal: theme.spacing.large,
       paddingTop: theme.spacing.small + safeAreaTop,
       paddingBottom: theme.spacing.standard,
-      elevation: 5,
     }),
     [safeAreaTop],
   );
@@ -57,7 +49,6 @@ export function useLaundryHeaderScroll({
     scrollY,
     scrollHandler,
     headerBackgroundStyle,
-    headerShadowStyle,
     headerPositionStyle,
   };
 }

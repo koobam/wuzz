@@ -136,6 +136,8 @@ const request = (url?: string, options?: AxiosRequestConfig) => {
     method: options?.method || 'GET',
     ...options,
   };
+  
+  console.log("CONFIG", config)
 
   const onSuccess = (response: AxiosResponse) => {
     if (response) {return response.data;}

@@ -1,0 +1,481 @@
+diff --git a/node_modules/metro-cache/src/Cache.d.ts b/node_modules/metro-cache/src/Cache.d.ts
+index f95aa55..318ba7c 100644
+--- a/node_modules/metro-cache/src/Cache.d.ts
++++ b/node_modules/metro-cache/src/Cache.d.ts
+@@ -4,8 +4,15 @@
+  * This source code is licensed under the MIT license found in the
+  * LICENSE file in the root directory of this source tree.
+  *
+- * @format
++ * @noformat
+  * @oncall react_native
++ * @generated SignedSource<<1fe6ca4aa9f1f410281edf1b8f9adea2>>
++ *
++ * This file was translated from Flow by scripts/generateTypeScriptDefinitions.js
++ * Original file: packages/metro-cache/src/Cache.js
++ * To regenerate, run:
++ *   js1 build metro-ts-defs (internal) OR
++ *   yarn run build-ts-defs (OSS) 
+  */
+ 
+ import type {CacheStore} from './types';
+diff --git a/node_modules/metro-cache/src/Cache.js.flow b/node_modules/metro-cache/src/Cache.js.flow
+index 2c70a31..6ded694 100644
+--- a/node_modules/metro-cache/src/Cache.js.flow
++++ b/node_modules/metro-cache/src/Cache.js.flow
+@@ -21,10 +21,10 @@ import {Logger} from 'metro-core';
+  * All get/set operations are logged via Metro's logger.
+  */
+ export default class Cache<T> {
+-  +#stores: $ReadOnlyArray<CacheStore<T>>;
++  +#stores: ReadonlyArray<CacheStore<T>>;
+   +#hits: WeakMap<Buffer, CacheStore<T>> = new WeakMap();
+ 
+-  constructor(stores: $ReadOnlyArray<CacheStore<T>>) {
++  constructor(stores: ReadonlyArray<CacheStore<T>>) {
+     this.#stores = stores;
+   }
+ 
+diff --git a/node_modules/metro-cache/src/index.d.ts b/node_modules/metro-cache/src/index.d.ts
+index f676d9a..3be3d5f 100644
+--- a/node_modules/metro-cache/src/index.d.ts
++++ b/node_modules/metro-cache/src/index.d.ts
+@@ -4,8 +4,15 @@
+  * This source code is licensed under the MIT license found in the
+  * LICENSE file in the root directory of this source tree.
+  *
+- * @format
++ * @noformat
+  * @oncall react_native
++ * @generated SignedSource<<2bb72546f80164eb8c0068f9de3a1487>>
++ *
++ * This file was translated from Flow by scripts/generateTypeScriptDefinitions.js
++ * Original file: packages/metro-cache/src/index.js
++ * To regenerate, run:
++ *   js1 build metro-ts-defs (internal) OR
++ *   yarn run build-ts-defs (OSS) 
+  */
+ 
+ import Cache from './Cache';
+diff --git a/node_modules/metro-cache/src/stableHash.d.ts b/node_modules/metro-cache/src/stableHash.d.ts
+index 6e9a722..870f430 100644
+--- a/node_modules/metro-cache/src/stableHash.d.ts
++++ b/node_modules/metro-cache/src/stableHash.d.ts
+@@ -4,8 +4,15 @@
+  * This source code is licensed under the MIT license found in the
+  * LICENSE file in the root directory of this source tree.
+  *
+- * @format
++ * @noformat
+  * @oncall react_native
++ * @generated SignedSource<<36e0de65be0930a61b8ff46232052ea7>>
++ *
++ * This file was translated from Flow by scripts/generateTypeScriptDefinitions.js
++ * Original file: packages/metro-cache/src/stableHash.js
++ * To regenerate, run:
++ *   js1 build metro-ts-defs (internal) OR
++ *   yarn run build-ts-defs (OSS) 
+  */
+ 
+ declare function stableHash(value: unknown): Buffer;
+diff --git a/node_modules/metro-cache/src/stableHash.js.flow b/node_modules/metro-cache/src/stableHash.js.flow
+index 4a6b211..a71bb7d 100644
+--- a/node_modules/metro-cache/src/stableHash.js.flow
++++ b/node_modules/metro-cache/src/stableHash.js.flow
+@@ -12,7 +12,7 @@
+ import crypto from 'crypto';
+ import canonicalize from 'metro-core/private/canonicalize';
+ 
+-export default function stableHash(value: mixed): Buffer {
++export default function stableHash(value: unknown): Buffer {
+   return (
+     crypto
+       .createHash('md5')
+diff --git a/node_modules/metro-cache/src/stores/AutoCleanFileStore.d.ts b/node_modules/metro-cache/src/stores/AutoCleanFileStore.d.ts
+index 22aa4ab..f3cc4b3 100644
+--- a/node_modules/metro-cache/src/stores/AutoCleanFileStore.d.ts
++++ b/node_modules/metro-cache/src/stores/AutoCleanFileStore.d.ts
+@@ -4,8 +4,15 @@
+  * This source code is licensed under the MIT license found in the
+  * LICENSE file in the root directory of this source tree.
+  *
+- * @format
++ * @noformat
+  * @oncall react_native
++ * @generated SignedSource<<b48a572e322053f43ea91adf8f8a2bdb>>
++ *
++ * This file was translated from Flow by scripts/generateTypeScriptDefinitions.js
++ * Original file: packages/metro-cache/src/stores/AutoCleanFileStore.js
++ * To regenerate, run:
++ *   js1 build metro-ts-defs (internal) OR
++ *   yarn run build-ts-defs (OSS) 
+  */
+ 
+ import type {Options} from './FileStore';
+diff --git a/node_modules/metro-cache/src/stores/AutoCleanFileStore.js.flow b/node_modules/metro-cache/src/stores/AutoCleanFileStore.js.flow
+index 8ebc34b..deb478d 100644
+--- a/node_modules/metro-cache/src/stores/AutoCleanFileStore.js.flow
++++ b/node_modules/metro-cache/src/stores/AutoCleanFileStore.js.flow
+@@ -15,7 +15,7 @@ import FileStore from './FileStore';
+ import fs from 'fs';
+ import path from 'path';
+ 
+-type CleanOptions = $ReadOnly<{
++type CleanOptions = Readonly<{
+   ...Options,
+   intervalMs?: number,
+   cleanupThresholdMs?: number,
+diff --git a/node_modules/metro-cache/src/stores/FileStore.d.ts b/node_modules/metro-cache/src/stores/FileStore.d.ts
+index 8a62ac3..6b0ff79 100644
+--- a/node_modules/metro-cache/src/stores/FileStore.d.ts
++++ b/node_modules/metro-cache/src/stores/FileStore.d.ts
+@@ -4,8 +4,15 @@
+  * This source code is licensed under the MIT license found in the
+  * LICENSE file in the root directory of this source tree.
+  *
+- * @format
++ * @noformat
+  * @oncall react_native
++ * @generated SignedSource<<7de501c6653d300c594fcf37ce3b56f4>>
++ *
++ * This file was translated from Flow by scripts/generateTypeScriptDefinitions.js
++ * Original file: packages/metro-cache/src/stores/FileStore.js
++ * To regenerate, run:
++ *   js1 build metro-ts-defs (internal) OR
++ *   yarn run build-ts-defs (OSS) 
+  */
+ 
+ export type Options = Readonly<{root: string}>;
+diff --git a/node_modules/metro-cache/src/stores/FileStore.js b/node_modules/metro-cache/src/stores/FileStore.js
+index f3db2a0..30d007b 100644
+--- a/node_modules/metro-cache/src/stores/FileStore.js
++++ b/node_modules/metro-cache/src/stores/FileStore.js
+@@ -11,12 +11,37 @@ function _interopRequireDefault(e) {
+ }
+ const NULL_BYTE = 0x00;
+ const NULL_BYTE_BUFFER = Buffer.from([NULL_BYTE]);
++
++// Limit concurrent file handles to avoid EMFILE ("too many open files") on
++// Windows, where Metro otherwise opens thousands of cache files at once.
++// Override with METRO_FILE_STORE_CONCURRENCY if needed.
++const MAX_OPEN_FILES =
++  parseInt(process.env.METRO_FILE_STORE_CONCURRENCY, 10) || 128;
++let _activeFileOps = 0;
++const _fileOpQueue = [];
++function _acquireFileSlot() {
++  if (_activeFileOps < MAX_OPEN_FILES) {
++    _activeFileOps++;
++    return Promise.resolve();
++  }
++  return new Promise((resolve) => _fileOpQueue.push(resolve));
++}
++function _releaseFileSlot() {
++  const next = _fileOpQueue.shift();
++  if (next) {
++    next();
++  } else {
++    _activeFileOps--;
++  }
++}
++
+ class FileStore {
+   #root;
+   constructor(options) {
+     this.#root = options.root;
+   }
+   async get(key) {
++    await _acquireFileSlot();
+     try {
+       const data = await _fs.default.promises.readFile(this.#getFilePath(key));
+       if (data[0] === NULL_BYTE) {
+@@ -28,6 +53,8 @@ class FileStore {
+         return null;
+       }
+       throw err;
++    } finally {
++      _releaseFileSlot();
+     }
+   }
+   async set(key, value) {
+@@ -52,7 +79,12 @@ class FileStore {
+     } else {
+       content = JSON.stringify(value) ?? JSON.stringify(null);
+     }
+-    await _fs.default.promises.writeFile(filePath, content);
++    await _acquireFileSlot();
++    try {
++      await _fs.default.promises.writeFile(filePath, content);
++    } finally {
++      _releaseFileSlot();
++    }
+   }
+   clear() {
+     this.#removeDirs();
+diff --git a/node_modules/metro-cache/src/stores/FileStore.js.flow b/node_modules/metro-cache/src/stores/FileStore.js.flow
+index 3394eee..e2987f5 100644
+--- a/node_modules/metro-cache/src/stores/FileStore.js.flow
++++ b/node_modules/metro-cache/src/stores/FileStore.js.flow
+@@ -15,7 +15,7 @@ import path from 'path';
+ const NULL_BYTE = 0x00;
+ const NULL_BYTE_BUFFER = Buffer.from([NULL_BYTE]);
+ 
+-export type Options = $ReadOnly<{
++export type Options = Readonly<{
+   root: string,
+ }>;
+ 
+@@ -31,7 +31,7 @@ export default class FileStore<T> {
+       const data = await fs.promises.readFile(this.#getFilePath(key));
+ 
+       if (data[0] === NULL_BYTE) {
+-        return (data.slice(1): any);
++        return data.slice(1) as any;
+       }
+ 
+       return JSON.parse(data.toString('utf8'));
+diff --git a/node_modules/metro-cache/src/stores/HttpError.d.ts b/node_modules/metro-cache/src/stores/HttpError.d.ts
+index 5837c66..2830a1c 100644
+--- a/node_modules/metro-cache/src/stores/HttpError.d.ts
++++ b/node_modules/metro-cache/src/stores/HttpError.d.ts
+@@ -4,7 +4,14 @@
+  * This source code is licensed under the MIT license found in the
+  * LICENSE file in the root directory of this source tree.
+  *
+- * @format
++ * @noformat
++ * @generated SignedSource<<7a0b4b83fb44651820333ade6a980ef7>>
++ *
++ * This file was translated from Flow by scripts/generateTypeScriptDefinitions.js
++ * Original file: packages/metro-cache/src/stores/HttpError.js
++ * To regenerate, run:
++ *   js1 build metro-ts-defs (internal) OR
++ *   yarn run build-ts-defs (OSS) 
+  */
+ 
+ declare class HttpError extends Error {
+diff --git a/node_modules/metro-cache/src/stores/HttpGetStore.d.ts b/node_modules/metro-cache/src/stores/HttpGetStore.d.ts
+index 70eaa16..a3ba44a 100644
+--- a/node_modules/metro-cache/src/stores/HttpGetStore.d.ts
++++ b/node_modules/metro-cache/src/stores/HttpGetStore.d.ts
+@@ -4,8 +4,15 @@
+  * This source code is licensed under the MIT license found in the
+  * LICENSE file in the root directory of this source tree.
+  *
+- * @format
++ * @noformat
+  * @oncall react_native
++ * @generated SignedSource<<12106d5e641e2402d71f229ec168a8ec>>
++ *
++ * This file was translated from Flow by scripts/generateTypeScriptDefinitions.js
++ * Original file: packages/metro-cache/src/stores/HttpGetStore.js
++ * To regenerate, run:
++ *   js1 build metro-ts-defs (internal) OR
++ *   yarn run build-ts-defs (OSS) 
+  */
+ 
+ import type {Options as HttpOptions} from './HttpStore';
+diff --git a/node_modules/metro-cache/src/stores/HttpStore.d.ts b/node_modules/metro-cache/src/stores/HttpStore.d.ts
+index bfc235d..52d1f74 100644
+--- a/node_modules/metro-cache/src/stores/HttpStore.d.ts
++++ b/node_modules/metro-cache/src/stores/HttpStore.d.ts
+@@ -4,8 +4,15 @@
+  * This source code is licensed under the MIT license found in the
+  * LICENSE file in the root directory of this source tree.
+  *
+- * @format
++ * @noformat
+  * @oncall react_native
++ * @generated SignedSource<<05ef02cd1f35e98055791237d573dc5a>>
++ *
++ * This file was translated from Flow by scripts/generateTypeScriptDefinitions.js
++ * Original file: packages/metro-cache/src/stores/HttpStore.js
++ * To regenerate, run:
++ *   js1 build metro-ts-defs (internal) OR
++ *   yarn run build-ts-defs (OSS) 
+  */
+ 
+ import HttpError from './HttpError';
+diff --git a/node_modules/metro-cache/src/stores/HttpStore.js b/node_modules/metro-cache/src/stores/HttpStore.js
+index 84a887b..ac19057 100644
+--- a/node_modules/metro-cache/src/stores/HttpStore.js
++++ b/node_modules/metro-cache/src/stores/HttpStore.js
+@@ -37,8 +37,8 @@ class HttpStore {
+       family: options.family,
+       keepAlive: true,
+       keepAliveMsecs: options.timeout || 5000,
+-      maxSockets: 64,
+       maxFreeSockets: 64,
++      maxSockets: 64,
+     };
+     if (options.key != null) {
+       agentConfig.key = options.key;
+@@ -62,21 +62,21 @@ class HttpStore {
+       throw new TypeError("Invalid endpoint: " + options.endpoint);
+     }
+     return {
+-      agent,
+-      headers: options.headers,
+-      host: uri.hostname,
+-      path: uri.pathname,
+-      port: +uri.port,
+-      params: new URLSearchParams(options.params),
+-      timeout: options.timeout || 5000,
+-      module: uri.protocol === "http:" ? _http.default : _https.default,
+       additionalSuccessStatuses: new Set(
+         options.additionalSuccessStatuses ?? [],
+       ),
++      agent,
+       debug: options.debug ?? false,
++      headers: options.headers,
++      host: uri.hostname,
+       maxAttempts: options.maxAttempts ?? 1,
+-      retryStatuses: new Set(options.retryStatuses ?? []),
++      module: uri.protocol === "http:" ? _http.default : _https.default,
++      params: new URLSearchParams(options.params),
++      path: uri.pathname,
++      port: +uri.port,
+       retryNetworkErrors: options.retryNetworkErrors ?? false,
++      retryStatuses: new Set(options.retryStatuses ?? []),
++      timeout: options.timeout || 5000,
+     };
+   }
+   get(key) {
+diff --git a/node_modules/metro-cache/src/stores/HttpStore.js.flow b/node_modules/metro-cache/src/stores/HttpStore.js.flow
+index 590a3ea..951671b 100644
+--- a/node_modules/metro-cache/src/stores/HttpStore.js.flow
++++ b/node_modules/metro-cache/src/stores/HttpStore.js.flow
+@@ -27,12 +27,12 @@ type EndpointOptions = {
+   endpoint: string,
+   family?: 4 | 6,
+   timeout?: number,
+-  key?: string | $ReadOnlyArray<string> | Buffer | $ReadOnlyArray<Buffer>,
+-  cert?: string | $ReadOnlyArray<string> | Buffer | $ReadOnlyArray<Buffer>,
+-  ca?: string | $ReadOnlyArray<string> | Buffer | $ReadOnlyArray<Buffer>,
++  key?: string | ReadonlyArray<string> | Buffer | ReadonlyArray<Buffer>,
++  cert?: string | ReadonlyArray<string> | Buffer | ReadonlyArray<Buffer>,
++  ca?: string | ReadonlyArray<string> | Buffer | ReadonlyArray<Buffer>,
+   params?: URLSearchParams,
+   headers?: {[string]: string},
+-  additionalSuccessStatuses?: $ReadOnlyArray<number>,
++  additionalSuccessStatuses?: ReadonlyArray<number>,
+   /**
+    * Whether to include additional debug information in error messages.
+    */
+@@ -43,7 +43,7 @@ type EndpointOptions = {
+    */
+   maxAttempts?: number,
+   retryNetworkErrors?: boolean,
+-  retryStatuses?: $ReadOnlySet<number>,
++  retryStatuses?: ReadonlySet<number>,
+   socketPath?: string,
+   proxy?: string,
+ };
+@@ -57,7 +57,7 @@ type Endpoint = {
+   params: URLSearchParams,
+   headers?: {[string]: string},
+   timeout: number,
+-  additionalSuccessStatuses: $ReadOnlySet<number>,
++  additionalSuccessStatuses: ReadonlySet<number>,
+   debug: boolean,
+ 
+   /**
+@@ -65,7 +65,7 @@ type Endpoint = {
+    */
+   maxAttempts: number,
+   retryNetworkErrors: boolean,
+-  retryStatuses: $ReadOnlySet<number>,
++  retryStatuses: ReadonlySet<number>,
+ };
+ 
+ const ZLIB_OPTIONS: zlib$options = {
+@@ -96,8 +96,8 @@ export default class HttpStore<T> {
+       family: options.family,
+       keepAlive: true,
+       keepAliveMsecs: options.timeout || 5000,
+-      maxSockets: 64,
+       maxFreeSockets: 64,
++      maxSockets: 64,
+     };
+ 
+     if (options.key != null) {
+@@ -133,21 +133,21 @@ export default class HttpStore<T> {
+     }
+ 
+     return {
+-      agent,
+-      headers: options.headers,
+-      host: uri.hostname,
+-      path: uri.pathname,
+-      port: +uri.port,
+-      params: new URLSearchParams(options.params),
+-      timeout: options.timeout || 5000,
+-      module: uri.protocol === 'http:' ? http : https,
+       additionalSuccessStatuses: new Set(
+         options.additionalSuccessStatuses ?? [],
+       ),
++      agent,
+       debug: options.debug ?? false,
++      headers: options.headers,
++      host: uri.hostname,
+       maxAttempts: options.maxAttempts ?? 1,
+-      retryStatuses: new Set(options.retryStatuses ?? []),
++      module: uri.protocol === 'http:' ? http : https,
++      params: new URLSearchParams(options.params),
++      path: uri.pathname,
++      port: +uri.port,
+       retryNetworkErrors: options.retryNetworkErrors ?? false,
++      retryStatuses: new Set(options.retryStatuses ?? []),
++      timeout: options.timeout || 5000,
+     };
+   }
+ 
+@@ -249,7 +249,7 @@ export default class HttpStore<T> {
+             const buffer = Buffer.concat(data);
+ 
+             if (buffer.length > 0 && buffer[0] === NULL_BYTE) {
+-              resolve((buffer.slice(1): any));
++              resolve(buffer.slice(1) as any);
+             } else {
+               resolve(JSON.parse(buffer.toString('utf8')));
+             }
+diff --git a/node_modules/metro-cache/src/stores/NetworkError.d.ts b/node_modules/metro-cache/src/stores/NetworkError.d.ts
+index 3984acf..35044d3 100644
+--- a/node_modules/metro-cache/src/stores/NetworkError.d.ts
++++ b/node_modules/metro-cache/src/stores/NetworkError.d.ts
+@@ -4,7 +4,14 @@
+  * This source code is licensed under the MIT license found in the
+  * LICENSE file in the root directory of this source tree.
+  *
+- * @format
++ * @noformat
++ * @generated SignedSource<<9a68fe7766e376b8525c589673853e54>>
++ *
++ * This file was translated from Flow by scripts/generateTypeScriptDefinitions.js
++ * Original file: packages/metro-cache/src/stores/NetworkError.js
++ * To regenerate, run:
++ *   js1 build metro-ts-defs (internal) OR
++ *   yarn run build-ts-defs (OSS) 
+  */
+ 
+ declare class NetworkError extends Error {
+diff --git a/node_modules/metro-cache/src/types.d.ts b/node_modules/metro-cache/src/types.d.ts
+index e747c9f..25f0d27 100644
+--- a/node_modules/metro-cache/src/types.d.ts
++++ b/node_modules/metro-cache/src/types.d.ts
+@@ -4,8 +4,15 @@
+  * This source code is licensed under the MIT license found in the
+  * LICENSE file in the root directory of this source tree.
+  *
+- * @format
++ * @noformat
+  * @oncall react_native
++ * @generated SignedSource<<80dd2674720fe89c7a90a649a922cb1d>>
++ *
++ * This file was translated from Flow by scripts/generateTypeScriptDefinitions.js
++ * Original file: packages/metro-cache/src/types.js
++ * To regenerate, run:
++ *   js1 build metro-ts-defs (internal) OR
++ *   yarn run build-ts-defs (OSS) 
+  */
+ 
+ export interface CacheStore<T> {

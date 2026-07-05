@@ -11,4 +11,6 @@ export type CategoryGridProps = {
   isError?: boolean;
   /** Error object or message; used when isError is true. */
   error?: Error | { message?: string } | null;
+  /** Called when user taps "Muat ulang" on the empty/error state. */
+  onRefresh?: () => void;
 };

@@ -16,7 +16,8 @@ import {
   ServiceSection,
   TermsAndPrivacySection,
 } from '@features/(bottom)/home/components';
-import { useOutletListData } from '@features/(outlet)/outlet-list';
+import { useNearestOutlet } from '@features/(outlet)/outlet-list';
+import { useCurrentLocation } from '@hooks/utils';
 import type { OnlyServiceItem } from '@features/(bottom)/home/utils';
 import {
   useFetchLaundryServices,
@@ -33,17 +34,28 @@ export const Home = memo((props: HomeType) => {
   const { navigation } = props;
   const { top } = useSafeAreaInsets();
   const screenWidth = Dimensions.get('screen').width;
-  const { outletList } = useOutletListData();
-  const defaultOutlet = outletList[0] ?? null;
+  const {
+    coords,
+    isLoading: isLoadingLocation,
+    isLocationError,
+  } = useCurrentLocation();
+  const {
+    outlet: defaultOutlet,
+    isLoading: isLoadingOutlet,
+    isError: isErrorOutlet,
+    error: errorOutlet,
+    refetch: refetchOutlet,
+  } = useNearestOutlet(coords);
   const {
     data: laundryServiceQueries,
     isLoading: isLoadingLaundryServices,
     isError: isErrorLaundryServices,
     error: errorLaundryServices,
+    refetch: refetchLaundryServices,
   } = useFetchLaundryServices();
 
-  console.log(errorLaundryServices);
   const { data: alacarteData } = useFetchLaundryServicesAlacarte();
+  console.log(alacarteData)
   const {
     data: moodsData,
     isLoading: isLoadingMoods,
@@ -87,7 +99,7 @@ export const Home = memo((props: HomeType) => {
   const onlyServiceItems = useMemo((): Array<
     OnlyServiceItem & { onPress: () => void }
   > => {
-    const services = alacarteData?.laundry_services ?? [];
+    const services = alacarteData?.services ?? [];
     return services.map(service => {
       const promo =
         service.discount > 0
@@ -98,16 +110,17 @@ export const Home = memo((props: HomeType) => {
       const item: OnlyServiceItem = {
         id: String(service.id),
         name: service.name,
+        description: service.description,
         icon: service.icon,
         promo,
-        serviceType: service.service_type,
+        serviceType: service.service_type === 'multiple' ? 'kiloan' : 'satuan',
       };
       return {
         ...item,
         onPress: () => handleOnlyServicePress(item),
       };
     });
-  }, [alacarteData?.laundry_services, handleOnlyServicePress]);
+  }, [alacarteData?.services, handleOnlyServicePress]);
 
   return (
     <VStack as={<ScrollView />} fill>
@@ -121,6 +134,11 @@ export const Home = memo((props: HomeType) => {
         <HomeBanner screenWidth={screenWidth} />
         <OutletCard
           onPress={handleOutletPress}
+          isLoading={isLoadingLocation || isLoadingOutlet}
+          isError={isErrorOutlet}
+          error={errorOutlet}
+          isLocationError={isLocationError}
+          onRefresh={refetchOutlet}
           outlet={
             defaultOutlet
               ? {
@@ -137,24 +155,28 @@ export const Home = memo((props: HomeType) => {
 
       <CategoryGrid
         onCategoryPress={handleCategoryPress}
-        items={laundryServiceQueries?.laundry_services ?? []}
+        items={laundryServiceQueries?.services ?? []}
         isLoading={isLoadingLaundryServices}
         isError={isErrorLaundryServices}
         error={errorLaundryServices}
+        onRefresh={refetchLaundryServices}
       />
-      <OnlyServiceSection
-        onServicePress={handleOnlyServicePress}
-        items={onlyServiceItems}
-      />
+      {onlyServiceItems.length > 0 && (
+        <OnlyServiceSection
+          onServicePress={handleOnlyServicePress}
+          items={onlyServiceItems}
+        />
+      )}
       <ProcessingSection />
-       <OrderTrackingList onOrderPress={handleOrderPress} />
-      <MoodSection
-        moods={moods}
-        isLoading={isLoadingMoods}
-        isError={isErrorMoods}
-        error={errorMoods}
-      />
-
+      <OrderTrackingList onOrderPress={handleOrderPress} />
+      {moods && (
+        <MoodSection
+          moods={moods}
+          isLoading={isLoadingMoods}
+          isError={isErrorMoods}
+          error={errorMoods}
+        />
+      )}
       <ServiceSection onServicePress={handleServicePress} />
       <TermsAndPrivacySection />
     </VStack>

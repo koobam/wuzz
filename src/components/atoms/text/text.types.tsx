@@ -67,7 +67,7 @@ export interface TextStyleProps {
   align?: RNTextStyle['textAlign'];
 }
 
-export type TextWeight = 'light' | 'regular' | 'medium' | 'semibold' | 'bold' | 'stylized';
+export type TextWeight = 'light' | 'regular' | 'medium' | 'semibold' | 'bold' | 'extrabold' | 'stylized';
 export type TextType =
   | 'h1'
   | 'h2'

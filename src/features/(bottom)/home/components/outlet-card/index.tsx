@@ -4,7 +4,9 @@ import {
   BatteryCharging,
   BatteryEmpty,
   BatteryFull,
+  Gps,
   Location,
+  Wifi,
 } from 'iconsax-react-native';
 import { IconChevronDown } from 'tabler-icons-react-native';
 import {
@@ -14,13 +16,40 @@ import {
   OutletServiceBadge,
 } from '@features/(outlet)/outlet-list';
 import type { OutletService, OutletStatus } from '@features/(outlet)/outlet-list';
-import { StyleSheet } from 'react-native';
+import { isNetworkError } from '@http/errors';
+import { Linking, StyleSheet } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import type { OutletCardProps, OutletCardTagItem } from './outlet-card.types';
 
-const DEFAULT_NAME = 'Wuzz 2025 - Supermall Karawaci';
-const DEFAULT_STATUS = 'Lagi Ramai Nih!';
 const CARD_BORDER_RADIUS = 20;
+
+type EmptyReason = 'location' | 'network' | 'error' | 'notfound';
+
+const EMPTY_CONFIG: Record<
+  EmptyReason,
+  { title: string; description: string; buttonLabel: string }
+> = {
+  location: {
+    title: 'Lokasi tidak aktif',
+    description: 'Aktifkan GPS untuk menemukan outlet terdekat.',
+    buttonLabel: 'Buka Pengaturan',
+  },
+  network: {
+    title: 'Tidak ada koneksi internet',
+    description: 'Periksa koneksi internetmu lalu coba lagi.',
+    buttonLabel: 'Coba lagi',
+  },
+  error: {
+    title: 'Gagal memuat outlet',
+    description: 'Terjadi kesalahan. Coba lagi nanti.',
+    buttonLabel: 'Coba lagi',
+  },
+  notfound: {
+    title: 'Outlet tidak ditemukan',
+    description: 'Belum ada outlet terdekat.',
+    buttonLabel: 'Coba lagi',
+  },
+};
 const TAG_ICON_SIZE = 16;
 const TAG_DOT_SIZE = 2;
 
@@ -38,17 +67,42 @@ function getAccentColor(services: OutletService[] | undefined): string {
     : theme.pallate.teal['03'];
 }
 
-export const OutletCard = memo(({ onPress, outlet }: OutletCardProps) => {
+export const OutletCard = memo(
+  ({
+    onPress,
+    outlet,
+    isLoading = false,
+    isError = false,
+    error,
+    isLocationError = false,
+    onRefresh,
+  }: OutletCardProps) => {
   const accentColor = useMemo(
     () => getAccentColor(outlet?.services),
     [outlet?.services],
   );
 
-  const displayName = outlet?.name ?? DEFAULT_NAME;
+  const hasOutlet = outlet != null;
+  const displayName = outlet?.name;
   const displayAddress = outlet?.address;
-  const statusLabel =
-    (outlet?.status && STATUS_LABELS[outlet.status]) ?? DEFAULT_STATUS;
   const showBadge = outlet?.services && outlet.services.length > 0;
+
+  const emptyReason: EmptyReason = isLocationError
+    ? 'location'
+    : isNetworkError(error)
+      ? 'network'
+      : isError
+        ? 'error'
+        : 'notfound';
+  const emptyConfig = EMPTY_CONFIG[emptyReason];
+  const handleEmptyAction = useCallback(() => {
+    if (emptyReason === 'location') {
+      Linking.openSettings();
+      return;
+    }
+    onRefresh?.();
+  }, [emptyReason, onRefresh]);
+  const showEmptyButton = emptyReason === 'location' || onRefresh != null;
 
   const tagItems = useMemo((): OutletCardTagItem[] => {
     const items: OutletCardTagItem[] = [];
@@ -64,12 +118,12 @@ export const OutletCard = memo(({ onPress, outlet }: OutletCardProps) => {
       items.push({
         type: 'status',
         id: 'status',
-        label: statusLabel,
+        label: STATUS_LABELS[outlet.status],
         statusValue: outlet.status,
       });
     }
     return items;
-  }, [outlet?.distanceKm, outlet?.status, statusLabel]);
+  }, [outlet?.distanceKm, outlet?.status]);
 
   const renderTagItem = useCallback(
     ({ item }: { item: OutletCardTagItem }) => {
@@ -124,7 +178,7 @@ export const OutletCard = memo(({ onPress, outlet }: OutletCardProps) => {
         marginHorizontal: theme.spacing.standard,
         marginVertical: theme.spacing.standard,
       }}
-      onPress={onPress}
+      onPress={hasOutlet ? onPress : undefined}
       borderRadius={CARD_BORDER_RADIUS}
       removeClippedSubviews
       padding={theme.spacing.small}
@@ -138,51 +192,109 @@ export const OutletCard = memo(({ onPress, outlet }: OutletCardProps) => {
         borderColor={theme.pallate.primary['03']}
         style={styles.cardInner}
       >
-        <HStack
-          padding={{
-            paddingHorizontal: theme.spacing.medium,
-            paddingVertical: theme.spacing.standard,
-          }}
-          fill
-          items="center"
-          spacing={theme.spacing.standard}
-        >
-          <VStack fill style={styles.content} spacing={theme.spacing.small}>
-            <HStack items="center" spacing={theme.spacing.small} fill>
-              {showBadge && outlet && (
-                <OutletServiceBadge
-                  services={outlet.services}
-                  selectedBackgroundColor={theme.pallate.primary['01']}
-                  selectedContentColor={theme.pallate.primary['03']}
-                  isSelected
-                  iconOnly
+        {isLoading ? (
+          <HStack
+            padding={{
+              paddingHorizontal: theme.spacing.medium,
+              paddingVertical: theme.spacing.standard,
+            }}
+            fill
+            items="center"
+            spacing={theme.spacing.standard}
+          >
+            <Location size={20} variant="Bulk" color={theme.pallate.neutral['03']} />
+            <Text type="l1" color={theme.pallate.neutral['04']} fill>
+              Mencari outlet terdekat...
+            </Text>
+          </HStack>
+        ) : hasOutlet && !isLocationError ? (
+          <HStack
+            padding={{
+              paddingHorizontal: theme.spacing.medium,
+              paddingVertical: theme.spacing.standard,
+            }}
+            fill
+            items="center"
+            spacing={theme.spacing.standard}
+          >
+            <VStack fill style={styles.content} spacing={theme.spacing.small}>
+              <HStack items="center" spacing={theme.spacing.small} fill>
+                {showBadge && outlet && (
+                  <OutletServiceBadge
+                    services={outlet.services}
+                    selectedBackgroundColor={theme.pallate.primary['01']}
+                    selectedContentColor={theme.pallate.primary['03']}
+                    isSelected
+                    iconOnly
+                  />
+                )}
+                <VStack fill>
+                  <Text type="l1" weight="semibold" numberOfLines={1} fill>
+                    {displayName}
+                  </Text>
+                  {displayAddress != null && displayAddress !== '' && (
+                    <Text type="l2" color={theme.pallate.neutral['04']} numberOfLines={1}>
+                      {displayAddress}
+                    </Text>
+                  )}
+                </VStack>
+              </HStack>
+              {tagItems.length > 0 && (
+                <FlashList
+                  data={tagItems}
+                  renderItem={renderTagItem}
+                  keyExtractor={tagKeyExtractor}
+                  horizontal
+                  ItemSeparatorComponent={tagSeparator}
+                  scrollEnabled={false}
+                  contentContainerStyle={styles.tagListContent}
                 />
               )}
-              <VStack fill>
-                <Text type="l1" weight="semibold" numberOfLines={1} fill>
-                  {displayName}
-                </Text>
-                {displayAddress != null && displayAddress !== '' && (
-                  <Text type="l2" color={theme.pallate.neutral['04']} numberOfLines={1}>
-                    {displayAddress}
-                  </Text>
-                )}
-              </VStack>
-            </HStack>
-            {tagItems.length > 0 && (
-              <FlashList
-                data={tagItems}
-                renderItem={renderTagItem}
-                keyExtractor={tagKeyExtractor}
-                horizontal
-                ItemSeparatorComponent={tagSeparator}
-                scrollEnabled={false}
-                contentContainerStyle={styles.tagListContent}
-              />
+            </VStack>
+            <IconChevronDown color={accentColor} size={24} />
+          </HStack>
+        ) : (
+          <HStack
+            padding={{
+              paddingHorizontal: theme.spacing.medium,
+              paddingVertical: theme.spacing.standard,
+            }}
+            fill
+            items="center"
+            spacing={theme.spacing.standard}
+          >
+            {emptyReason === 'location' ? (
+              <Gps size={20} variant="Bulk" color={theme.pallate.neutral['04']} />
+            ) : emptyReason === 'network' ? (
+              <Wifi size={20} variant="Bulk" color={theme.pallate.neutral['04']} />
+            ) : (
+              <Location size={20} variant="Bulk" color={theme.pallate.neutral['04']} />
             )}
-          </VStack>
-          <IconChevronDown color={accentColor} size={24} />
-        </HStack>
+            <VStack fill>
+              <Text type="l1" weight="semibold" numberOfLines={1}>
+                {emptyConfig.title}
+              </Text>
+              <Text type="l2" color={theme.pallate.neutral['04']} numberOfLines={2}>
+                {emptyConfig.description}
+              </Text>
+            </VStack>
+            {showEmptyButton && (
+              <Pressable
+                onPress={handleEmptyAction}
+                padding={{
+                  paddingHorizontal: theme.spacing.standard,
+                  paddingVertical: theme.spacing.tiny,
+                }}
+                borderRadius={999}
+                backgroundColor={theme.pallate.primary['01']}
+              >
+                <Text type="l2" weight="semibold" color={theme.pallate.primary['03']}>
+                  {emptyConfig.buttonLabel}
+                </Text>
+              </Pressable>
+            )}
+          </HStack>
+        )}
       </Flex>
     </Pressable>
   );
