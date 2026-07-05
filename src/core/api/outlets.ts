@@ -10,7 +10,7 @@ export const outlets = (params?: OutletsParams): Promise<OutletsResponse> => {
   if (params?.long != null) query.long = String(params.long);
   if (params?.cursor != null) query.cursor = params.cursor;
   if (params?.num != null) query.num = String(params.num);
-  return request(apiUrl('/outlets', query));
+  return request(apiUrl('/outlets/nearby', query));
 };
 
 /** Nearest outlet (the single closest). GET /outlets/nearest */

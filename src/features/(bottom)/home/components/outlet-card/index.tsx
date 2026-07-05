@@ -6,6 +6,7 @@ import {
   BatteryFull,
   Gps,
   Location,
+  SearchNormal1,
   Wifi,
 } from 'iconsax-react-native';
 import { IconChevronDown } from 'tabler-icons-react-native';
@@ -202,10 +203,11 @@ export const OutletCard = memo(
             items="center"
             spacing={theme.spacing.standard}
           >
-            <Location size={20} variant="Bulk" color={theme.pallate.neutral['03']} />
-            <Text type="l1" color={theme.pallate.neutral['04']} fill>
-              Mencari outlet terdekat...
-            </Text>
+            <SearchNormal1 size={20} variant="Linear" color={theme.pallate.neutral['04']} />
+            <VStack fill>
+              <Text type="l1" weight="semibold" numberOfLines={1} fill text="Sedang Mencari Outlet.." />
+              <Text type="l2" color={theme.pallate.neutral['04']} numberOfLines={1} text="Mencari outlet terdekat dari lokasi kamu" />           
+            </VStack>
           </HStack>
         ) : hasOutlet && !isLocationError ? (
           <HStack

@@ -38,6 +38,8 @@ export const Home = memo((props: HomeType) => {
     coords,
     isLoading: isLoadingLocation,
     isLocationError,
+    isError: isErrorLocation,
+    refetch: refetchLocation,
   } = useCurrentLocation();
   const {
     outlet: defaultOutlet,
@@ -46,6 +48,13 @@ export const Home = memo((props: HomeType) => {
     error: errorOutlet,
     refetch: refetchOutlet,
   } = useNearestOutlet(coords);
+
+  // "Coba lagi" pada kartu outlet: ulangi ambil lokasi (yang otomatis memicu
+  // ulang query outlet lewat coords) sekaligus refetch outlet.
+  const handleOutletRefresh = useCallback(() => {
+    refetchLocation();
+    refetchOutlet();
+  }, [refetchLocation, refetchOutlet]);
   const {
     data: laundryServiceQueries,
     isLoading: isLoadingLaundryServices,
@@ -135,10 +144,10 @@ export const Home = memo((props: HomeType) => {
         <OutletCard
           onPress={handleOutletPress}
           isLoading={isLoadingLocation || isLoadingOutlet}
-          isError={isErrorOutlet}
+          isError={isErrorOutlet || isErrorLocation}
           error={errorOutlet}
           isLocationError={isLocationError}
-          onRefresh={refetchOutlet}
+          onRefresh={handleOutletRefresh}
           outlet={
             defaultOutlet
               ? {
