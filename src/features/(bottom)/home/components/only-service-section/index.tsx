@@ -17,48 +17,48 @@ const OnlyServiceCard = memo(
       direction="column"
       fill
       onPress={onPress}
-      justify="center"
-      items="center"
-      gap={theme.spacing.small}
-      borderRadius={20}
+      justify="flex-end"
+      height={150}
+      borderRadius={14}
       padding={theme.spacing.medium}
       backgroundColor={theme.pallate.neutral['02']}
     >
-      <Flex width={50} height={50} borderRadius={20} items="center" justify="center">
-        <Icon
-          icon={item.icon ?? 'bag'}
-          size={60}
-          color={theme.pallate.neutral['04']}
-        />
-        {item.promo !== undefined && item.promo !== '' && (
-          <Box
-            position={{
-              top: -2,
-              right: -30,
-            }}
-            backgroundColor={
-              typeof item.promo === 'string' && item.promo.trim().endsWith('%')
-                ? theme.pallate.danger['03']
-                : theme.pallate.primary['03']
-            }
-            padding={{
-              paddingHorizontal: theme.spacing.small,
-              paddingVertical: 2,
-            }}
-            borderRadius={999}
+      <Icon
+        icon={item.icon ?? 'bag'}
+        size={45}
+        color={theme.pallate.neutral['04']}
+      />
+      {item.promo !== undefined && item.promo !== '' && (
+        <Box
+          position={{
+            top: -2,
+            right: -30,
+          }}
+          backgroundColor={
+            typeof item.promo === 'string' && item.promo.trim().endsWith('%')
+              ? theme.pallate.danger['03']
+              : theme.pallate.primary['03']
+          }
+          padding={{
+            paddingHorizontal: theme.spacing.small,
+            paddingVertical: 2,
+          }}
+          borderRadius={999}
+        >
+          <Text
+            type="l2"
+            weight="semibold"
+            color={theme.pallate.neutral['01']}
           >
-            <Text
-              type="l2"
-              weight="semibold"
-              color={theme.pallate.neutral['01']}
-            >
-              {item.promo}
-            </Text>
-          </Box>
-        )}
-      </Flex>
-      <Text type="l2" align="center" weight="medium">
+            {item.promo}
+          </Text>
+        </Box>
+      )}
+      <Text margin={{marginTop: theme.spacing.small}} type="b2" weight="semibold">
         {item.name}
+      </Text>
+      <Text type="l2" numberOfLines={2}>
+        {item.description}
       </Text>
     </Pressable>
   ),
@@ -68,7 +68,6 @@ OnlyServiceCard.displayName = 'OnlyServiceCard';
 
 export const OnlyServiceSection = memo(
   ({ onServicePress, items }: OnlyServiceSectionProps) => {
-    if (!items || items.length === 0) return null;
     return (
       <VStack
         gap={theme.spacing.standard}

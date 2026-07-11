@@ -16,6 +16,8 @@ import {
   ServiceSection,
   TermsAndPrivacySection,
 } from '@features/(bottom)/home/components';
+import { useNearestOutlet } from '@features/(outlet)/outlet-list';
+import { useCurrentLocation } from '@hooks/utils';
 import {
   useFetchLaundryServices,
   useFetchLaundryServicesAlacarte,
@@ -26,6 +28,7 @@ import { LaundryService } from '@core/api';
 import { useLocationState } from '@services/contexts';
 import { useAuthState } from '@hooks/utils/useAuth';
 import type { OutletStatus } from '@features/(outlet)/outlet-list';
+import { OnlyServiceItem } from '@features/(bottom)/home/components/only-service-section/only-service-section.types';
 
 const styles = StyleSheet.create({
   overflowHidden: { overflow: 'hidden' },
@@ -35,21 +38,28 @@ export const Home = memo((props: HomeType) => {
   const { navigation } = props;
   const { top } = useSafeAreaInsets();
   const screenWidth = Dimensions.get('screen').width;
-  const { coords } = useLocationState();
   const { isAuthenticated } = useAuthState();
-
-  const handleLoginPress = useCallback(() => {
-    navigation.getParent()?.navigate('login' as never);
-  }, [navigation]);
   const {
-    data: nearestOutlet,
-    isFetching: isFetchingOutlet,
-    isError: isOutletError,
+    coords,
+    isLoading: isLoadingLocation,
+    isLocationError,
+    isError: isErrorLocation,
+    refetch: refetchLocation,
+  } = useCurrentLocation();
+  const {
+    outlet: defaultOutlet,
+    isLoading: isLoadingOutlet,
+    isError: isErrorOutlet,
     error: errorOutlet,
-  } = useFetchNearestOutlet({
-    lat: coords?.lat ?? 0,
-    long: coords?.long ?? 0,
-  });
+    refetch: refetchOutlet,
+  } = useNearestOutlet(coords);
+
+  // "Coba lagi" pada kartu outlet: ulangi ambil lokasi (yang otomatis memicu
+  // ulang query outlet lewat coords) sekaligus refetch outlet.
+  const handleOutletRefresh = useCallback(() => {
+    refetchLocation();
+    refetchOutlet();
+  }, [refetchLocation, refetchOutlet]);
   const {
     data: laundryServiceQueries,
     isLoading: isLoadingLaundryServices,
@@ -59,6 +69,7 @@ export const Home = memo((props: HomeType) => {
   } = useFetchLaundryServices();
 
   const { data: alacarteData } = useFetchLaundryServicesAlacarte();
+  console.log(alacarteData)
   const {
     data: moodsData,
     isLoading: isLoadingMoods,
@@ -88,42 +99,39 @@ export const Home = memo((props: HomeType) => {
 
   const handleOnlyServicePress = useCallback(
     (item: OnlyServiceItem) => {
-      navigation.navigate({
-        name: 'laundry',
-        params: {
-          type: item.serviceType ?? 'satuan',
-          serviceId: item.id,
-        },
+      navigation.navigate('laundry', {
+        type: (item.serviceType ?? 'satuan') as 'satuan' | 'kiloan',
+        serviceId: String(item.id),
       });
     },
     [navigation],
   );
 
-  const onlyServiceItems = useMemo(() => {
-    if (!alacarteData?.laundry_services) return [];
-    return alacarteData.laundry_services.map((service) => ({
-      id: service.id,
-      name: service.name,
-      icon: service.icon,
-      serviceType: service.service_type,
-    }));
-  }, [alacarteData]);
-
-  const nearestOutletData = useMemo(() => {
-    if (!nearestOutlet) return undefined;
-    return {
-      id: nearestOutlet.id,
-      name: nearestOutlet.name,
-      address: nearestOutlet.address,
-      distanceKm: nearestOutlet.distance_in_km,
-      status: nearestOutlet.current_status as OutletStatus,
-      services: ['laundry' as const],
-      deliveryTypes: nearestOutlet.delivery_types,
-      hours: nearestOutlet.hours?.length >= 2
-        ? [nearestOutlet.hours[0], nearestOutlet.hours[1]] as [string, string]
-        : undefined,
-    };
-  }, [nearestOutlet]);
+  const onlyServiceItems = useMemo((): Array<
+    OnlyServiceItem & { onPress: () => void }
+  > => {
+    const services = alacarteData?.services ?? [];
+    return services.map(service => {
+      const promo =
+        service.discount > 0
+          ? service.discount_type === 'percentage'
+            ? `${service.discount}%`
+            : String(service.discount)
+          : undefined;
+      const item: OnlyServiceItem = {
+        id: service.id,
+        name: service.name,
+        description: service.description,
+        icon: service.icon,
+        promo,
+        serviceType: service.service_type === 'multiple' ? 'kiloan' : 'satuan',
+      };
+      return {
+        ...item,
+        onPress: () => handleOnlyServicePress(item),
+      };
+    });
+  }, [alacarteData?.services, handleOnlyServicePress]);
 
   return (
     <VStack as={<ScrollView />} fill>
@@ -133,39 +141,53 @@ export const Home = memo((props: HomeType) => {
           borderBottomLeftRadius: 40,
         }}
       >
-        <HomeHeader topInset={top} isAuthenticated={isAuthenticated} onLoginPress={handleLoginPress} />
+        <HomeHeader topInset={top} isAuthenticated={isAuthenticated} onLoginPress={() => {}} />
         <HomeBanner screenWidth={screenWidth} />
         <OutletCard
           onPress={handleOutletPress}
-          isError={isOutletError}
-          isLoading={isFetchingOutlet}
+          isLoading={isLoadingLocation || isLoadingOutlet}
+          isError={isErrorOutlet || isErrorLocation}
           error={errorOutlet}
-          outlet={nearestOutletData}
+          isLocationError={isLocationError}
+          onRefresh={handleOutletRefresh}
+          outlet={
+            defaultOutlet
+              ? {
+                  name: defaultOutlet.name,
+                  address: defaultOutlet.address,
+                  status: defaultOutlet.status,
+                  services: defaultOutlet.services,
+                  distanceKm: defaultOutlet.distanceKm,
+                }
+              : undefined
+          }
         />
       </VStack>
 
       <CategoryGrid
         onCategoryPress={handleCategoryPress}
-        items={laundryServiceQueries?.laundry_services ?? []}
+        items={laundryServiceQueries?.services ?? []}
         isLoading={isLoadingLaundryServices}
         isError={isErrorLaundryServices}
         error={errorLaundryServices}
         onRetry={refetchLaundryServices}
       />
-      {}
-      <OnlyServiceSection
-        onServicePress={handleOnlyServicePress}
-        items={onlyServiceItems}
-      />
+      {onlyServiceItems.length > 0 && (
+        <OnlyServiceSection
+          items={onlyServiceItems} onServicePress={function (id: number): void {
+            throw new Error('Function not implemented.');
+          } }        />
+      )}
       <ProcessingSection />
       <OrderTrackingList onOrderPress={handleOrderPress} />
-      <MoodSection
-        moods={moods}
-        isLoading={isLoadingMoods}
-        isError={isErrorMoods}
-        error={errorMoods}
-      />
-
+      {moods && (
+        <MoodSection
+          moods={moods}
+          isLoading={isLoadingMoods}
+          isError={isErrorMoods}
+          error={errorMoods}
+        />
+      )}
       <ServiceSection onServicePress={handleServicePress} />
       <TermsAndPrivacySection />
     </VStack>

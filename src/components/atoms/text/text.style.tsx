@@ -1,12 +1,19 @@
 import { Platform, StyleSheet } from 'react-native';
 import {
   RecordTextStyleType,
+  RecordTextStyleWeight,
   TextMarginType,
   TextPaddingType,
   TextStyleProps,
 } from './Text.types';
 
-export const TextStyleWeight = StyleSheet.create({
+// Each variant maps to a specific Poppins font file via `fontFamily` only — do
+// NOT set fontWeight/fontStyle (Android would add synthetic fake-bold / fake-
+// italic and the named font can mis-resolve). The italic *.ttf files were
+// patched (scripts/fix_italic_fonts) to each carry a UNIQUE internal family
+// name reported as a Regular face, so they resolve on their own instead of
+// colliding with the upright weight that originally shared their family name.
+export const TextStyleWeight: RecordTextStyleWeight = StyleSheet.create({
   light:         { fontWeight: '300', fontFamily: 'Poppins-Light' },
   lightItalic:   { fontWeight: '300', fontFamily: 'Poppins-LightItalic', fontStyle: 'italic' },
   regular:       { fontWeight: '400', fontFamily: 'Poppins-Regular' },
@@ -17,6 +24,8 @@ export const TextStyleWeight = StyleSheet.create({
   semiboldItalic:{ fontWeight: '600', fontFamily: 'Poppins-SemiBoldItalic', fontStyle: 'italic' },
   bold:          { fontWeight: 'bold', fontFamily: 'Poppins-Bold' },
   boldItalic:    { fontWeight: 'bold', fontFamily: 'Poppins-BoldItalic', fontStyle: 'italic' },
+  extrabold:     { fontWeight: '800', fontFamily: 'Poppins-ExtraBold' },
+  extraboldItalic:{ fontWeight: '800', fontFamily: 'Poppins-ExtraBoldItalic', fontStyle: 'italic' },
   stylized:      { fontWeight: '400', fontFamily: Platform.OS === 'ios' ? 'Fredoka One' : 'FredokaOne-Regular', fontStyle: 'normal' },
 });
 
@@ -33,6 +42,8 @@ export const TextStyleType: RecordTextStyleType = StyleSheet.create({
   l2: { fontSize: 10, lineHeight: 15 },
   l3: { fontSize: 9,  lineHeight: 13.5 },
 });
+
+const LINE_HEIGHT_RATIO = 1.4;
 
 export const createTextMarginStyle = (margin?: TextMarginType) => {
   if (typeof margin === 'undefined') { return undefined; }
@@ -53,11 +64,18 @@ const TextStyle = (props: TextStyleProps) => {
     props.italic && props.weight
       ? TextStyleWeight[`${props.weight}Italic` as keyof typeof TextStyleWeight]
       : undefined;
+  const fontSize = typeStyle?.fontSize;
   return StyleSheet.create({
     text: {
+      // Remove Android's extra font-metric padding so lineHeight matches fontSize.
+      includeFontPadding: false,
+      textAlignVertical: 'center',
       ...weightStyle,
       ...typeStyle,
       ...italicStyle,
+      ...(fontSize != null
+        ? { lineHeight: Math.round(fontSize * LINE_HEIGHT_RATIO) }
+        : {}),
       ...(props.fontFamily ? { fontFamily: props.fontFamily } : {}),
       flex: props.fill ? 1 : undefined,
       color: props.color,

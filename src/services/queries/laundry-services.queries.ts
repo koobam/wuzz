@@ -1,8 +1,7 @@
 import { createQueryKeys } from '@lukemorales/query-key-factory';
 import {
+  laundryServices,
   laundryServiceDetail,
-  laundryServicesAlacarte,
-  laundryServicesRegular,
 } from '@api/laundry-services';
 import type { LaundryServicesParams } from '@api/laundry-services.types';
 
@@ -17,12 +16,12 @@ export const laundryServicesQueries = createQueryKeys(LAUNDRY_SERVICES_QUERY_KEY
   regular: (params?: LaundryServicesParams) => ({
     queryKey: [LAUNDRY_SERVICES_QUERY_KEY.regular],
     queryFn: ({ signal }) =>
-      laundryServicesRegular(params, LAUNDRY_SERVICES_QUERY_KEY.regular, signal),
+      laundryServices('regular',params, LAUNDRY_SERVICES_QUERY_KEY.regular, signal),
   }),
   alacarte: (params?: LaundryServicesParams) => ({
     queryKey: [LAUNDRY_SERVICES_QUERY_KEY.alacarte],
     queryFn: ({ signal }) =>
-      laundryServicesAlacarte(params, LAUNDRY_SERVICES_QUERY_KEY.alacarte, signal),
+      laundryServices('alacarte', params, LAUNDRY_SERVICES_QUERY_KEY.alacarte, signal),
   }),
   detail: (id: string) => ({
     queryKey: [LAUNDRY_SERVICES_QUERY_KEY.detail(id), id],

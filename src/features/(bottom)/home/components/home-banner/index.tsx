@@ -27,13 +27,16 @@ export const HomeBanner = memo(({ screenWidth }: HomeBannerProps) => {
     handleDotPress,
   } = useBannerPager();
 
+  // Banner height (smaller than full-width square). Tune the ratio to taste.
+  const bannerHeight = screenWidth * 0.75;
+
   const renderBannerItem = useCallback(
     ({ item }: { item: string }) => (
-      <Box width={screenWidth} height={screenWidth} style={styles.overflowHidden}>
+      <Box width={screenWidth} height={bannerHeight} style={styles.overflowHidden}>
         <Image uri={item} resizeMode="cover" style={styles.bannerImage} />
       </Box>
     ),
-    [screenWidth],
+    [screenWidth, bannerHeight],
   );
 
   const keyExtractor = useCallback(
@@ -43,7 +46,7 @@ export const HomeBanner = memo(({ screenWidth }: HomeBannerProps) => {
 
   return (
     <>
-      <Box height={screenWidth}>
+      <Box height={bannerHeight}>
         <FlashList
           ref={bannerListRef}
           data={BANNER_IMAGES}
@@ -66,7 +69,7 @@ export const HomeBanner = memo(({ screenWidth }: HomeBannerProps) => {
               locations={[0, 0.5, 1]}
             />
           }
-          height={screenWidth}
+          height={bannerHeight}
           pointerEvents="none"
         />
       </Box>

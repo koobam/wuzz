@@ -1,5 +1,9 @@
-import { outlets, outletsNearest } from '@api/outlets';
-import type { NearestOutletParams, NearestOutletResponse, OutletsParams, OutletsResponse } from '@api/outlets.types';
+import { outletNearest, outlets } from '@api/outlets';
+import type {
+  NearestOutletResponse,
+  OutletsParams,
+  OutletsResponse,
+} from '@api/outlets.types';
 import { createQueryKeyStore } from '@lukemorales/query-key-factory';
 import { useQuery } from '@tanstack/react-query';
 
@@ -9,9 +13,9 @@ export const outletsQueryKeys = createQueryKeyStore({
       queryKey: ['fetchOutlets', params?.lat, params?.long, params?.cursor, params?.num],
       queryFn: () => outlets(params),
     }),
-    nearest: (params: NearestOutletParams) => ({
-      queryKey: ['fetchNearestOutlet', params.lat, params.long],
-      queryFn: () => outletsNearest(params),
+    nearest: (params?: OutletsParams) => ({
+      queryKey: ['fetchNearestOutlet', params?.lat, params?.long],
+      queryFn: () => outletNearest(params),
     }),
   },
 });
@@ -24,14 +28,9 @@ export const useFetchOutlets = (params?: OutletsParams) => {
   });
 };
 
-export const useFetchNearestOutlet = (params: NearestOutletParams) => {
+export const useFetchNearestOutlet = (params?: OutletsParams) => {
   return useQuery({
     ...outletsQueryKeys.outlets.nearest(params),
     select: (data: NearestOutletResponse) => data.data ?? null,
-    enabled: params.lat !== 0 && params.long !== 0,
-    gcTime: 5 * 60 * 1000, // 5 menit
-    refetchOnMount: true,
-    refetchOnWindowFocus: true,
-    refetchOnReconnect: true,
   });
-}
+};

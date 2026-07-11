@@ -1,6 +1,6 @@
-import { memo, useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Pressable, Text, theme } from '@components/atoms';
+import { memo } from 'react';
+import { StyleSheet } from 'react-native';
+import { HStack, Pressable, Text, theme } from '@components/atoms';
 import { Coin1, Login, Sms } from 'iconsax-react-native';
 import type { HomeHeaderProps } from './home-header.types';
 
@@ -39,24 +39,28 @@ const LoginButton = memo(({ onPress }: LoginButtonProps) => (
 LoginButton.displayName = 'LoginButton';
 
 export const HomeHeader = memo(({ topInset, isAuthenticated, onLoginPress }: HomeHeaderProps) => {
-  const containerStyle = useMemo(
-    () => [styles.container, { paddingTop: topInset }],
-    [topInset],
-  );
 
   return (
-    <View style={containerStyle}>
-      <View style={styles.titleContainer}>
-        <Text type="h2" italic weight="bold" color={theme.pallate.neutral['01']}>
+    <HStack
+      zIndex={1}
+      position={{
+        top: 0,
+        left: 0,
+        right: 0,
+      }}
+      padding={{ paddingTop: topInset, paddingHorizontal: theme.spacing.large }}
+      items="center"
+      gap={theme.spacing.small}
+    >
+        <Text fill type="h2" weight="extrabold" italic color={theme.pallate.neutral['01']}>
           Wuzz
         </Text>
-      </View>
       {isAuthenticated ? (
         <AuthenticatedButtons />
       ) : (
         <LoginButton onPress={onLoginPress} />
       )}
-    </View>
+    </HStack>
   );
 });
 

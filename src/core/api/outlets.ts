@@ -1,8 +1,8 @@
 import request from '@http/request';
 import { apiUrl } from '@http/url';
 import type { StringifiableRecord } from 'query-string';
-import type { NearestOutletResponse, OutletsParams } from './outlets.types';
-import type { OutletsResponse } from './outlets.types';
+
+import type { OutletsParams, NearestOutletResponse, OutletsResponse } from './outlets.types';
 
 export const outlets = (params?: OutletsParams): Promise<OutletsResponse> => {
   const query: StringifiableRecord = {};
@@ -10,7 +10,17 @@ export const outlets = (params?: OutletsParams): Promise<OutletsResponse> => {
   if (params?.long != null) query.long = String(params.long);
   if (params?.cursor != null) query.cursor = params.cursor;
   if (params?.num != null) query.num = String(params.num);
-  return request(apiUrl('/outlets', query));
+  return request(apiUrl('/outlets/nearby', query));
+};
+
+/** Nearest outlet (the single closest). GET /outlets/nearest */
+export const outletNearest = (
+  params?: OutletsParams,
+): Promise<NearestOutletResponse> => {
+  const query: StringifiableRecord = {};
+  if (params?.lat != null) query.lat = String(params.lat);
+  if (params?.long != null) query.long = String(params.long);
+  return request(apiUrl('/outlets/nearest', query));
 };
 
 

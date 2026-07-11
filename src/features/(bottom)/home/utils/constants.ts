@@ -9,3 +9,17 @@ export const BANNER_IMAGES = [
 ];
 
 export type ProductAddOnType = 'single' | 'multiple';
+
+export type OnlyServiceItem = {
+  id: string;
+  name: string;
+  description?: string;
+  icon?: string;
+  promo?: string;
+  /** Untuk navigasi ke layar laundry (dari API alacarte). */
+  serviceType?: 'kiloan' | 'satuan';
+  /** Jika diset, dipakai oleh kartu alih-alih onServicePress global. */
+  onPress?: () => void;
+};
+
+export const ONLY_SERVICE_ITEMS: OnlyServiceItem[] = [];

@@ -35,14 +35,14 @@ export interface UseLaundryFormParams {
 
 export function useLaundryForm({
   initialWeightKg = 5,
-  initialServiceId = 'reguler',
+  initialServiceId,
   mainSectionId,
   sections,
   laundryType,
 }: UseLaundryFormParams) {
   const [weightKg, setWeightKg] = useState(initialWeightKg);
   const [selectedServiceId, setSelectedServiceId] =
-    useState<ServiceTypeId>(initialServiceId);
+    useState<ServiceTypeId | undefined>(initialServiceId);
   const [sectionSelections, setSectionSelections] = useState<
     Record<string, string[]>
   >(() => getDefaultSectionSelections(sections));

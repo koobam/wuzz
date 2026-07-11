@@ -10,8 +10,8 @@ export type {
   OutletServiceBadgeProps,
   ServiceFilterPillsProps,
 } from './components';
-export { useOutletListData } from './hooks';
-export type { OutletListData } from './hooks';
+export { useOutletListData, useNearestOutlet } from './hooks';
+export type { OutletListData, NearestOutletData } from './hooks';
 export {
   formatDistanceKm,
   getDistanceStyles,

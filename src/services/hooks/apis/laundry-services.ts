@@ -1,3 +1,7 @@
+import {
+  laundryServiceDetail,
+  laundryServices,
+} from '@api/laundry-services';
 import type {
   LaundryServiceDetailResponse,
   LaundryServicesParams,

@@ -25,6 +25,8 @@ export interface PressableProps extends PressableContainer {
   androidRipple?: RNPressableProps['android_ripple'];
   shrink?: boolean;
   opacity?: number;
+  /** Tilt in degrees, merged into the same transform as the press-scale. */
+  rotation?: number;
   containerStyle?: ViewStyle;
 }
 

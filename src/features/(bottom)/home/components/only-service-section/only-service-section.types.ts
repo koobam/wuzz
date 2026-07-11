@@ -2,7 +2,7 @@
 export type OnlyServiceSectionProps = {
   onServicePress: (id: number) => void;
   /** Override items (e.g. with onPress per item). Default: ONLY_SERVICE_ITEMS */
-  items?: OnlyServiceItem[];
+  items: OnlyServiceItem[];
 };
 
 export type OnlyServiceCardProps = {

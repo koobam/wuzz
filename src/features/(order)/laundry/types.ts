@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
-export type ServiceTypeId = 'reguler' | 'express' | 'kilat';
+/** Tier code dari API (mis. "reguler", "express", "kilat"). */
+export type ServiceTypeId = string;
 
 export type WashAddOnId = 'cuci_lipat_only' | 'setrika';
 

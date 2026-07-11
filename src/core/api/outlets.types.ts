@@ -2,6 +2,9 @@ import { ApiResponse } from '@http/response';
 
 export type OutletsResponse = ApiResponse<OutletsData>;
 
+/** GET /outlets/nearest — single nearest outlet. */
+export type NearestOutletResponse = ApiResponse<OutletApi>;
+
 export interface OutletsData {
   next: string;
   outlets: OutletApi[];

@@ -5,16 +5,14 @@ import {
   LaundryServiceDetailResponse,
   LaundryServicesParams,
   LaundryServicesResponse,
+  ServiceCategory,
 } from './laundry-services.types';
 
-export const LAUNDRY_SERVICES_ENDPOINTS = {
-  regular: '/app/laundry-services/regular',
-  alacarte: '/app/laundry-services/alacarte',
-  detail: (id: string) => `/app/laundry-services/regular/${id}`,
-} as const;
-
-const listQuery = (params?: LaundryServicesParams): StringifiableRecord => {
-  const q: StringifiableRecord = {};
+const listQuery = (
+  category: ServiceCategory,
+  params?: LaundryServicesParams,
+): StringifiableRecord => {
+  const q: StringifiableRecord = { service_category: category };
   if (params?.num != null) q.num = String(params.num);
   if (params?.include_tiers != null) {
     q.include_tiers = String(params.include_tiers);
@@ -22,26 +20,21 @@ const listQuery = (params?: LaundryServicesParams): StringifiableRecord => {
   return q;
 };
 
-export const laundryServicesRegular = (
+/**
+ * List services, filtered by category (`regular` or `alacarte`).
+ * GET /services?service_category=<category>
+ */
+export const laundryServices = (
+  category: ServiceCategory,
   params?: LaundryServicesParams,
   prefetchKey?: string,
   signal?: AbortSignal,
 ): Promise<LaundryServicesResponse> =>
-  request(apiUrl(LAUNDRY_SERVICES_ENDPOINTS.regular, listQuery(params)), { prefetchKey, signal });
-
-export const laundryServicesAlacarte = (
-  params?: LaundryServicesParams,
-  prefetchKey?: string,
-  signal?: AbortSignal,
-): Promise<LaundryServicesResponse> =>
-  request(apiUrl(LAUNDRY_SERVICES_ENDPOINTS.alacarte, listQuery(params)), { prefetchKey, signal });
-
-/** @deprecated Use laundryServicesRegular or laundryServicesAlacarte */
-export const laundryServices = laundryServicesRegular;
+  request(apiUrl('/services', listQuery(category, params)), { signal, prefetchKey });
 
 export const laundryServiceDetail = (
   id: string,
   prefetchKey?: string,
   signal?: AbortSignal,
 ): Promise<LaundryServiceDetailResponse> =>
-  request(apiUrl(LAUNDRY_SERVICES_ENDPOINTS.detail(id)), { prefetchKey, signal });
+  request(apiUrl(`/services/${id}`), { signal, prefetchKey });

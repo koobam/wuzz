@@ -5,3 +5,4 @@ export * from './useCountdown';
 export * from './useScreenSize';
 export * from './useHapticFeedback';
 // export * from './usePrefetch';
+export * from './useCurrentLocation';

@@ -1,2 +1,2 @@
-export { useOutletListData } from './useOutletListData';
-export type { OutletListData } from './useOutletListData';
+export { useOutletListData, useNearestOutlet } from './useOutletListData';
+export type { OutletListData, NearestOutletData } from './useOutletListData';

@@ -205,6 +205,7 @@ export const History = memo((props: any) => {
           ]}
           contentContainerStyle={ongoingListContentStyle}
           ItemSeparatorComponent={renderItemSeparator}
+          ListHeaderComponent={() => <Box height={theme.spacing.standard} />}
           renderItem={renderItem}
         />
       </Tabs.Tab>
@@ -214,6 +215,7 @@ export const History = memo((props: any) => {
           contentContainerStyle={historyListContentStyle}
           ItemSeparatorComponent={renderItemSeparator}
           ListEmptyComponent={renderHistoryEmpty}
+          ListHeaderComponent={() => <Box height={theme.spacing.standard} />}
           renderItem={renderItem}
         />
       </Tabs.Tab>
