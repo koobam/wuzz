@@ -1,151 +1,66 @@
+diff --git a/node_modules/@gorhom/bottom-sheet/lib/commonjs/hooks/useBoundingClientRect.js b/node_modules/@gorhom/bottom-sheet/lib/commonjs/hooks/useBoundingClientRect.js
+index b4a90b7..08dc0f9 100644
+--- a/node_modules/@gorhom/bottom-sheet/lib/commonjs/hooks/useBoundingClientRect.js
++++ b/node_modules/@gorhom/bottom-sheet/lib/commonjs/hooks/useBoundingClientRect.js
+@@ -46,7 +46,7 @@ function useBoundingClientRect(ref, handler) {
+     }
+ 
+     // @ts-ignore 👉 https://github.com/facebook/react/commit/53b1f69ba
+-    if (ref.current.unstable_getBoundingClientRect !== null) {
++    if (typeof ref.current.unstable_getBoundingClientRect === 'function') {
+       // @ts-ignore https://github.com/facebook/react/commit/53b1f69ba
+       const layout = ref.current.unstable_getBoundingClientRect();
+       handler(layout);
+@@ -54,7 +54,7 @@ function useBoundingClientRect(ref, handler) {
+     }
+ 
+     // @ts-ignore once it `unstable_getBoundingClientRect` gets stable 🤞.
+-    if (ref.current.getBoundingClientRect !== null) {
++    if (typeof ref.current.getBoundingClientRect === 'function') {
+       // @ts-ignore once it `unstable_getBoundingClientRect` gets stable.
+       const layout = ref.current.getBoundingClientRect();
+       handler(layout);
+diff --git a/node_modules/@gorhom/bottom-sheet/lib/module/hooks/useBoundingClientRect.js b/node_modules/@gorhom/bottom-sheet/lib/module/hooks/useBoundingClientRect.js
+index a723aed..272c3a0 100644
+--- a/node_modules/@gorhom/bottom-sheet/lib/module/hooks/useBoundingClientRect.js
++++ b/node_modules/@gorhom/bottom-sheet/lib/module/hooks/useBoundingClientRect.js
+@@ -42,7 +42,7 @@ export function useBoundingClientRect(ref, handler) {
+     }
+ 
+     // @ts-ignore 👉 https://github.com/facebook/react/commit/53b1f69ba
+-    if (ref.current.unstable_getBoundingClientRect !== null) {
++    if (typeof ref.current.unstable_getBoundingClientRect === 'function') {
+       // @ts-ignore https://github.com/facebook/react/commit/53b1f69ba
+       const layout = ref.current.unstable_getBoundingClientRect();
+       handler(layout);
+@@ -50,7 +50,7 @@ export function useBoundingClientRect(ref, handler) {
+     }
+ 
+     // @ts-ignore once it `unstable_getBoundingClientRect` gets stable 🤞.
+-    if (ref.current.getBoundingClientRect !== null) {
++    if (typeof ref.current.getBoundingClientRect === 'function') {
+       // @ts-ignore once it `unstable_getBoundingClientRect` gets stable.
+       const layout = ref.current.getBoundingClientRect();
+       handler(layout);
 diff --git a/node_modules/@gorhom/bottom-sheet/src/hooks/useBoundingClientRect.ts b/node_modules/@gorhom/bottom-sheet/src/hooks/useBoundingClientRect.ts
-index cc85c8c..3f80410 100644
+index cc85c8c..67294e4 100644
 --- a/node_modules/@gorhom/bottom-sheet/src/hooks/useBoundingClientRect.ts
 +++ b/node_modules/@gorhom/bottom-sheet/src/hooks/useBoundingClientRect.ts
-@@ -1,73 +1,141 @@
- import { type RefObject, useLayoutEffect } from 'react';
-+
- import type { View } from 'react-native';
-+
- import { isFabricInstalled } from '../utilities/isFabricInstalled';
- 
- export type BoundingClientRect = {
-+
-   x: number;
-+
-   y: number;
-+
-   width: number;
-+
-   height: number;
-+
-   left: number;
-+
-   right: number;
-+
-   top: number;
-+
-   bottom: number;
-+
- };
- 
- /**
-+
-  * A custom hook that retrieves the bounding client rectangle of a given `ref` element
-+
-  * and invokes a handler function with the layout information.
-+
-  *
-+
-  * This hook is designed to work with React Native's Fabric architecture and provides
-+
-  * support for both `unstable_getBoundingClientRect` and `getBoundingClientRect` methods.
-+
-  *
-+
-  * @param ref - A `RefObject` pointing to a `View` or `null`. The bounding client rectangle
-+
-  *              will be retrieved from this reference.
-+
-  * @param handler - A callback function that will be invoked with the layout information
-+
-  *                  of the referenced element.
-+
-  *
-+
-  * @remarks
-+
-  * - The hook uses `useLayoutEffect` to ensure the layout information is retrieved
-+
-  *   after the DOM updates.
-+
-  * - The `isFabricInstalled` function is used to determine if the Fabric architecture
-+
-  *   is available.
-+
-  * - The `unstable_getBoundingClientRect` method is used if available, falling back
-+
-  *   to `getBoundingClientRect` otherwise.
-+
-  *
-+
-  * @example
-+
-  * ```tsx
-+
-  * const ref = useRef<View | null>(null);
-+
-  * useBoundingClientRect(ref, (layout) => {
-+
-  *   console.log('Bounding client rect:', layout);
-+
-  * });
-+
-  * ```
-+
-  */
-+
- export function useBoundingClientRect(
-+
-   ref: RefObject<View | null>,
-+
-   handler: (layout: BoundingClientRect) => void
-+
- ) {
-+
-   if (!isFabricInstalled()) {
-+
-     return;
-+
-   }
- 
-   // biome-ignore lint/correctness/useHookAtTopLevel: `isFabricInstalled` is a constant that will not change during the runtime
-+
-   useLayoutEffect(() => {
-+
-     if (!ref || !ref.current) {
-+
-       return;
-+
+@@ -56,7 +56,7 @@ export function useBoundingClientRect(
      }
  
--    // @ts-ignore 👉 https://github.com/facebook/react/commit/53b1f69ba
+     // @ts-ignore 👉 https://github.com/facebook/react/commit/53b1f69ba
 -    if (ref.current.unstable_getBoundingClientRect !== null) {
--      // @ts-ignore https://github.com/facebook/react/commit/53b1f69ba
-+    // @ts-expect-error 👉 https://github.com/facebook/react/commit/53b1f69ba
-+
-+    if (
-+
-+      ref.current.unstable_getBoundingClientRect !== null &&
-+
-+      typeof ref.current.unstable_getBoundingClientRect === 'function'
-+
-+    ) {
-+
-+      // @ts-expect-error https://github.com/facebook/react/commit/53b1f69ba
-+
++    if (typeof ref.current.unstable_getBoundingClientRect === 'function') {
+       // @ts-ignore https://github.com/facebook/react/commit/53b1f69ba
        const layout = ref.current.unstable_getBoundingClientRect();
-+
        handler(layout);
-+
-       return;
-+
+@@ -64,7 +64,7 @@ export function useBoundingClientRect(
      }
  
--    // @ts-ignore once it `unstable_getBoundingClientRect` gets stable 🤞.
-+    // @ts-expect-error once it `unstable_getBoundingClientRect` gets stable 🤞.
-+
-     if (ref.current.getBoundingClientRect !== null) {
--      // @ts-ignore once it `unstable_getBoundingClientRect` gets stable.
-+
-+      // @ts-expect-error once it `unstable_getBoundingClientRect` gets stable.
-+
+     // @ts-ignore once it `unstable_getBoundingClientRect` gets stable 🤞.
+-    if (ref.current.getBoundingClientRect !== null) {
++    if (typeof ref.current.getBoundingClientRect === 'function') {
+       // @ts-ignore once it `unstable_getBoundingClientRect` gets stable.
        const layout = ref.current.getBoundingClientRect();
-+
        handler(layout);
-+
-     }
-+
-   });
-+
- }

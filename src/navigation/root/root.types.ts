@@ -68,4 +68,8 @@ export type RootStackParamList = {
     title?: string;
   };
   leaderboard: undefined;
+
+  // (account) group
+  deliveryaddress: undefined;
+  addaddress: undefined;
 };

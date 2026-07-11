@@ -28,7 +28,7 @@ export type OutletListItem = {
   lat: number;
   lng: number;
   /** Distance from user in km. Used for color-coded display (< 5km okay, > 10km red). */
-  distanceKm?: number;
+  distance_in_km?: number;
   /** Outlet crowd status for tag row. */
   status?: OutletStatus;
   photos: string[];

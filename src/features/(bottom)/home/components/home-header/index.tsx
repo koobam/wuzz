@@ -46,6 +46,9 @@ export const HomeHeader = memo(({ topInset }: HomeHeaderProps) => {
           </Pressable>
           <Pressable
             borderRadius={999}
+            margin={{
+              marginLeft: theme.spacing.standard
+            }}
             backgroundColor={theme.pallate.neutral['01']}
             items="center"
             justify="center"

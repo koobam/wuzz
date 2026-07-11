@@ -12,4 +12,6 @@ export const ROOT_ROUTES = {
   HELP: 'help',
   WEBVIEW: 'webview',
   LEADERBOARD: 'leaderboard',
+  DELIVERY_ADDRESS: 'deliveryaddress',
+  ADD_ADDRESS: 'addaddress',
 } as const;

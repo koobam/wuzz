@@ -92,7 +92,7 @@ export const Menu = memo((props: MenuScreenProps) => {
         topInset={top}
         outletName={defaultOutlet?.name}
         outletAddress={defaultOutlet?.address}
-        distanceKm={defaultOutlet?.distanceKm}
+        distanceKm={defaultOutlet?.distance_in_km}
         outletServices={defaultOutlet?.services}
         onOutletPress={handleOutletPress}
         onSearchPress={handleSearchPress}

@@ -16,14 +16,14 @@ import {
   Input,
   Button,
   HStack,
-  Flex,
   Pressable,
 } from '@components/atoms';
 import { RootStackParamList } from '@navigation/root/root.types';
 import { useAuthAction } from '@hooks/utils/useAuth';
 import { loginSchema, LoginFormData } from '@features/(auth)/login/schemas';
 import { ROOT_ROUTES } from '@navigation/root/_routes';
-import { IconX } from 'tabler-icons-react-native';
+import { ArrowCircleLeft } from 'iconsax-react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type LoginProps = {
   navigation: NativeStackNavigationProp<RootStackParamList>;
@@ -31,6 +31,7 @@ type LoginProps = {
 
 const Login = memo(({ navigation }: LoginProps) => {
   const { setUser } = useAuthAction();
+  const insets = useSafeAreaInsets();
   const resolver = useMemo(() => zodResolver(loginSchema), []);
 
   const form = useForm<LoginFormData>({
@@ -97,32 +98,39 @@ const Login = memo(({ navigation }: LoginProps) => {
       removeClippedSubviews
       behavior="padding"
     >
-      <Flex
-        self="center"
-        width={38}
-        height={7}
-        borderRadius={4}
-        backgroundColor={theme.pallate.neutral['03']}
-      />
+      <Pressable
+        onPress={handleClose}
+        self="flex-start"
+        margin={{
+          marginTop: insets.top + theme.spacing.standard,
+          marginLeft: theme.spacing.large,
+        }}
+        padding={{
+          paddingVertical: theme.spacing.standard,
+          paddingHorizontal: theme.spacing.medium,
+        }}
+        borderWidth={1}
+        borderColor={theme.pallate.neutral['02']}
+        items="center"
+        spacing={theme.spacing.small}
+        borderRadius={999}
+        backgroundColor={theme.pallate.neutral['01']}
+      >
+        <ArrowCircleLeft
+          variant="Bulk"
+          size={24}
+          color={theme.pallate.neutral['04']}
+        />
+        <Text type="b2" weight="bold" color={theme.pallate.neutral['04']}>
+          Kembali
+        </Text>
+      </Pressable>
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
         removeClippedSubviews
       >
-        <Button
-          position={{
-            top: theme.spacing.large,
-            right: theme.spacing.large,
-          }}
-          zIndex={1}
-          variant="default"
-          size="fixed"
-          rounded
-          onPress={handleClose}
-        >
-          <IconX size={20} color={theme.pallate.neutral['05']} />
-        </Button>
         <VStack spacing={theme.spacing.tiny}>
           <Text type="h2" color={theme.pallate.neutral['05']}>
             Welcome back!
@@ -240,8 +248,8 @@ Login.displayName = 'Login';
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: theme.pallate.neutral['01'],
-    paddingTop: theme.spacing.standard,
   },
   scrollContent: {
     flexGrow: 1,

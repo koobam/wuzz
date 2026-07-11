@@ -13,6 +13,8 @@ import OrderStatus from '@pages/(order)/order-status';
 import Help from '@pages/(utils)/help';
 import WebViewScreen from '@pages/(utils)/webview';
 import Leaderboard from '@pages/(utils)/leaderboard';
+import DeliveryAddressList from '@pages/(account)/delivery-address';
+import AddAddress from '@pages/(account)/add-address';
 
 const defaultConfig = {
   screenOptions: {
@@ -21,12 +23,12 @@ const defaultConfig = {
   },
 };
 
-// Optimized formSheet config to reduce memory consumption
-const formSheetOptions = {
-  presentation: 'formSheet' as const,
+// Login & register tampil sebagai layar penuh (card push) di semua platform —
+// bukan modal/sheet.
+const authScreenOptions = {
+  presentation: 'card' as const,
   headerShown: false,
-  sheetAllowedDetents: 'fitToContents' as const,
-  animation: 'default' as const,
+  animation: 'slide_from_right' as const,
   gestureEnabled: true,
 };
 
@@ -84,14 +86,14 @@ const loginConfig: Routes = {
   name: ROOT_ROUTES.LOGIN,
   components: Login,
   auth: false,
-  options: formSheetOptions,
+  options: authScreenOptions,
 };
 
 const registerConfig: Routes = {
   name: ROOT_ROUTES.REGISTER,
   components: Register,
   auth: false,
-  options: formSheetOptions,
+  options: authScreenOptions,
 };
 
 const orderStatusConfig: Routes = {
@@ -130,6 +132,24 @@ const leaderboardConfig: Routes = {
   },
 };
 
+const deliveryAddressConfig: Routes = {
+  name: ROOT_ROUTES.DELIVERY_ADDRESS,
+  components: DeliveryAddressList,
+  auth: false,
+  options: {
+    animation: 'slide_from_right',
+  },
+};
+
+const addAddressConfig: Routes = {
+  name: ROOT_ROUTES.ADD_ADDRESS,
+  components: AddAddress,
+  auth: false,
+  options: {
+    animation: 'slide_from_right',
+  },
+};
+
 export const rootNavigationConfigs = {
   default: defaultConfig,
   [ROOT_ROUTES.BOTTOM]: bottomConfig,
@@ -145,6 +165,8 @@ export const rootNavigationConfigs = {
   [ROOT_ROUTES.HELP]: helpConfig,
   [ROOT_ROUTES.WEBVIEW]: webviewConfig,
   [ROOT_ROUTES.LEADERBOARD]: leaderboardConfig,
+  [ROOT_ROUTES.DELIVERY_ADDRESS]: deliveryAddressConfig,
+  [ROOT_ROUTES.ADD_ADDRESS]: addAddressConfig,
 };
 
 export const rootRoutes: Routes[] = [
@@ -161,4 +183,6 @@ export const rootRoutes: Routes[] = [
   rootNavigationConfigs[ROOT_ROUTES.HELP],
   rootNavigationConfigs[ROOT_ROUTES.WEBVIEW],
   rootNavigationConfigs[ROOT_ROUTES.LEADERBOARD],
+  rootNavigationConfigs[ROOT_ROUTES.DELIVERY_ADDRESS],
+  rootNavigationConfigs[ROOT_ROUTES.ADD_ADDRESS],
 ];

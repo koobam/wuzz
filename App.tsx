@@ -8,7 +8,12 @@
 import { queryClient } from '@core/query-client';
 import Root from '@navigation/root';
 import Mapbox from '@rnmapbox/maps';
-import { AppState, BottomNavHeightProvider } from '@services/contexts';
+import {
+  AppState,
+  BottomNavHeightProvider,
+  SelectedOutletProvider,
+} from '@services/contexts';
+import { DeliveryAddressProvider } from '@features/(account)/delivery-address';
 import { QuerySyncWithAppState } from '@services/contexts/app-state';
 import { QueryClientProvider } from '@tanstack/react-query';
 import {
@@ -52,7 +57,11 @@ function AppContent() {
     <GestureHandlerRootView style={styles.flex1}>
       <BottomSheetModalProvider>
         <BottomNavHeightProvider>
-          <Root />
+          <SelectedOutletProvider>
+            <DeliveryAddressProvider>
+              <Root />
+            </DeliveryAddressProvider>
+          </SelectedOutletProvider>
         </BottomNavHeightProvider>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>

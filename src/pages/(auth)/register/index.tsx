@@ -8,13 +8,12 @@ import {
   theme,
   Button,
   HStack,
+  Pressable,
 } from '@components/atoms';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RootStackParamList } from '@navigation/root/root.types';
-import {
-  IconArrowLeft,
-  IconArrowRight,
-  IconX,
-} from 'tabler-icons-react-native';
+import { ArrowCircleLeft } from 'iconsax-react-native';
+import { IconArrowLeft, IconArrowRight } from 'tabler-icons-react-native';
 import {
   useRegisterForm,
   useStepNavigation,
@@ -32,6 +31,7 @@ interface Step {
 const Register = memo(() => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const insets = useSafeAreaInsets();
 
   const config = getRegisterConfig();
 
@@ -92,12 +92,33 @@ const Register = memo(() => {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <Button position={{
-        top: theme.spacing.large,
-        right: theme.spacing.large,
-      }} zIndex={1} variant="default" size="fixed" rounded onPress={handleClose}>
-        <IconX size={20} color={theme.pallate.neutral['05']} />
-      </Button>
+      <Pressable
+        onPress={handleClose}
+        self="flex-start"
+        margin={{
+          marginTop: insets.top + theme.spacing.standard,
+          marginLeft: theme.spacing.large,
+        }}
+        padding={{
+          paddingVertical: theme.spacing.standard,
+          paddingHorizontal: theme.spacing.medium,
+        }}
+        borderWidth={1}
+        borderColor={theme.pallate.neutral['02']}
+        items="center"
+        spacing={theme.spacing.small}
+        borderRadius={999}
+        backgroundColor={theme.pallate.neutral['01']}
+      >
+        <ArrowCircleLeft
+          variant="Bulk"
+          size={24}
+          color={theme.pallate.neutral['04']}
+        />
+        <Text type="b2" weight="bold" color={theme.pallate.neutral['04']}>
+          Kembali
+        </Text>
+      </Pressable>
 
       <HStack
         items="center"
@@ -211,7 +232,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.pallate.neutral['01'],
-    paddingTop: theme.spacing.standard,
   },
   header: {
     paddingHorizontal: theme.spacing.large,

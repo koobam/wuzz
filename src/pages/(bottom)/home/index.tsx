@@ -1,6 +1,7 @@
-import { memo, useCallback, useMemo } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { VStack } from '@components/atoms';
-import { ScrollView, StyleSheet } from 'react-native';
+import { RefreshControl, ScrollView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Dimensions } from 'react-native';
 import type { HomeType } from '@features/(bottom)/home/types';
@@ -16,8 +17,9 @@ import {
   ServiceSection,
   TermsAndPrivacySection,
 } from '@features/(bottom)/home/components';
-import { useNearestOutlet } from '@features/(outlet)/outlet-list';
+import { useOutletListData } from '@features/(outlet)/outlet-list';
 import { useCurrentLocation } from '@hooks/utils';
+import { useSelectedOutlet } from '@services/contexts';
 import type { OnlyServiceItem } from '@features/(bottom)/home/utils';
 import {
   useFetchLaundryServices,
@@ -41,13 +43,16 @@ export const Home = memo((props: HomeType) => {
     isError: isErrorLocation,
     refetch: refetchLocation,
   } = useCurrentLocation();
+  // Outlet yang ditampilkan = objek terpilih global (di-set dari nearest atau
+  // pilihan di daftar), jadi konsisten dengan halaman list.
+  const { selectedOutlet } = useSelectedOutlet();
+  // Tetap fetch list (untuk init context dari nearest + state loading/error kartu).
   const {
-    outlet: defaultOutlet,
     isLoading: isLoadingOutlet,
     isError: isErrorOutlet,
     error: errorOutlet,
     refetch: refetchOutlet,
-  } = useNearestOutlet(coords);
+  } = useOutletListData(coords, { enabled: !isLoadingLocation });
 
   // "Coba lagi" pada kartu outlet: ulangi ambil lokasi (yang otomatis memicu
   // ulang query outlet lewat coords) sekaligus refetch outlet.
@@ -55,6 +60,20 @@ export const Home = memo((props: HomeType) => {
     refetchLocation();
     refetchOutlet();
   }, [refetchLocation, refetchOutlet]);
+
+  // Pull-to-refresh: ulangi lokasi + refetch SEMUA query aktif (outlet, services,
+  // alacarte, moods, order tracking, dst) supaya seluruh section ikut segar.
+  const queryClient = useQueryClient();
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const handlePullRefresh = useCallback(async () => {
+    setIsRefreshing(true);
+    try {
+      refetchLocation();
+      await queryClient.refetchQueries({ type: 'active' });
+    } finally {
+      setIsRefreshing(false);
+    }
+  }, [queryClient, refetchLocation]);
   const {
     data: laundryServiceQueries,
     isLoading: isLoadingLaundryServices,
@@ -64,7 +83,6 @@ export const Home = memo((props: HomeType) => {
   } = useFetchLaundryServices();
 
   const { data: alacarteData } = useFetchLaundryServicesAlacarte();
-  console.log(alacarteData)
   const {
     data: moodsData,
     isLoading: isLoadingMoods,
@@ -132,7 +150,19 @@ export const Home = memo((props: HomeType) => {
   }, [alacarteData?.services, handleOnlyServicePress]);
 
   return (
-    <VStack as={<ScrollView />} fill>
+    <VStack
+      as={
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={handlePullRefresh}
+            />
+          }
+        />
+      }
+      fill
+    >
       <VStack
         style={styles.overflowHidden}
         borderRadius={{
@@ -143,19 +173,19 @@ export const Home = memo((props: HomeType) => {
         <HomeBanner screenWidth={screenWidth} />
         <OutletCard
           onPress={handleOutletPress}
-          isLoading={isLoadingLocation || isLoadingOutlet}
+          isLoading={!selectedOutlet && (isLoadingLocation || isLoadingOutlet)}
           isError={isErrorOutlet || isErrorLocation}
           error={errorOutlet}
           isLocationError={isLocationError}
           onRefresh={handleOutletRefresh}
           outlet={
-            defaultOutlet
+            selectedOutlet
               ? {
-                  name: defaultOutlet.name,
-                  address: defaultOutlet.address,
-                  status: defaultOutlet.status,
-                  services: defaultOutlet.services,
-                  distanceKm: defaultOutlet.distanceKm,
+                  name: selectedOutlet.name,
+                  address: selectedOutlet.address,
+                  status: selectedOutlet.status,
+                  services: selectedOutlet.services,
+                  distanceKm: selectedOutlet.distance_in_km,
                 }
               : undefined
           }
@@ -186,7 +216,6 @@ export const Home = memo((props: HomeType) => {
           error={errorMoods}
         />
       )}
-      <ServiceSection onServicePress={handleServicePress} />
       <TermsAndPrivacySection />
     </VStack>
   );

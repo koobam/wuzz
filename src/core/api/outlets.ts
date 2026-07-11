@@ -10,6 +10,9 @@ export const outlets = (params?: OutletsParams): Promise<OutletsResponse> => {
   if (params?.long != null) query.long = String(params.long);
   if (params?.cursor != null) query.cursor = params.cursor;
   if (params?.num != null) query.num = String(params.num);
+  if (params?.selected_outlet_id != null) {
+    query.selected_outlet_id = String(params.selected_outlet_id);
+  }
   return request(apiUrl('/outlets/nearby', query));
 };
 

@@ -185,6 +185,7 @@ export const OutletCard = memo(
       padding={theme.spacing.small}
       shrink={false}
       backgroundColor={theme.pallate.neutral['01']}
+      style={styles.cardOuter}
     >
       <Flex
         fill
@@ -305,6 +306,9 @@ export const OutletCard = memo(
 const styles = StyleSheet.create({
   cardShadow: {
     borderRadius: CARD_BORDER_RADIUS,
+  },
+  cardOuter: {
+    overflow: 'hidden',
   },
   cardInner: {
     overflow: 'hidden',
