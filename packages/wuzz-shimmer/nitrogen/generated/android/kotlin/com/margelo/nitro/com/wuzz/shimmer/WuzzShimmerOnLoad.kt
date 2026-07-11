@@ -21,9 +21,9 @@ internal class WuzzShimmerOnLoad {
     fun initializeNative() {
       if (didLoad) return
       try {
-        Log.i(TAG, "Loading WuzzShimmer C++ library...")
-        System.loadLibrary("WuzzShimmer")
-        Log.i(TAG, "Successfully loaded WuzzShimmer C++ library!")
+        Log.i(TAG, "Loading appmodules C++ library for WuzzShimmer...")
+        System.loadLibrary("appmodules")
+        Log.i(TAG, "Successfully loaded appmodules C++ library for WuzzShimmer!")
         didLoad = true
       } catch (e: Error) {
         Log.e(TAG, "Failed to load WuzzShimmer C++ library! Is it properly installed and linked? " +

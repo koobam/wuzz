@@ -68,6 +68,16 @@ react {
     autolinkLibrariesWithApp()
 }
 
+android {
+    sourceSets {
+        main {
+            java.srcDirs += ["../../packages/wuzz-nitro-text/nitrogen/generated/android/kotlin"]
+            java.srcDirs += ["../../packages/wuzz-shimmer/android"]
+            java.srcDirs += ["../../packages/wuzz-shimmer/nitrogen/generated/android/kotlin"]
+        }
+    }
+}
+
 /**
  * Set this to true to Run Proguard on Release builds to minify the Java bytecode.
  */

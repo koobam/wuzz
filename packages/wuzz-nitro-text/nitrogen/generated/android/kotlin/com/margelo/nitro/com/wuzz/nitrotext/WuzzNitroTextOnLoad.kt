@@ -21,9 +21,9 @@ internal class WuzzNitroTextOnLoad {
     fun initializeNative() {
       if (didLoad) return
       try {
-        Log.i(TAG, "Loading WuzzNitroText C++ library...")
-        System.loadLibrary("WuzzNitroText")
-        Log.i(TAG, "Successfully loaded WuzzNitroText C++ library!")
+        Log.i(TAG, "Loading appmodules C++ library for WuzzNitroText...")
+        System.loadLibrary("appmodules")
+        Log.i(TAG, "Successfully loaded appmodules C++ library for WuzzNitroText!")
         didLoad = true
       } catch (e: Error) {
         Log.e(TAG, "Failed to load WuzzNitroText C++ library! Is it properly installed and linked? " +
