@@ -14,7 +14,7 @@ export type RootStackParamList = {
   walkthrough: undefined;
   outletlist: undefined;
   menusearch: undefined;
-  laundry: { type?: 'kiloan' | 'satuan'; serviceId: string };
+  laundry: { type?: string; serviceId: string };
   orderstatus: { orderId: string };
   // (auth) group
   login: undefined;
