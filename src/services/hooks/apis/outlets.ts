@@ -4,33 +4,38 @@ import type {
   OutletsParams,
   OutletsResponse,
 } from '@api/outlets.types';
+import { buildPrefetchKey } from '@http/prefetch-key';
 import { createQueryKeyStore } from '@lukemorales/query-key-factory';
 import { useQuery } from '@tanstack/react-query';
 
 export const outletsQueryKeys = createQueryKeyStore({
   outlets: {
     list: (params?: OutletsParams) => ({
-      queryKey: ['fetchOutlets', params?.lat, params?.long, params?.cursor, params?.num],
-      queryFn: () => outlets(params),
+      queryKey: [{ ...params }],
+      queryFn: ({ signal, queryKey }) => outlets(params, buildPrefetchKey(queryKey), signal),
     }),
     nearest: (params?: OutletsParams) => ({
-      queryKey: ['fetchNearestOutlet', params?.lat, params?.long],
-      queryFn: () => outletNearest(params),
+      queryKey: [{ ...params }],
+      queryFn: ({ signal, queryKey }) => outletNearest(params, buildPrefetchKey(queryKey), signal),
     }),
   },
 });
 
-export const useFetchOutlets = (params?: OutletsParams) => {
+export const useFetchOutlets = (
+  params?: OutletsParams,
+  options?: { enabled?: boolean },
+) => {
   return useQuery({
     ...outletsQueryKeys.outlets.list(params),
     select: (data: OutletsResponse) => data.data ?? null,
-    gcTime: 0,
+    enabled: options?.enabled ?? true,
   });
 };
 
-export const useFetchNearestOutlet = (params?: OutletsParams) => {
+export const useFetchNearestOutlet = (params?: OutletsParams, options?: { enabled?: boolean }) => {
   return useQuery({
     ...outletsQueryKeys.outlets.nearest(params),
     select: (data: NearestOutletResponse) => data.data ?? null,
+    enabled: options?.enabled ?? true,
   });
 };

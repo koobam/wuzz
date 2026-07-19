@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { Icon, Pressable, Text, theme } from '@components/atoms';
 import type { CategoryCardProps } from './category-card.types';
 
-const ICON_SIZE = 55;
+const ICON_SIZE = 60;
 
 const styles = StyleSheet.create({
   shadow: {

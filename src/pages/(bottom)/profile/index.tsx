@@ -146,7 +146,7 @@ const Profile: React.FC<ProfileType> = memo((_props: ProfileType) => {
         navigation.navigate('shareProfileQr');
         break;
       case 'alamat':
-        // TODO: navigate to Alamat / saved addresses
+        navigation.navigate('deliveryaddress');
         break;
       case 'voucher':
         // TODO: navigate to Voucher

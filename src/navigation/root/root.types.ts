@@ -1,4 +1,7 @@
-import { Category } from '@core/api/category.types';
+type Category = {
+  id: number;
+  name?: string;
+};
 
 export type BottomNavigationParamList = {
   home: undefined;
@@ -19,6 +22,7 @@ export type RootStackParamList = {
   // (auth) group
   login: undefined;
   onboarding: undefined;
+  locationpermission: undefined;
   verification: {
     phone?: string;
   };
@@ -70,6 +74,8 @@ export type RootStackParamList = {
     title?: string;
   };
   leaderboard: undefined;
-  locationpermission: undefined;
-  textbenchmark: undefined;
+
+  // (account) group
+  deliveryaddress: undefined;
+  addaddress: undefined;
 };

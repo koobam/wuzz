@@ -1,0 +1,20 @@
+diff --git a/node_modules/reactotron-react-native/dist/commonjs/plugins/networking.js b/node_modules/reactotron-react-native/dist/commonjs/plugins/networking.js
+index f6194ad..e282546 100644
+--- a/node_modules/reactotron-react-native/dist/commonjs/plugins/networking.js
++++ b/node_modules/reactotron-react-native/dist/commonjs/plugins/networking.js
+@@ -4,7 +4,14 @@ Object.defineProperty(exports, "__esModule", {
+   value: true
+ });
+ exports.default = void 0;
+-var _xhrInterceptor = require("../xhr-interceptor");
++// The change in this PR for reactotron does not work with RN 0.80+ - https://github.com/infinitered/reactotron/pull/1571
++// What does work for RN 0.80+ is importing the XHRInterceptor from the new location directly as done below.
++// This will be likely be being removed in RN 0.82 so a better long term solution will be needed.
++// See this discussion here - https://github.com/react-native-community/discussions-and-proposals/discussions/893#discussioncomment-13468748
++// Additional context - https://github.com/alexbrazier/react-native-network-logger/pull/117
++// RN 0.80+ moved XHRInterceptor to a new location
++var _xhrInterceptor = require('react-native/src/private/devsupport/devmenu/elementinspector/XHRInterceptor');
++_xhrInterceptor = { XHRInterceptor: _xhrInterceptor.default };
+ /**
+  * Don't include the response bodies for images by default.
+  */

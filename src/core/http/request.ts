@@ -25,6 +25,11 @@ type TokenData = {
   refreshToken: string;
 };
 
+// How long a prefetched response is considered fresh once a real request
+// asks for it by prefetchKey. Nitro Fetch's own default is 5s, which is too
+// short for app-start prefetches (fired natively before JS even loads).
+const PREFETCH_CACHE_TTL_MS = 60_000;
+
 let isRefreshing = false;
 let refreshTokenPromise: Promise<TokenData> | null = null;
 
@@ -32,6 +37,7 @@ let refreshTokenPromise: Promise<TokenData> | null = null;
 let cachedDeviceHeaders: Record<string, string> | null = null;
 
 const NS_URL_ERROR_MESSAGES: Record<number, string> = {
+  [-324]: 'Network request failed. Please try again.',
   [-1001]: 'Request timed out. Please try again.',
   [-1003]: 'Server not found. Check your connection.',
   [-1004]: 'Could not connect to the server.',
@@ -59,6 +65,27 @@ function parseNetworkError(err: unknown): Error {
   }
   if (message.includes('ENOTFOUND') || message.includes('UnknownHostException')) {
     return new Error('Server not found. Check your connection.');
+  }
+
+  if (message.includes('ERR_EMPTY_RESPONSE')) {
+    return new Error('Server returned an empty response.');
+  }
+
+  // Android: Cronet (net::ERR_*) errors
+  if (message.includes('net::ERR_CONNECTION_REFUSED')) {
+    return new Error('Could not connect to the server.');
+  }
+  if (message.includes('net::ERR_CONNECTION_TIMED_OUT') || message.includes('net::ERR_TIMED_OUT')) {
+    return new Error('Request timed out. Please try again.');
+  }
+  if (message.includes('net::ERR_NAME_NOT_RESOLVED') || message.includes('net::ERR_INTERNET_DISCONNECTED')) {
+    return new Error('Server not found. Check your connection.');
+  }
+  if (message.includes('net::ERR_CONNECTION_RESET') || message.includes('net::ERR_NETWORK_CHANGED')) {
+    return new Error('Network connection was lost.');
+  }
+  if (message.includes('net::ERR_SSL') || message.includes('net::ERR_CERT')) {
+    return new Error('Secure connection failed.');
   }
   return err instanceof Error ? err : new Error(message);
 }
@@ -134,6 +161,10 @@ async function executeRequest(
       headers,
       body: data != null ? JSON.stringify(data) : undefined,
       signal,
+      // Default prefetch cache TTL is 5s, too short for an app-start prefetch
+      // (fired natively before the JS bundle even loads) to still be fresh by
+      // the time the real query runs after JS init + first render.
+      ...(prefetchKey ? { prefetchCacheTtlMs: PREFETCH_CACHE_TTL_MS } : undefined),
     });
   } catch (err) {
     throw parseNetworkError(err);

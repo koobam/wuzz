@@ -13,6 +13,7 @@ export type OnlyServiceCardProps = {
 export type OnlyServiceItem = {
   id: number;
   name: string;
+  description: string;
   serviceType: string; // e.g. 'satuan', 'express', etc. (used for navigation param)
   icon: string; // icon name from Icon component (default: 'bag')
   promo?: string; // e.g. '20%' or 'Free' (optional)

@@ -12,6 +12,7 @@ import com.facebook.react.uimanager.ReactStylesDiffMap
 import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.StateWrapper
 import com.facebook.react.uimanager.ThemedReactContext
+import com.facebook.react.uimanager.annotations.ReactProp
 import com.margelo.nitro.R.id.associated_hybrid_view_tag
 import com.margelo.nitro.views.RecyclableView
 import com.margelo.nitro.com.wuzz.shimmer.*
@@ -76,5 +77,31 @@ public class HybridShimmerViewManager: SimpleViewManager<View>() {
 
   private fun getHybridView(view: View): HybridShimmerView? {
     return view.getTag(associated_hybrid_view_tag) as? HybridShimmerView
+  }
+
+  // Manually added (not nitrogen-generated): this app's Fabric ComponentDescriptor
+  // registry (autolinking.cpp) never picks up HybridShimmerViewComponentDescriptor
+  // since local workspace packages aren't discovered by RN's codegen scan, so
+  // updateState() above never fires. These @ReactProp setters make props flow
+  // through Fabric's legacy interop path instead, which IS active for this
+  // ViewManager (createViewInstance already goes through it).
+  @ReactProp(name = "duration")
+  fun setDuration(view: View, value: Double) {
+    getHybridView(view)?.duration = value
+  }
+
+  @ReactProp(name = "borderRadius")
+  fun setBorderRadius(view: View, value: Double) {
+    getHybridView(view)?.borderRadius = value
+  }
+
+  @ReactProp(name = "shimmerColor")
+  fun setShimmerColor(view: View, value: String) {
+    getHybridView(view)?.shimmerColor = value
+  }
+
+  @ReactProp(name = "highlightOpacity")
+  fun setHighlightOpacity(view: View, value: Double) {
+    getHybridView(view)?.highlightOpacity = value
   }
 }

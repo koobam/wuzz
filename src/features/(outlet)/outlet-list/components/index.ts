@@ -1,5 +1,6 @@
 export { OutletListCard } from './outlet-list-card';
 export type { OutletListCardProps } from './outlet-list-card';
+export { OutletListCardSkeleton } from './outlet-list-card-skeleton';
 export { OutletMapMarker } from './outlet-map-marker';
 export type { OutletMapMarkerProps } from './outlet-map-marker';
 export { OutletServiceBadge } from './outlet-service-badge';

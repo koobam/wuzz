@@ -7,26 +7,23 @@ import {
   TextStyleProps,
 } from './Text.types';
 
-// Each variant maps to a specific Poppins font file via `fontFamily` only — do
-// NOT set fontWeight/fontStyle (Android would add synthetic fake-bold / fake-
-// italic and the named font can mis-resolve). The italic *.ttf files were
-// patched (scripts/fix_italic_fonts) to each carry a UNIQUE internal family
-// name reported as a Regular face, so they resolve on their own instead of
-// colliding with the upright weight that originally shared their family name.
+// Each variant maps to a specific Poppins font file via `fontFamily` only.
+// Using fontWeight/fontStyle here can make React Native synthesize a faux face
+// instead of loading the actual font file, which breaks italic and extra-bold.
 export const TextStyleWeight: RecordTextStyleWeight = StyleSheet.create({
-  light:         { fontWeight: '300', fontFamily: 'Poppins-Light' },
-  lightItalic:   { fontWeight: '300', fontFamily: 'Poppins-LightItalic', fontStyle: 'italic' },
-  regular:       { fontWeight: '400', fontFamily: 'Poppins-Regular' },
-  regularItalic: { fontWeight: '400', fontFamily: 'Poppins-Italic', fontStyle: 'italic' },
-  medium:        { fontWeight: '500', fontFamily: 'Poppins-Medium' },
-  mediumItalic:  { fontWeight: '500', fontFamily: 'Poppins-MediumItalic', fontStyle: 'italic' },
-  semibold:      { fontWeight: '600', fontFamily: 'Poppins-SemiBold' },
-  semiboldItalic:{ fontWeight: '600', fontFamily: 'Poppins-SemiBoldItalic', fontStyle: 'italic' },
-  bold:          { fontWeight: 'bold', fontFamily: 'Poppins-Bold' },
-  boldItalic:    { fontWeight: 'bold', fontFamily: 'Poppins-BoldItalic', fontStyle: 'italic' },
-  extrabold:     { fontWeight: '800', fontFamily: 'Poppins-ExtraBold' },
-  extraboldItalic:{ fontWeight: '800', fontFamily: 'Poppins-ExtraBoldItalic', fontStyle: 'italic' },
-  stylized:      { fontWeight: '400', fontFamily: Platform.OS === 'ios' ? 'Fredoka One' : 'FredokaOne-Regular', fontStyle: 'normal' },
+  light: { fontFamily: 'Poppins-Light' },
+  lightItalic: { fontFamily: 'Poppins-LightItalic' },
+  regular: { fontFamily: 'Poppins-Regular' },
+  regularItalic: { fontFamily: 'Poppins-Italic' },
+  medium: { fontFamily: 'Poppins-Medium' },
+  mediumItalic: { fontFamily: 'Poppins-MediumItalic' },
+  semibold: { fontFamily: 'Poppins-SemiBold' },
+  semiboldItalic: { fontFamily: 'Poppins-SemiBoldItalic' },
+  bold: { fontFamily: 'Poppins-Bold' },
+  boldItalic: { fontFamily: 'Poppins-BoldItalic' },
+  extrabold: { fontFamily: 'Poppins-ExtraBold' },
+  extraboldItalic: { fontFamily: 'Poppins-ExtraBoldItalic' },
+  stylized: { fontFamily: Platform.OS === 'ios' ? 'Fredoka One' : 'FredokaOne-Regular' },
 });
 
 export const TextStyleType: RecordTextStyleType = StyleSheet.create({

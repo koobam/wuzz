@@ -5,28 +5,22 @@ import { ROOT_ROUTES } from './_routes';
 
 // Eager — shown immediately on app start or auth flow
 import Bottom from '@navigation/bottom';
+import Checkout from '@pages/(order)/checkout';
+import OutletList from '@pages/(outlet)/outlet-list';
+import MenuSearch from '@pages/(bottom)/menu/search';
+import { Laundry } from '@pages/(order)/laundry';
+import ShareProfileQRScreen from '@pages/(bottom)/profile/share-qr';
+import StreakScreen from '@pages/(gamification)/streak';
 import LocationPermission from '@pages/(utils)/location-permission';
-import LoginIOS from '@pages/(auth)/(auth-ios)/login';
-import RegisterIOS from '@pages/(auth)/(auth-ios)/register';
-import LoginAndroid from '@pages/(auth)/(auth-android)/login';
-import RegisterAndroid from '@pages/(auth)/(auth-android)/register';
+import Login from '@pages/(auth)/login';
+import Register from '@pages/(auth)/register';
 import Verification from '@pages/(auth)/verification';
-
-const Login = Platform.OS === 'ios' ? LoginIOS : LoginAndroid;
-const Register = Platform.OS === 'ios' ? RegisterIOS : RegisterAndroid;
-
-// Lazy — only loaded when first navigated to
-const Checkout = React.lazy(() => import('@pages/(order)/checkout'));
-const OutletList = React.lazy(() => import('@pages/(outlet)/outlet-list'));
-const MenuSearch = React.lazy(() => import('@pages/(bottom)/menu/search'));
-const Laundry = React.lazy(() => import('@pages/(order)/laundry').then(m => ({ default: m.Laundry })));
-const ShareProfileQRScreen = React.lazy(() => import('@pages/(bottom)/profile/share-qr'));
-const StreakScreen = React.lazy(() => import('@pages/(gamification)/streak'));
-const OrderStatus = React.lazy(() => import('@pages/(order)/order-status'));
-const Help = React.lazy(() => import('@pages/(utils)/help'));
-const WebViewScreen = React.lazy(() => import('@pages/(utils)/webview'));
-const Leaderboard = React.lazy(() => import('@pages/(utils)/leaderboard'));
-const TextBenchmark = React.lazy(() => import('@pages/(utils)/text-benchmark'));
+import OrderStatus from '@pages/(order)/order-status';
+import Help from '@pages/(utils)/help';
+import WebViewScreen from '@pages/(utils)/webview';
+import Leaderboard from '@pages/(utils)/leaderboard';
+import DeliveryAddressList from '@pages/(account)/delivery-address';
+import AddAddress from '@pages/(account)/add-address';
 
 const defaultConfig = {
   screenOptions: {
@@ -35,33 +29,14 @@ const defaultConfig = {
   },
 };
 
-const authSheetOptions = Platform.OS === 'ios'
-  ? {
-      presentation: 'formSheet' as const,
-      headerShown: false,
-      sheetAllowedDetents: 'fitToContents' as const,
-      animation: 'default' as const,
-      gestureEnabled: true,
-    }
-  : {
-      headerShown: false,
-      animation: 'slide_from_bottom' as const,
-    };
-
-// Register is a multi-step form — fitToContents clips the Kembali button when it appears.
-// Use a full modal so the sheet has a fixed height and flex:1 works correctly.
-const registerSheetOptions = Platform.OS === 'ios'
-  ? {
-      presentation: 'formSheet' as const,
-      headerShown: false,
-      animation: 'default' as const,
-      sheetAllowedDetents: 'fitToContents' as const,
-      gestureEnabled: true,
-    }
-  : {
-      headerShown: false,
-      animation: 'slide_from_bottom' as const,
-    };
+// Login & register tampil sebagai layar penuh (card push) di semua platform —
+// bukan modal/sheet.
+const authScreenOptions = {
+  presentation: 'card' as const,
+  headerShown: false,
+  animation: 'slide_from_right' as const,
+  gestureEnabled: true,
+};
 
 const bottomConfig: Routes = {
   name: ROOT_ROUTES.BOTTOM,
@@ -113,6 +88,12 @@ const streakConfig: Routes = {
   auth: false,
 };
 
+const locationPermissionConfig: Routes = {
+  name: ROOT_ROUTES.LOCATION_PERMISSION,
+  components: LocationPermission,
+  auth: false,
+};
+
 /**
  * Auth-related screens (login, register, verification) are grouped together in the root navigator
  * because they share similar presentation styles (form sheets) and are part of the same user flow.
@@ -122,14 +103,14 @@ const loginConfig: Routes = {
   name: ROOT_ROUTES.LOGIN,
   components: Login,
   auth: false,
-  options: authSheetOptions,
+  options: authScreenOptions,
 };
 
 const registerConfig: Routes = {
   name: ROOT_ROUTES.REGISTER,
   components: Register,
   auth: false,
-  options: registerSheetOptions,
+  options: authScreenOptions,
 };
 
 const verificationConfig: Routes = {
@@ -178,15 +159,18 @@ const leaderboardConfig: Routes = {
   },
 };
 
-const locationPermissionConfig: Routes = {
-  name: ROOT_ROUTES.LOCATION_PERMISSION,
-  components: LocationPermission,
+const deliveryAddressConfig: Routes = {
+  name: ROOT_ROUTES.DELIVERY_ADDRESS,
+  components: DeliveryAddressList,
   auth: false,
+  options: {
+    animation: 'slide_from_right',
+  },
 };
 
-const textBenchmarkConfig: Routes = {
-  name: ROOT_ROUTES.TEXT_BENCHMARK,
-  components: TextBenchmark,
+const addAddressConfig: Routes = {
+  name: ROOT_ROUTES.ADD_ADDRESS,
+  components: AddAddress,
   auth: false,
   options: {
     animation: 'slide_from_right',
@@ -202,6 +186,7 @@ export const rootNavigationConfigs = {
   [ROOT_ROUTES.LAUNDRY]: laundryConfig,
   [ROOT_ROUTES.SHARE_PROFILE_QR]: shareProfileQrConfig,
   [ROOT_ROUTES.STREAK]: streakConfig,
+  [ROOT_ROUTES.LOCATION_PERMISSION]: locationPermissionConfig,
   [ROOT_ROUTES.LOGIN]: loginConfig,
   [ROOT_ROUTES.REGISTER]: registerConfig,
   [ROOT_ROUTES.VERIFICATION]: verificationConfig,
@@ -209,8 +194,8 @@ export const rootNavigationConfigs = {
   [ROOT_ROUTES.HELP]: helpConfig,
   [ROOT_ROUTES.WEBVIEW]: webviewConfig,
   [ROOT_ROUTES.LEADERBOARD]: leaderboardConfig,
-  [ROOT_ROUTES.LOCATION_PERMISSION]: locationPermissionConfig,
-  [ROOT_ROUTES.TEXT_BENCHMARK]: textBenchmarkConfig,
+  [ROOT_ROUTES.DELIVERY_ADDRESS]: deliveryAddressConfig,
+  [ROOT_ROUTES.ADD_ADDRESS]: addAddressConfig,
 };
 
 export const rootRoutes: Routes[] = [
@@ -229,5 +214,6 @@ export const rootRoutes: Routes[] = [
   rootNavigationConfigs[ROOT_ROUTES.HELP],
   rootNavigationConfigs[ROOT_ROUTES.WEBVIEW],
   rootNavigationConfigs[ROOT_ROUTES.LEADERBOARD],
-  rootNavigationConfigs[ROOT_ROUTES.TEXT_BENCHMARK],
+  rootNavigationConfigs[ROOT_ROUTES.DELIVERY_ADDRESS],
+  rootNavigationConfigs[ROOT_ROUTES.ADD_ADDRESS],
 ];

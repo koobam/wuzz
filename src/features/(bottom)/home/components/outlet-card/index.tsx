@@ -212,19 +212,19 @@ export const OutletCard = memo(
 
     if (!outlet) return <OutletCardSkeleton />;
 
-    return (
-      <GesturePressable
-        margin={{
-          marginHorizontal: theme.spacing.standard,
-          marginVertical: theme.spacing.standard,
-        }}
-        onPress={hasOutlet ? onPress : undefined}
-        borderRadius={CARD_BORDER_RADIUS}
-        removeClippedSubviews
-        padding={theme.spacing.small}
-        shrink={false}
-        backgroundColor={theme.pallate.neutral['01']}
-      >
+  return (
+    <GesturePressable
+      margin={{
+        marginHorizontal: theme.spacing.standard,
+        marginVertical: theme.spacing.standard,
+      }}
+      onPress={hasOutlet ? onPress : undefined}
+      borderRadius={CARD_BORDER_RADIUS}
+      removeClippedSubviews
+      padding={theme.spacing.small}
+      backgroundColor={theme.pallate.neutral['01']}
+      style={styles.cardOuter}
+    >
         <Flex
           fill
           borderWidth={1}
@@ -337,11 +337,17 @@ export const OutletCard = memo(
             </HStack>
           )}
         </Flex>
-      </GesturePressable>
+    </GesturePressable>
     );
   });
 
 const styles = StyleSheet.create({
+  cardShadow: {
+    borderRadius: CARD_BORDER_RADIUS,
+  },
+  cardOuter: {
+    overflow: 'hidden',
+  },
   cardInner: {
     overflow: 'hidden',
   },

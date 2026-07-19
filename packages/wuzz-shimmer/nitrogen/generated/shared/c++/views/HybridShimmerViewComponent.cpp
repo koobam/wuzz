@@ -90,7 +90,7 @@ namespace margelo::nitro::wuzz::shimmer::views {
 
   HybridShimmerViewComponentDescriptor::HybridShimmerViewComponentDescriptor(const react::ComponentDescriptorParameters& parameters)
     : ConcreteComponentDescriptor(parameters,
-                                  react::RawPropsParser(/* enableJsiParser */ true)) {}
+                                  react::RawPropsParser()) {}
 
   std::shared_ptr<const react::Props> HybridShimmerViewComponentDescriptor::cloneProps(const react::PropsParserContext& context,
                                                                                        const std::shared_ptr<const react::Props>& props,

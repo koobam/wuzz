@@ -56,6 +56,7 @@ export const Pressable: React.FC<PressableProps> = React.memo(({
   borderWidth,
   borderColor,
   borderRadius,
+  rotation,
   children,
   ...rest
 }) => {
@@ -118,7 +119,10 @@ export const Pressable: React.FC<PressableProps> = React.memo(({
         containerStyle,
         {
           opacity: pressed && opacityProp ? 0.6 : 1,
-          transform: [{ scale: pressed && shrink ? 0.98 : 1 }],
+          transform: [
+            { scale: pressed && shrink ? 0.98 : 1 },
+            ...(rotation != null ? [{ rotate: `${rotation}deg` }] : []),
+          ],
         },
         style as ViewStyle,
       ]}

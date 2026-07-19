@@ -9,9 +9,9 @@ import {
   Location,
   TruckFast,
 } from 'iconsax-react-native';
-import { memo, useCallback } from 'react';
+import { Fragment, memo, useCallback } from 'react';
 import { StyleSheet } from 'react-native';
-import { FlashList } from '@shopify/flash-list';
+import { ScrollView } from 'react-native-gesture-handler';
 import type { OutletTag } from '../../types';
 import { formatDistanceKm, getDistanceStyles, getStatusStyles } from '../../utils';
 import { OutletServiceBadge } from '../outlet-service-badge';
@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
     marginHorizontal: theme.spacing.large,
     borderRadius: CARD_BORDER_RADIUS,
     overflow: 'hidden',
+    minHeight: 200,
   },
   card: {
     borderRadius: CARD_BORDER_RADIUS,
@@ -67,8 +68,8 @@ const styles = StyleSheet.create({
   },
   serviceBadge: {
     position: 'absolute' as const,
-    top: -1,
-    right: -1,
+    top: 1,
+    right: 1,
     zIndex: 1,
   },
   photoListContent: {
@@ -141,7 +142,7 @@ export const OutletListCard = memo(
             <Clock variant="Linear" size={TAG_ICON_SIZE} color={iconColor} />
           );
         case 'status':
-          if (item.statusValue === 'ramai') {
+          if (item.statusValue === 'busy') {
             return (
               <BatteryFull
                 variant="Bulk"
@@ -150,7 +151,7 @@ export const OutletListCard = memo(
               />
             );
           }
-          if (item.statusValue === 'sedang') {
+          if (item.statusValue === 'moderate') {
             return (
               <BatteryCharging
                 variant="Bulk"
@@ -240,14 +241,8 @@ export const OutletListCard = memo(
       [],
     );
 
-    const selectedBorderColor =
-      services.length === 2
-        ? theme.pallate.primary['03']
-        : services[0] === 'coffee'
-          ? theme.pallate.coffee['03']
-          : theme.pallate.teal['03'];
     const borderColor = isSelected
-      ? selectedBorderColor
+      ? theme.pallate.primary['03']
       : theme.pallate.neutral['03'];
 
     const kmColor =
@@ -264,66 +259,67 @@ export const OutletListCard = memo(
           style={styles.serviceBadge}
         />
         <VStack
-          style={styles.card}
           gap={theme.spacing.standard}
           padding={cardPadding}
         >
-          <HStack
-            padding={headerPadding}
-            items="center"
-            gap={theme.spacing.standard}
-          >
-            <VStack fill gap={theme.spacing.tiny}>
-              <Text
-                type="b2"
-                weight="semibold"
-                color={theme.pallate.neutral['05']}
-                numberOfLines={1}
-              >
-                {name}
-              </Text>
-              <HStack items="center" gap={theme.spacing.small}>
-                <HStack items="center" gap={theme.spacing.tiny}>
-                  <Location
-                    variant="Bulk"
-                    size={ADDRESS_ICON_SIZE}
-                    color={kmColor}
-                  />
-                  <Text type="l2" color={kmColor}>
-                    {kmLabel}
-                  </Text>
-                </HStack>
-                <Box style={styles.tagDot} />
-                <Text
-                  type="l2"
-                  color={theme.pallate.neutral['04']}
-                  numberOfLines={1}
-                >
-                  {address}
+          <VStack padding={{
+            paddingHorizontal: 20
+          }} fill gap={theme.spacing.tiny}>
+            <Text
+              type="b2"
+              weight="semibold"
+              color={theme.pallate.neutral['05']}
+            >
+              {name}
+            </Text>
+            <HStack items="center" gap={theme.spacing.small}>
+              <HStack items="center" gap={theme.spacing.tiny}>
+                <Location
+                  variant="Bulk"
+                  size={ADDRESS_ICON_SIZE}
+                  color={kmColor}
+                />
+                <Text type="l2" color={kmColor}>
+                  {kmLabel}
                 </Text>
               </HStack>
-            </VStack>
-          </HStack>
+              <Box style={styles.tagDot} />
+              <Text
+                type="l2"
+                color={theme.pallate.neutral['04']}
+                numberOfLines={1}
+              >
+                {address}
+              </Text>
+            </HStack>
+          </VStack>
           {photos.length > 0 && (
-            <FlashList
-              data={photos}
+            <ScrollView
               horizontal
-              ItemSeparatorComponent={photoSeparator}
-              contentContainerStyle={styles.photoListContent}
               showsHorizontalScrollIndicator={false}
-              renderItem={renderPhotoItem}
-            />
+              contentContainerStyle={styles.photoListContent}
+            >
+              {photos.map((uri, i) => (
+                <Fragment key={`${uri}-${i}`}>
+                  {i > 0 && photoSeparator()}
+                  {renderPhotoItem({ item: uri })}
+                </Fragment>
+              ))}
+            </ScrollView>
           )}
           {tags.length > 0 && (
-            <FlashList
-              data={tags}
+            <ScrollView
               horizontal
-              keyExtractor={keyExtractorTag}
-              ItemSeparatorComponent={tagSeparator}
-              contentContainerStyle={styles.tagListContent}
               showsHorizontalScrollIndicator={false}
-              renderItem={renderTagItem}
-            />
+              contentContainerStyle={styles.tagListContent}
+            >
+              {tags.map((tag, i) => (
+                <Fragment key={keyExtractorTag(tag)}>
+                  {i > 0 && tagSeparator()}
+                  {renderTagItem({ item: tag })}
+                </Fragment>
+              ))}
+            </ScrollView>
           )}
         </VStack>
       </Pressable>

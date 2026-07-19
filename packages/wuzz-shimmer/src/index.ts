@@ -26,7 +26,7 @@ export const Shimmer = ({
     borderRadius,
     shimmerColor,
     highlightOpacity,
-    style: [{ width: width as number, height: height as number, borderRadius, overflow: 'hidden' as const }, style],
+    style: [{ width: width as number, height: height as number, overflow: 'hidden' as const }, style],
   })
 
 export type { ShimmerViewProps } from './ShimmerView.nitro'

@@ -9,11 +9,17 @@ export type Coordinates = { lat: number; long: number };
 // Pakai fused/Play Services kalau tersedia (fallback ke provider Android). Ini
 // bikin getCurrentPosition sering langsung dapat last-known location, jadi jarang
 // timeout. Dipanggil sekali saat module load; aman kalau ke-run berkali-kali.
-Geolocation.setRNConfiguration({
-  skipPermissionRequests: false,
-  authorizationLevel: 'whenInUse',
-  locationProvider: 'auto',
-});
+// Dibungkus try/catch: kalau modul native belum ada (belum rebuild), jangan
+// sampai throw saat import — cukup fallback diam (pakai default center).
+try {
+  Geolocation.setRNConfiguration({
+    skipPermissionRequests: false,
+    authorizationLevel: 'whenInUse',
+    locationProvider: 'auto',
+  });
+} catch {
+  // Modul native geolocation belum tersedia (butuh rebuild). Abaikan.
+}
 
 export type CurrentLocationState = {
   /** Koordinat device; null saat belum ada / gagal. */
@@ -69,34 +75,46 @@ export const useCurrentLocation = (): CurrentLocationState => {
     setIsLocationError(false);
     setIsError(false);
 
-    const granted = await requestLocationPermission();
+    let granted = false;
+    try {
+      granted = await requestLocationPermission();
+    } catch {
+      // Modul native belum ada (belum rebuild) → fallback diam ke default center.
+      setIsLoading(false);
+      return;
+    }
     if (!granted) {
       setIsLocationError(true);
       setIsLoading(false);
       return;
     }
 
-    Geolocation.getCurrentPosition(
-      (position) => {
-        setCoords({
-          lat: position.coords.latitude,
-          long: position.coords.longitude,
-        });
-        setIsLoading(false);
-      },
-      (error: GeolocationError) => {
-        // Bedakan izin ditolak (perlu ke Pengaturan) vs timeout/unavailable
-        // (transient — GPS-nya justru aktif, cukup coba lagi).
-        if (error.code === error.PERMISSION_DENIED) {
-          setIsLocationError(true);
-        } else {
-          setIsError(true);
-        }
-        setIsLoading(false);
-      },
-      // maximumAge longgar: terima cached fix s/d 1 menit → cepat & jarang timeout.
-      { enableHighAccuracy: false, timeout: 20000, maximumAge: 60000 },
-    );
+    try {
+      Geolocation.getCurrentPosition(
+        (position) => {
+          setCoords({
+            lat: position.coords.latitude,
+            long: position.coords.longitude,
+          });
+          setIsLoading(false);
+        },
+        (error: GeolocationError) => {
+          // Bedakan izin ditolak (perlu ke Pengaturan) vs timeout/unavailable
+          // (transient — GPS-nya justru aktif, cukup coba lagi).
+          if (error.code === error.PERMISSION_DENIED) {
+            setIsLocationError(true);
+          } else if (error.code === error.POSITION_UNAVAILABLE) {
+            setIsError(true);
+          }
+          setIsLoading(false);
+        },
+        // maximumAge longgar: terima cached fix s/d 1 menit → cepat & jarang timeout.
+        { enableHighAccuracy: false, timeout: 20000, maximumAge: 60000 },
+      );
+    } catch {
+      // Modul native belum ada (belum rebuild) → fallback diam ke default center.
+      setIsLoading(false);
+    }
   }, []);
 
   useEffect(() => {

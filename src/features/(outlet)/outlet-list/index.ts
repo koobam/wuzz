@@ -1,5 +1,6 @@
 export {
   OutletListCard,
+  OutletListCardSkeleton,
   OutletMapMarker,
   OutletServiceBadge,
   ServiceFilterPills,
@@ -17,8 +18,6 @@ export {
   getDistanceStyles,
   getOutletTags,
   getStatusStyles,
-  OUTLET_LIST_DUMMY,
-  OUTLET_MAP_MARKERS_DUMMY,
 } from './utils';
 export type {
   OutletListItem,

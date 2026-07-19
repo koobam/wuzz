@@ -22,13 +22,13 @@ const BADGE_CONFIG: Record<
   },
   coffee: {
     label: 'Coffee',
-    backgroundColor: theme.pallate.coffee['01'],
-    color: theme.pallate.coffee['03'],
+    backgroundColor: theme.pallate.primary['01'],
+    color: theme.pallate.primary['03'],
   },
   laundry: {
     label: 'Laundry',
-    backgroundColor: theme.pallate.teal['01'],
-    color: theme.pallate.teal['03'],
+    backgroundColor: theme.pallate.primary['01'],
+    color: theme.pallate.primary['03'],
   },
 };
 

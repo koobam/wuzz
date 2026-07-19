@@ -9,9 +9,13 @@ import { queryClient } from '@core/query-client';
 import { queryPersister } from '@core/query-persister';
 import Root from '@navigation/root';
 import Mapbox from '@rnmapbox/maps';
-import { AppState, BottomNavHeightProvider, LocationProvider } from '@services/contexts';
+import {
+  AppState,
+  BottomNavHeightProvider,
+  SelectedOutletProvider,
+} from '@services/contexts';
+import { DeliveryAddressProvider } from '@features/(account)/delivery-address';
 import { QuerySyncWithAppState } from '@services/contexts/app-state';
-// import { LocationWatcher } from '@components/organisms/location-watcher';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import {
   StatusBar,
@@ -43,9 +47,7 @@ function App() {
         >
           <QuerySyncWithAppState />
           <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-          <LocationProvider>
-            <AppContent />
-          </LocationProvider>
+          <AppContent />
         </PersistQueryClientProvider>
       </AppState.Provider>
     </SafeAreaProvider>
@@ -57,8 +59,11 @@ function AppContent() {
     <GestureHandlerRootView style={styles.flex1}>
       <BottomSheetModalProvider>
         <BottomNavHeightProvider>
-          <Root />
-          {/* <LocationWatcher /> */}
+          <SelectedOutletProvider>
+            <DeliveryAddressProvider>
+              <Root />
+            </DeliveryAddressProvider>
+          </SelectedOutletProvider>
         </BottomNavHeightProvider>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>

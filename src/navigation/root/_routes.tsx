@@ -6,6 +6,7 @@ export const ROOT_ROUTES = {
   LAUNDRY: 'laundry',
   SHARE_PROFILE_QR: 'shareProfileQr',
   STREAK: 'streak',
+  LOCATION_PERMISSION: 'locationpermission',
   LOGIN: 'login',
   REGISTER: 'register',
   VERIFICATION: 'verification',
@@ -13,6 +14,6 @@ export const ROOT_ROUTES = {
   HELP: 'help',
   WEBVIEW: 'webview',
   LEADERBOARD: 'leaderboard',
-  LOCATION_PERMISSION: 'locationpermission',
-  TEXT_BENCHMARK: 'textbenchmark',
+  DELIVERY_ADDRESS: 'deliveryaddress',
+  ADD_ADDRESS: 'addaddress',
 } as const;

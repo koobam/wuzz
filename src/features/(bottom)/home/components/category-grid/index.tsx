@@ -67,7 +67,7 @@ export const CategoryGrid = memo(
               network ? (
                 <WifiSquare size={48} color={theme.pallate.neutral['04']} variant="Bulk" />
               ) : (
-                <Danger size={48} color={theme.pallate.neutral['04']} variant="Linear" />
+                <Danger size={48} color={theme.pallate.neutral['04']} variant="Bulk" />
               )
             }
             title={network ? 'Tidak ada koneksi internet' : 'Gagal memuat layanan'}
@@ -82,7 +82,7 @@ export const CategoryGrid = memo(
             secondaryButton={
               network
                 ? { label: 'Pengaturan', onPress: () => { Linking.openSettings(); } }
-                : undefined
+                : { label: 'Perlu Bantuan ?', onPress: () => { Linking.openSettings(); } }
             }
           />
         );

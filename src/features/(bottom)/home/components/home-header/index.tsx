@@ -56,7 +56,36 @@ export const HomeHeader = memo(({ topInset, isAuthenticated, onLoginPress }: Hom
           Wuzz
         </Text>
       {isAuthenticated ? (
-        <AuthenticatedButtons />
+        <>
+          <Pressable
+            borderRadius={999}
+            backgroundColor={theme.pallate.neutral['01']}
+            items="center"
+            removeClippedSubviews
+            height={45}
+            padding={{
+              paddingHorizontal: theme.spacing.medium,
+            }}
+            gap={theme.spacing.tiny}
+          >
+            <Coin1 color="#FF9500" size={24} variant="Bulk" />
+            <Text type="b2" weight="bold" text="10" />
+          </Pressable>
+          <Pressable
+            borderRadius={999}
+            margin={{
+              marginLeft: theme.spacing.standard
+            }}
+            backgroundColor={theme.pallate.neutral['01']}
+            items="center"
+            justify="center"
+            removeClippedSubviews
+            height={45}
+            width={45}
+          >
+            <Sms color={theme.pallate.neutral['04']} size={24} variant="Bulk" />
+          </Pressable>
+        </>
       ) : (
         <LoginButton onPress={onLoginPress} />
       )}
