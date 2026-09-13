@@ -1,0 +1,17 @@
+{
+  "name": "@wuzz/api",
+  "version": "0.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "dependencies": {
+    "@wuzz/native": "workspace:*"
+  },
+  "peerDependencies": {
+    "query-string": "*",
+    "react-native": "*",
+    "react-native-config": "*",
+    "react-native-device-info": "*",
+    "react-native-network-info": "*",
+    "react-native-nitro-fetch": "*"
+  }
+}

@@ -1,0 +1,24 @@
+packages:
+  - 'apps/*'
+  - 'libs/*'
+  # Nitro native modules, consumed as source like the libs.
+  - 'packages/*'
+
+allowBuilds:
+  nx: true
+
+# React ships inside the native binary, so the workspace must resolve exactly
+# one copy — two versions is a hard build error for React Native, not a warning.
+overrides:
+  react: 19.1.1
+  react-native: 0.82.0
+  fast-xml-parser: ^5.8.0
+  kysely: ^0.29.0
+  # Without pinning, pnpm's strict resolution lets a transitive dependency
+  # pull a newer @tanstack/query-core than @tanstack/react-query itself uses,
+  # producing two different QueryClient classes at once (a private-field type
+  # error, and a real runtime split — a query created against one client isn't
+  # recognized by hooks bound to the other). Yarn's flat hoisting had deduped
+  # these to a single version; pin the same version pair here.
+  '@tanstack/query-core': 5.101.2
+  '@tanstack/query-persist-client-core': 5.101.2

@@ -41,13 +41,17 @@ local.properties
 .env.*.local
 
 # react-native-config codegen (iOS)
-ios/tmp.xcconfig
+**/ios/tmp.xcconfig
 
 # node.js
 #
 node_modules/
 npm-debug.log
 yarn-error.log
+
+# Nx
+.nx/cache
+.nx/workspace-data
 
 # fastlane
 #
@@ -66,13 +70,13 @@ yarn-error.log
 
 # Ruby / CocoaPods
 **/Pods/
-/vendor/bundle/
+**/vendor/bundle/
 
 # Temporary files created by Metro to check the health of the file watcher
 .metro-health-check*
 
 # testing
-/coverage
+**/coverage
 
 # Yarn
 .yarn/*
@@ -87,10 +91,10 @@ yarn-error.log
 .hot-updater/log
 
 # Firebase
-ios/GoogleService-Info.plist
-ios/GoogleService-Info.Staging.plist
-ios/Wuzz/GoogleService-Info.plist
-ios/Wuzz/GoogleService-Info.Staging.plist
+**/ios/GoogleService-Info.plist
+**/ios/GoogleService-Info.Staging.plist
+**/ios/Wuzz/GoogleService-Info.plist
+**/ios/Wuzz/GoogleService-Info.Staging.plist
 
-android/app/google-services.json
-android/app/google-services.staging.json
+**/android/app/google-services.json
+**/android/app/google-services.staging.json
