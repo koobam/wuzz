@@ -1,4 +1,4 @@
-import {ViewStyle} from 'react-native';
+import {Dimensions, ScaledSize, ViewStyle} from 'react-native';
 import React from 'react';
 import theme from '../theme';
 
@@ -233,3 +233,33 @@ export const getResponsiveValue = (value: any, dimensions: number) => {
 
 
 export type ResponsiveValue<T> = T | Record<keyof typeof theme.breakpoints, T>;
+
+/**
+ * The screen width, subscribed to only when a prop actually needs it.
+ *
+ * useWindowDimensions subscribes, so every Box and Divider on a screen used to
+ * register a listener and re-render on any size change, even though almost no
+ * call site passes a responsive object. `needed` says whether this instance
+ * has such a prop; when it is false no listener exists and the returned 0 is
+ * never read.
+ */
+export const useResponsiveWidth = (needed: boolean): number => {
+  const [screenWidth, setScreenWidth] = React.useState(() =>
+    needed ? Dimensions.get('window').width : 0,
+  );
+
+  React.useEffect(() => {
+    if (!needed) {
+      return;
+    }
+    // Re-read on subscribe: the width may have changed since initial state.
+    setScreenWidth(Dimensions.get('window').width);
+    const subscription = Dimensions.addEventListener(
+      'change',
+      ({window}: {window: ScaledSize}) => setScreenWidth(window.width),
+    );
+    return () => subscription.remove();
+  }, [needed]);
+
+  return screenWidth;
+};

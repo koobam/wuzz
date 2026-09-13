@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { View, ViewProps, ViewStyle, useWindowDimensions } from 'react-native';
+import { View, ViewProps, ViewStyle } from 'react-native';
 
 import {
   BorderColorType,
@@ -16,6 +16,7 @@ import {
   createPaddingStyle,
   createPositionStyle,
   getResponsiveValue,
+  useResponsiveWidth,
   ResponsiveValue,
 } from '../helper';
 
@@ -36,16 +37,40 @@ export interface BoxProps extends ViewProps {
   borderColor?: BorderColorType | string;
   borderRadius?: BorderRadiusType | number;
   opacity?: number;
+  // Flex used to be a component of its own that only turned these props into
+  // a style and rendered Box. They live here now so Flex and the stacks can
+  // call BoxBase directly instead of adding a component per layout node.
+  fill?: boolean;
+  wrap?: boolean;
+  inline?: boolean;
+  content?: ViewStyle['alignContent'];
+  self?: ViewStyle['alignSelf'];
+  items?: ViewStyle['alignItems'];
+  justify?: ViewStyle['justifyContent'];
+  direction?: ViewStyle['flexDirection'];
 }
 
 /**
  * Box is component serves as a wrapper component for most of the styling properties.
  * Also, for references check it out {@link https://github.com/yamankatby/react-native-flex-layout/blob/main/src/Box.tsx}
+ *
+ * BoxBase is the plain implementation, exported so Flex, Stack, VStack and
+ * HStack can call it inline rather than rendering another component that
+ * renders this one: a VStack used to be VStack → Stack → Flex → Box for a
+ * single native view, now it is one component and one view.
  */
-export const Box = React.memo((props: BoxProps) => {
+export const BoxBase = (props: BoxProps) => {
   const {
     as,
     style,
+    fill,
+    wrap,
+    inline,
+    content,
+    self,
+    items,
+    justify,
+    direction,
     position,
     width,
     height,
@@ -61,7 +86,10 @@ export const Box = React.memo((props: BoxProps) => {
     ...rest
   } = props;
 
-  const { width: screenWidth } = useWindowDimensions();
+  // Only subscribe to window size when width/height is actually responsive.
+  const screenWidth = useResponsiveWidth(
+    typeof width === 'object' || typeof height === 'object',
+  );
 
   const resolvedWidth = useMemo(() => {
     if (typeof width === 'object') {
@@ -110,6 +138,13 @@ export const Box = React.memo((props: BoxProps) => {
     }
 
     return {
+      flex: fill ? 1 : undefined,
+      flexWrap: wrap ? 'wrap' : undefined,
+      flexDirection: inline ? 'row' : direction,
+      alignContent: content,
+      alignSelf: self,
+      alignItems: items,
+      justifyContent: justify,
       ...positionStyle,
       ...paddingStyle,
       ...marginStyle,
@@ -124,6 +159,14 @@ export const Box = React.memo((props: BoxProps) => {
       borderCurve: borderRadius ? ('continuous' as const) : undefined,
     } as ViewStyle;
   }, [
+    fill,
+    wrap,
+    inline,
+    direction,
+    content,
+    self,
+    items,
+    justify,
     resolvedWidth,
     resolvedHeight,
     padding,
@@ -183,7 +226,10 @@ export const Box = React.memo((props: BoxProps) => {
       {...rest}
     />
   );
-});
+};
+
+export const Box = React.memo(BoxBase);
+Box.displayName = 'Box';
 
 export const BoxAnimated = Reanimated.createAnimatedComponent(Box);
 export default Box;

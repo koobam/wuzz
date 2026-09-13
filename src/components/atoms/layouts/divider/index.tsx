@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
-import { useWindowDimensions } from 'react-native';
 import Box, { BoxProps } from '../box';
-import { ResponsiveValue, getResponsiveValue } from '../helper';
+import { ResponsiveValue, getResponsiveValue, useResponsiveWidth } from '../helper';
 
 export interface DividerProps extends BoxProps {
   /**
@@ -28,7 +27,7 @@ export interface DividerProps extends BoxProps {
 
 export const Divider: React.FC<DividerProps> = React.memo(
   ({ horizontal = true, thickness = 1, color, style, ...rest }) => {
-    const { width: screenWidth } = useWindowDimensions();
+    const screenWidth = useResponsiveWidth(typeof thickness === 'object');
 
     const resolvedThickness = useMemo(() => {
       if (typeof thickness === 'object') {

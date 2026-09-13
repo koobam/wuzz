@@ -5,8 +5,24 @@ require Pod::Executable.execute_command('node', ['-p',
     {paths: [process.argv[1]]},
   )', __dir__]).strip
 
+def node_require(script)
+  # Resolve script with node to allow for hoisting
+  require Pod::Executable.execute_command('node', ['-p',
+    "require.resolve(
+      '#{script}',
+      {paths: [process.argv[1]]},
+    )", __dir__]).strip
+end
+
+node_require('react-native-permissions/scripts/setup.rb')
+
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
+
+# Only the handlers the app requests — see useLocationPermission
+setup_permissions([
+  'LocationWhenInUse',
+])
 
 $RNMapboxMapsVersion = '> 11.0.0'
 
@@ -56,5 +72,12 @@ target 'Wuzz' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
+    # fmt 11.0.2 consteval fails to compile with Xcode 26 clang; build it as C++17
+    installer.pods_project.targets.each do |target|
+      next unless target.name == 'fmt'
+      target.build_configurations.each do |config|
+        config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'c++17'
+      end
+    end
   end
 end
