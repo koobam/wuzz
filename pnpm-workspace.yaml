@@ -10,8 +10,8 @@ allowBuilds:
 # React ships inside the native binary, so the workspace must resolve exactly
 # one copy — two versions is a hard build error for React Native, not a warning.
 overrides:
-  react: 19.1.1
-  react-native: 0.82.0
+  react: 19.2.3
+  react-native: 0.87.1
   fast-xml-parser: ^5.8.0
   kysely: ^0.29.0
   # Without pinning, pnpm's strict resolution lets a transitive dependency
