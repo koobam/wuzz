@@ -16,6 +16,18 @@
       "inputs": ["production", "^production"],
       "outputs": ["{projectRoot}/dist"]
     },
+    "build:staging": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"],
+      "outputs": ["{projectRoot}/dist"]
+    },
+    "build:production": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"],
+      "outputs": ["{projectRoot}/dist"]
+    },
     "typecheck": {
       "cache": true,
       "dependsOn": ["^typecheck"],
@@ -32,9 +44,23 @@
     "dev": {
       "continuous": true
     },
+    "dev:staging": {
+      "continuous": true
+    },
+    "dev:production": {
+      "continuous": true
+    },
     "preview": {
       "continuous": true,
       "dependsOn": ["build"]
+    },
+    "preview:staging": {
+      "continuous": true,
+      "dependsOn": ["build:staging"]
+    },
+    "preview:production": {
+      "continuous": true,
+      "dependsOn": ["build:production"]
     }
   },
   "analytics": false

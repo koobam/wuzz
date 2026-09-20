@@ -8,10 +8,16 @@
   },
   "scripts": {
     "dev": "vite",
+    "dev:staging": "vite --mode staging",
+    "dev:production": "vite --mode production",
     "routes": "tsr generate",
     "build": "tsr generate && tsc -p tsconfig.json --noEmit && vite build",
+    "build:staging": "tsr generate && tsc -p tsconfig.json --noEmit && vite build --mode staging",
+    "build:production": "tsr generate && tsc -p tsconfig.json --noEmit && vite build --mode production",
     "typecheck": "tsr generate && tsc -p tsconfig.json --noEmit",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "preview:staging": "vite preview --mode staging",
+    "preview:production": "vite preview --mode production"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.101.4",
