@@ -2,6 +2,23 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
+// react-native-config: env file per flavor → project.env.get("KEY") in Gradle
+project.ext.envConfigFiles = [
+    staging: ".env.staging",
+    production: ".env.production",
+]
+// dotenv reads from project.rootDir/../ (= android/); copy from repo root so it finds the file
+def envFlavor = gradle.startParameter.taskNames.findResult { name ->
+    def m = (name =~ /(?:.*:)*[a-z]+([A-Z][A-Za-z0-9]+)/); m.find() ? m.group(1).toLowerCase() : null
+} ?: ""
+def envFileName = project.ext.envConfigFiles.findResult { k, v -> envFlavor.startsWith(k.toLowerCase()) ? v : null } ?: ".env"
+def envSrc = file("${rootProject.projectDir}/../${envFileName}")
+def envDest = file("${rootProject.projectDir}/${envFileName}")
+if (envSrc.exists() && envDest.canonicalPath != envSrc.canonicalPath) {
+    envDest.parentFile.mkdirs(); envDest.text = envSrc.text
+}
+apply from: "${rootProject.projectDir}/../node_modules/react-native-config/android/dotenv.gradle"
+
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
@@ -18,10 +35,7 @@ react {
     // cliFile = file("../../node_modules/react-native/cli.js")
 
     /* Variants */
-    //   The list of variants to that are debuggable. For those we're going to
-    //   skip the bundling of the JS bundle and the assets. Default is "debug", "debugOptimized".
-    //   If you add flavors like lite, prod, etc. you'll have to list your debuggableVariants.
-    // debuggableVariants = ["liteDebug", "liteDebugOptimized", "prodDebug", "prodDebugOptimized"]
+    debuggableVariants = ["stagingDebug", "productionDebug"]
 
     /* Bundling */
     //   A list containing the node command and its flags. Default is just 'node'.
@@ -77,13 +91,27 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.station"
+    namespace "com.wuzz.station"
     defaultConfig {
-        applicationId "com.station"
+        applicationId "com.wuzz.station"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName project.env.get("APP_VERSION") ?: "1.0"
+        resValue "string", "build_config_package", "com.wuzz.station"
+    }
+    flavorDimensions += "env"
+    productFlavors {
+        staging {
+            dimension = "env"
+            applicationIdSuffix = project.env.get("ANDROID_APPLICATION_ID_SUFFIX") ?: ".staging"
+            resValue "string", "app_name", project.env.get("APP_DISPLAY_NAME") ?: "Station (Staging)"
+        }
+        production {
+            dimension = "env"
+            applicationIdSuffix = project.env.get("ANDROID_APPLICATION_ID_SUFFIX") ?: ""
+            resValue "string", "app_name", project.env.get("APP_DISPLAY_NAME") ?: "Station"
+        }
     }
     signingConfigs {
         debug {

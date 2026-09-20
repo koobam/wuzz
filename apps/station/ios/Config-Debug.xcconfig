@@ -1,0 +1,3 @@
+#include "Pods/Target Support Files/Pods-Station/Pods-Station.debug.xcconfig"
+#include "Config.xcconfig"
+PRODUCT_BUNDLE_IDENTIFIER = com.wuzz.station$(IOS_BUNDLE_ID_SUFFIX)
