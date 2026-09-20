@@ -49,6 +49,10 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
+# Vite / TanStack Router
+dist/
+.tanstack
+
 # Nx
 .nx/cache
 .nx/workspace-data

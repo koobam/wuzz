@@ -3,9 +3,19 @@
   "namedInputs": {
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "production": ["default", "!{projectRoot}/**/*.md", "!{projectRoot}/.env*"],
-    "sharedGlobals": ["{workspaceRoot}/tsconfig.base.json"]
+    "sharedGlobals": [
+      "{workspaceRoot}/tsconfig.base.json",
+      { "env": "VITE_API_URL" },
+      { "env": "VITE_SENTRY_DSN" }
+    ]
   },
   "targetDefaults": {
+    "build": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"],
+      "outputs": ["{projectRoot}/dist"]
+    },
     "typecheck": {
       "cache": true,
       "dependsOn": ["^typecheck"],
@@ -18,6 +28,13 @@
     "test": {
       "cache": true,
       "inputs": ["default", "^default"]
+    },
+    "dev": {
+      "continuous": true
+    },
+    "preview": {
+      "continuous": true,
+      "dependsOn": ["build"]
     }
   },
   "analytics": false
