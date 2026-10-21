@@ -1,38 +1,36 @@
-import { env } from '@/services/env/client';
+import { ApiError, publicPost, readSession, refreshSession, type Session, writeSession } from './http';
 
-export type Admin = {
-  id: string;
-  name: string;
-  email: string;
-};
+export type { Session };
 
-// Stub: no wuzz-backend admin auth endpoint exists yet. Shape and error
-// handling here are a best guess to get the routing/guard scaffold working;
-// replace the body once the real endpoint contract is known.
-export async function login(credentials: { email: string; password: string }): Promise<Admin> {
-  const response = await fetch(`${env.VITE_API_URL}/admin/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-    body: JSON.stringify(credentials),
-  });
-  if (!response.ok) {
-    throw new Error('Login failed');
-  }
-  return response.json();
+export async function sendCode(phone: string): Promise<void> {
+  await publicPost('/auth/send-code', { phone });
 }
 
-export async function fetchSession(): Promise<Admin | null> {
-  const response = await fetch(`${env.VITE_API_URL}/admin/session`, {
-    credentials: 'include',
-  });
-  if (!response.ok) return null;
-  return response.json();
+export async function verifyCode(phone: string, otp_code: string): Promise<Session> {
+  const session = await publicPost<Session>('/auth/verify-otp', { phone, otp_code });
+  writeSession(session);
+  return session;
+}
+
+// Offline-first: a cashier whose connection drops mid-shift must still get into
+// the app on reload. Only the server saying the session is over (401/403) signs
+// them out; a network failure keeps the stored session.
+export async function fetchSession(): Promise<Session | null> {
+  const stored = readSession();
+  if (!stored) return null;
+  if (new Date(stored.expires_at).getTime() - Date.now() > 60_000) return stored;
+  try {
+    return await refreshSession();
+  } catch {
+    return readSession();
+  }
 }
 
 export async function logout(): Promise<void> {
-  await fetch(`${env.VITE_API_URL}/admin/logout`, {
-    method: 'POST',
-    credentials: 'include',
+  const session = readSession();
+  writeSession(null);
+  if (!session) return;
+  await publicPost('/auth/logout', { refresh_token: session.refresh_token }).catch((e) => {
+    if (!(e instanceof ApiError)) return; // offline: the token will expire on its own
   });
 }

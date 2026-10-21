@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
   cardWrapper: {
     marginHorizontal: theme.spacing.large,
     borderRadius: CARD_BORDER_RADIUS,
+    borderCurve: 'continuous',
     borderWidth: 1,
     borderColor: theme.pallate.neutral['03'],
     overflow: 'hidden',

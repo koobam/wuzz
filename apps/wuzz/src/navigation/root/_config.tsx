@@ -7,16 +7,17 @@ import { ROOT_ROUTES } from './_routes';
 import Bottom from '@navigation/bottom';
 import Checkout from '@pages/(order)/checkout';
 import OutletList from '@pages/(outlet)/outlet-list';
+import WuzzerList from '@pages/(wuzzer)/wuzzer-list';
 import MenuSearch from '@pages/(bottom)/menu/search';
 import { Laundry } from '@pages/(order)/laundry';
 import ShareProfileQRScreen from '@pages/(bottom)/profile/share-qr';
 import StreakScreen from '@pages/(gamification)/streak';
-import LocationPermission from '@pages/(utils)/location-permission';
 import Login from '@pages/(auth)/login';
 import Register from '@pages/(auth)/register';
 import Verification from '@pages/(auth)/verification';
 import OrderStatus from '@pages/(order)/order-status';
 import Help from '@pages/(utils)/help';
+import Scan from '@pages/(bottom)/scan';
 import WebViewScreen from '@pages/(utils)/webview';
 import Leaderboard from '@pages/(utils)/leaderboard';
 import DeliveryAddressList from '@pages/(account)/delivery-address';
@@ -59,6 +60,15 @@ const outletListConfig: Routes = {
   },
 };
 
+const wuzzerListConfig: Routes = {
+  name: ROOT_ROUTES.WUZZER_LIST,
+  components: WuzzerList,
+  auth: false,
+  options: {
+    animation: 'slide_from_right',
+  },
+};
+
 const menuSearchConfig: Routes = {
   name: ROOT_ROUTES.MENU_SEARCH,
   components: MenuSearch,
@@ -85,12 +95,6 @@ const shareProfileQrConfig: Routes = {
 const streakConfig: Routes = {
   name: ROOT_ROUTES.STREAK,
   components: StreakScreen,
-  auth: false,
-};
-
-const locationPermissionConfig: Routes = {
-  name: ROOT_ROUTES.LOCATION_PERMISSION,
-  components: LocationPermission,
   auth: false,
 };
 
@@ -141,6 +145,15 @@ const helpConfig: Routes = {
   },
 };
 
+const scanConfig: Routes = {
+  name: ROOT_ROUTES.SCAN,
+  components: Scan,
+  auth: false,
+  options: {
+    animation: 'slide_from_bottom',
+  },
+};
+
 const webviewConfig: Routes = {
   name: ROOT_ROUTES.WEBVIEW,
   components: WebViewScreen,
@@ -182,16 +195,17 @@ export const rootNavigationConfigs = {
   [ROOT_ROUTES.BOTTOM]: bottomConfig,
   [ROOT_ROUTES.CHECKOUT]: checkoutConfig,
   [ROOT_ROUTES.OUTLET_LIST]: outletListConfig,
+  [ROOT_ROUTES.WUZZER_LIST]: wuzzerListConfig,
   [ROOT_ROUTES.MENU_SEARCH]: menuSearchConfig,
   [ROOT_ROUTES.LAUNDRY]: laundryConfig,
   [ROOT_ROUTES.SHARE_PROFILE_QR]: shareProfileQrConfig,
   [ROOT_ROUTES.STREAK]: streakConfig,
-  [ROOT_ROUTES.LOCATION_PERMISSION]: locationPermissionConfig,
   [ROOT_ROUTES.LOGIN]: loginConfig,
   [ROOT_ROUTES.REGISTER]: registerConfig,
   [ROOT_ROUTES.VERIFICATION]: verificationConfig,
   [ROOT_ROUTES.ORDER_STATUS]: orderStatusConfig,
   [ROOT_ROUTES.HELP]: helpConfig,
+  [ROOT_ROUTES.SCAN]: scanConfig,
   [ROOT_ROUTES.WEBVIEW]: webviewConfig,
   [ROOT_ROUTES.LEADERBOARD]: leaderboardConfig,
   [ROOT_ROUTES.DELIVERY_ADDRESS]: deliveryAddressConfig,
@@ -199,10 +213,10 @@ export const rootNavigationConfigs = {
 };
 
 export const rootRoutes: Routes[] = [
-  rootNavigationConfigs[ROOT_ROUTES.LOCATION_PERMISSION],
   rootNavigationConfigs[ROOT_ROUTES.BOTTOM],
   rootNavigationConfigs[ROOT_ROUTES.CHECKOUT],
   rootNavigationConfigs[ROOT_ROUTES.OUTLET_LIST],
+  rootNavigationConfigs[ROOT_ROUTES.WUZZER_LIST],
   rootNavigationConfigs[ROOT_ROUTES.MENU_SEARCH],
   rootNavigationConfigs[ROOT_ROUTES.LAUNDRY],
   rootNavigationConfigs[ROOT_ROUTES.SHARE_PROFILE_QR],
@@ -212,6 +226,7 @@ export const rootRoutes: Routes[] = [
   rootNavigationConfigs[ROOT_ROUTES.VERIFICATION],
   rootNavigationConfigs[ROOT_ROUTES.ORDER_STATUS],
   rootNavigationConfigs[ROOT_ROUTES.HELP],
+  rootNavigationConfigs[ROOT_ROUTES.SCAN],
   rootNavigationConfigs[ROOT_ROUTES.WEBVIEW],
   rootNavigationConfigs[ROOT_ROUTES.LEADERBOARD],
   rootNavigationConfigs[ROOT_ROUTES.DELIVERY_ADDRESS],

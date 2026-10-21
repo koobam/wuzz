@@ -13,6 +13,7 @@ const MACHINE_LABEL: Record<MachineType, string> = {
 const styles = StyleSheet.create({
   card: {
     borderRadius: theme.spacing.large,
+    borderCurve: 'continuous',
     borderWidth: 1,
     borderColor: theme.pallate.neutral['02'],
     backgroundColor: theme.pallate.neutral['01'],
@@ -22,10 +23,12 @@ const styles = StyleSheet.create({
   },
   button: {
     borderRadius: 999,
+    borderCurve: 'continuous',
     backgroundColor: theme.pallate.primary['03'],
   },
   buttonOutlined: {
     borderRadius: 999,
+    borderCurve: 'continuous',
     borderWidth: 1,
     borderColor: theme.pallate.primary['03'],
   },

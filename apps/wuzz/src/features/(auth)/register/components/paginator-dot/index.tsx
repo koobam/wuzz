@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
   paginatorDot: {
     height: 8,
     borderRadius: 4,
+    borderCurve: 'continuous',
     backgroundColor: theme.pallate.primary['03'],
   },
 });

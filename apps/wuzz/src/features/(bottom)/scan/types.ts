@@ -6,6 +6,7 @@
 export interface ScanScreenProps {
   navigation: {
     navigate: (params: { name: string; params?: object }) => void;
+    goBack: () => void;
   };
 }
 

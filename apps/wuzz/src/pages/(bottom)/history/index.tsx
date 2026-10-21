@@ -17,11 +17,13 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import useOnLayout from '@hooks/utils/useOnLayout';
 import { TruckFast } from 'iconsax-react-native';
+import { useBottomNavHeight } from '@services/contexts/bottom-nav-height';
 import TabBar from '@components/molecules/tabbar';
 
 export const History = memo((props: any) => {
   const { navigation } = props;
   const { top } = useSafeAreaInsets();
+  const { navHeight } = useBottomNavHeight();
   const { t } = useTranslation('history');
   const [layout, onLayout] = useOnLayout();
 
@@ -42,19 +44,19 @@ export const History = memo((props: any) => {
   const ongoingListContentStyle = useMemo(
     () => ({
       paddingTop: theme.spacing.standard,
-      paddingBottom: theme.spacing.standard,
+      paddingBottom: theme.spacing.standard + navHeight,
       paddingHorizontal: theme.spacing.large,
     }),
-    [],
+    [navHeight],
   );
 
   const historyListContentStyle = useMemo(
     () => ({
       paddingTop: theme.spacing.standard,
-      paddingBottom: theme.spacing.standard,
+      paddingBottom: theme.spacing.standard + navHeight,
       paddingHorizontal: theme.spacing.large,
     }),
-    [],
+    [navHeight],
   );
 
   const historyEmptyStateStyle = useMemo(
@@ -118,9 +120,15 @@ export const History = memo((props: any) => {
         onPress={() => handleOrderPress(String(item))}
       >
         <HStack items="center" gap={theme.spacing.standard}>
-          <TruckFast size={24} color={theme.pallate.primary['03']} variant='Bulk' />
+          <TruckFast
+            size={24}
+            color={theme.pallate.primary['03']}
+            variant="Bulk"
+          />
           <VStack>
-            <Text weight="semibold" type="b1">Driver Menuju Ke Lokasimu</Text>
+            <Text weight="semibold" type="b1">
+              Driver Menuju Ke Lokasimu
+            </Text>
             <HStack items="center" gap={theme.spacing.tiny}>
               <Text color={theme.pallate.neutral['04']} type="l1">
                 Wuzz 1090 Supermall Karawaci
@@ -138,21 +146,60 @@ export const History = memo((props: any) => {
           </VStack>
         </HStack>
         <HStack items="center" gap={theme.spacing.tiny}>
-          <Box borderRadius={25} width={30} height={30} backgroundColor={theme.pallate.neutral['02']} />
-          <Flex fill height={5} borderRadius={25} backgroundColor={theme.pallate.neutral['02']} />
-          <Box borderRadius={25} width={30} height={30} backgroundColor={theme.pallate.neutral['02']} />
-          <Flex fill height={5} borderRadius={25} backgroundColor={theme.pallate.neutral['02']} />
-          <Box borderRadius={25} width={30} height={30} backgroundColor={theme.pallate.neutral['02']} />
-          <Flex fill height={5} borderRadius={25} backgroundColor={theme.pallate.neutral['02']} />
-          <Box borderRadius={25} width={30} height={30} backgroundColor={theme.pallate.neutral['02']} />
+          <Box
+            borderRadius={25}
+            width={30}
+            height={30}
+            backgroundColor={theme.pallate.neutral['02']}
+          />
+          <Flex
+            fill
+            height={5}
+            borderRadius={25}
+            backgroundColor={theme.pallate.neutral['02']}
+          />
+          <Box
+            borderRadius={25}
+            width={30}
+            height={30}
+            backgroundColor={theme.pallate.neutral['02']}
+          />
+          <Flex
+            fill
+            height={5}
+            borderRadius={25}
+            backgroundColor={theme.pallate.neutral['02']}
+          />
+          <Box
+            borderRadius={25}
+            width={30}
+            height={30}
+            backgroundColor={theme.pallate.neutral['02']}
+          />
+          <Flex
+            fill
+            height={5}
+            borderRadius={25}
+            backgroundColor={theme.pallate.neutral['02']}
+          />
+          <Box
+            borderRadius={25}
+            width={30}
+            height={30}
+            backgroundColor={theme.pallate.neutral['02']}
+          />
         </HStack>
         <HStack items="center" gap={theme.spacing.tiny}>
           <VStack fill>
             <Text type="l1">Laundry Kiloan, +2 Lainnya</Text>
-            <Text color={theme.pallate.neutral['04']} type="l1">3Kg Pakaian, 2 Sepatu, +2 Item</Text>
+            <Text color={theme.pallate.neutral['04']} type="l1">
+              3Kg Pakaian, 2 Sepatu, +2 Item
+            </Text>
           </VStack>
           <VStack>
-            <Text weight="semibold" type="l1">Total Harga</Text>
+            <Text weight="semibold" type="l1">
+              Total Harga
+            </Text>
             <Text type="l1">Rp 40.000</Text>
           </VStack>
         </HStack>
@@ -196,13 +243,7 @@ export const History = memo((props: any) => {
     >
       <Tabs.Tab name="Ongoing">
         <Tabs.FlashList
-          data={[
-            1,
-            2,
-            3,
-            4,
-            5,
-          ]}
+          data={[1, 2, 3, 4, 5]}
           contentContainerStyle={ongoingListContentStyle}
           ItemSeparatorComponent={renderItemSeparator}
           ListHeaderComponent={() => <Box height={theme.spacing.standard} />}

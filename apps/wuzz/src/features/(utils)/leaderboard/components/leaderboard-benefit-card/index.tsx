@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: theme.pallate.neutral['01'],
     borderRadius: theme.spacing.large,
+    borderCurve: 'continuous',
     marginHorizontal: theme.spacing.large,
     marginTop: theme.spacing.large,
     marginBottom: theme.spacing.small,
@@ -20,6 +21,7 @@ const styles = StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
+    borderCurve: 'continuous',
     marginTop: 6,
   },
 });

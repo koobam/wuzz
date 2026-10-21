@@ -82,9 +82,11 @@ const inputWrapper = sv({
     rounded: {
       true: {
         borderRadius: 9999,
+        borderCurve: 'continuous',
       },
       false: {
         borderRadius: 4,
+        borderCurve: 'continuous',
       },
     },
   },

@@ -14,29 +14,34 @@ const WEIGHT_MAP: Record<
   { family: string; italicFamily: string; cssWeight: string }
 > = {
   light: {
-    family: 'Poppins-Light',
-    italicFamily: 'Poppins-LightItalic',
+    family: 'Nunito-Light',
+    italicFamily: 'Nunito-LightItalic',
     cssWeight: '300',
   },
   regular: {
-    family: 'Poppins-Regular',
-    italicFamily: 'Poppins-Italic',
+    family: 'Nunito-Regular',
+    italicFamily: 'Nunito-Italic',
     cssWeight: '400',
   },
   medium: {
-    family: 'Poppins-Medium',
-    italicFamily: 'Poppins-MediumItalic',
+    family: 'Nunito-Medium',
+    italicFamily: 'Nunito-MediumItalic',
     cssWeight: '500',
   },
   semibold: {
-    family: 'Poppins-SemiBold',
-    italicFamily: 'Poppins-SemiBoldItalic',
+    family: 'Nunito-SemiBold',
+    italicFamily: 'Nunito-SemiBoldItalic',
     cssWeight: '600',
   },
   bold: {
-    family: 'Poppins-Bold',
-    italicFamily: 'Poppins-BoldItalic',
+    family: 'Nunito-Bold',
+    italicFamily: 'Nunito-BoldItalic',
     cssWeight: '700',
+  },
+  extrabold: {
+    family: 'Nunito-ExtraBold',
+    italicFamily: 'Nunito-ExtraBoldItalic',
+    cssWeight: '800',
   },
   stylized: {
     family: Platform.OS === 'ios' ? 'Fredoka One' : 'FredokaOne-Regular',

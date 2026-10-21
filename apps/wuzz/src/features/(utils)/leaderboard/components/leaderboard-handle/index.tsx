@@ -13,6 +13,7 @@ import type { LeaderboardHandleContentProps } from './leaderboard-handle.types';
 const styles = StyleSheet.create({
   container: {
     borderTopLeftRadius: 24,
+    borderCurve: 'continuous',
     borderTopRightRadius: 24,
     overflow: 'hidden',
   },
@@ -20,16 +21,19 @@ const styles = StyleSheet.create({
     width: 40,
     height: 4,
     borderRadius: 2,
+    borderCurve: 'continuous',
     alignSelf: 'center',
     marginTop: theme.spacing.medium,
     marginBottom: theme.spacing.standard,
   },
   timeBadge: {
     borderRadius: 999,
+    borderCurve: 'continuous',
     borderWidth: 1,
   },
   rankBadge: {
     borderRadius: 999,
+    borderCurve: 'continuous',
   },
   divider: {
     width: 1,
@@ -63,18 +67,13 @@ export const LeaderboardHandleContent = memo(function LeaderboardHandleContent({
     >
       {/* Left: tier icon + league name */}
       <HStack fill items="center" gap={theme.spacing.small}>
-        <Box
-          borderRadius={999}
-          backgroundColor={lightColor}
-        >
+        <Box borderRadius={999} backgroundColor={lightColor}>
           <Icon icon={tier} size={32} color={color} />
         </Box>
 
-        <VStack>
-          <Text type="b2" weight="bold" color={theme.pallate[tier]['04']}>
-            {TIER_LABEL[tier]} League
-          </Text>
-        </VStack>
+        <Text type="b2" weight="bold" color={theme.pallate[tier]['04']}>
+          {TIER_LABEL[tier]} League
+        </Text>
       </HStack>
       <VStack items="flex-end">
         <Text type="l2" weight="semibold" color={theme.pallate.neutral['04']}>

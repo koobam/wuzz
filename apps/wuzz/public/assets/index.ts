@@ -1,5 +1,7 @@
 // Banner
 export const BannerTestingApp = require('./banner/banner-testing-app.png');
+// Payment
+export const GopayLogo = require('./image/gopay.png');
 // Menu
 export const MenuEmptyPlaceholder = require('./menu-empty-placeholder.png');
 // svgs — react-native-svg-transformer provides default export, not ReactComponent

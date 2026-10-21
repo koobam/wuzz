@@ -4,3 +4,5 @@ export type { AppStateContextValue, AppVisibility, NetworkState } from './app-st
 export type { AuthAction, AuthContextValue, AuthState, AuthUser } from './auth';
 export { BottomNavHeightProvider, useBottomNavHeight } from './bottom-nav-height';
 export { SelectedOutletProvider, useSelectedOutlet } from './selected-outlet';
+export { OrderDraftProvider, useOrderDraft } from './order-draft';
+export type { OrderDraftItem } from './order-draft';

@@ -4,3 +4,7 @@ export * from './outlets';
 export * from './outlets.types';
 export * from './moods';
 export * from './moods.types';
+export * from './coverage';
+export * from './coverage.types';
+export * from './member';
+export * from './member.types';

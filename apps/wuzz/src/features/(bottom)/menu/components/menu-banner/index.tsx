@@ -154,7 +154,7 @@ export const MenuBanner = memo(({ width }: MenuBannerProps) => {
 
   return (
     <Box padding={{ paddingTop: theme.spacing.standard }}>
-      <Box height={width / 2} style={styles.overflowHidden}>
+      <Box width={width} height={width / 2} style={styles.overflowHidden}>
         <FlashList
           ref={listRef}
           data={MENU_BANNER_IMAGES}

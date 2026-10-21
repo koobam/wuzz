@@ -1,18 +1,18 @@
 import request from '@http/request';
-import { apiUrl } from '@http/url';
+import { API_V1, apiUrl } from '@http/url';
 import type { CheckUsernameResponse, UsernameSuggestionsParams, UsernameSuggestionsResponse } from './username.types';
 
 export const getUsernameSuggestions = (
   params: UsernameSuggestionsParams,
 ): Promise<UsernameSuggestionsResponse> =>
-  request(apiUrl('/app/suggest-username'), {
+  request(apiUrl(`${API_V1}/suggest-username`), {
     method: 'GET',
     params,
   });
 
 
 export const checkUsernameAvailability = (username: string): Promise<CheckUsernameResponse> =>
-  request(apiUrl('/app/check-username'), {
+  request(apiUrl(`${API_V1}/check-username`), {
     method: 'GET',
     params: { username },
   })

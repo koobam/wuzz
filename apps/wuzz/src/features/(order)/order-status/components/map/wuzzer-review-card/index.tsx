@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: theme.pallate.neutral['02'],
     borderRadius: 12,
+    borderCurve: 'continuous',
   },
 });
 

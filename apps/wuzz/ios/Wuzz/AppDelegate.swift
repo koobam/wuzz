@@ -4,6 +4,7 @@ import React_RCTAppDelegate
 import ReactAppDependencyProvider
 import RNBootSplash // ⬅️ add this import
 import HotUpdater
+import FirebaseCore
 // NitroFetch: jangan `import NitroFetch` di Swift — Clang module-nya expose .hpp
 // dan bakal kena dependency-scanner failure. NitroAutoPrefetcher Obj-C class
 // otomatis available di Swift lewat Wuzz-Bridging-Header.h
@@ -19,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
+    configureFirebase()
     NitroAutoPrefetcher.prefetchOnStart()
 
     let delegate = ReactNativeDelegate()
@@ -38,6 +40,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     return true
   }
+}
+
+/// One Firebase app per bundle id (.dev, .staging, production), each with its own
+/// plist in the app bundle. Picks the plist whose BUNDLE_ID matches this build, so a
+/// build without a matching file simply runs without Firebase instead of crashing.
+private func configureFirebase() {
+  let bundleId = Bundle.main.bundleIdentifier ?? ""
+  let names = [
+    "GoogleService-Info", "GoogleService-Info.Staging", "GoogleService-Info.Production",
+  ]
+  for name in names {
+    guard let path = Bundle.main.path(forResource: name, ofType: "plist"),
+      let options = FirebaseOptions(contentsOfFile: path),
+      options.bundleID == bundleId
+    else { continue }
+    FirebaseApp.configure(options: options)
+    return
+  }
+  NSLog("Firebase not configured: no GoogleService-Info plist matches \(bundleId)")
 }
 
 class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {

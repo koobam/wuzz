@@ -62,12 +62,14 @@ const detailHandleStyles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 20,
+    borderCurve: 'continuous',
     overflow: 'hidden',
   },
   image: {
     width: 80,
     height: 80,
     borderRadius: 20,
+    borderCurve: 'continuous',
   },
   kgBadge: {
     alignSelf: 'flex-start',

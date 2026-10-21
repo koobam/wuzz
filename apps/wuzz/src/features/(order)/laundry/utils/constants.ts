@@ -13,6 +13,14 @@ export const THUMB_SIZE = 20;
 export const TRACK_HEIGHT = 8;
 export const TOOLTIP_WIDTH = 48;
 
+/**
+ * About how many garments a kilo holds, as a range: the usual laundry rule of
+ * thumb (a tee, a shirt and a pair of trousers average out near 200-250 g). An
+ * estimate to give a feel for the weight, not a count the order depends on.
+ */
+export const PIECES_PER_KG_MIN = 4;
+export const PIECES_PER_KG_MAX = 5;
+
 /** Base price per kg untuk multiple (kiloan) saja. Single = selected options + service extra saja. Rupiah. */
 export const BASE_PRICE_PER_KG = 5_000;
 
@@ -21,7 +29,8 @@ export const DEFAULT_PRICE_LABEL = 'Rp 0';
 
 /** Fallback error copy when laundry service detail fails (no API error data). */
 export const LAUNDRY_ERROR_TITLE_DEFAULT = 'Gagal memuat layanan';
-export const LAUNDRY_ERROR_DESCRIPTION_DEFAULT = 'Silakan coba lagi atau pilih layanan lain.';
+export const LAUNDRY_ERROR_DESCRIPTION_DEFAULT =
+  'Silakan coba lagi atau pilih layanan lain.';
 
 /** Add-on section copywriting (layanan tambahan). Overridable via AddOnChecklist props. */
 export const ADD_ON_SECTION_TITLE = 'Layanan Tambahan';
@@ -71,24 +80,44 @@ export const ADD_ON_OPTIONS: AddOnOption[] = [
 /** Options for laundry satuan (per item): Jas, Kemeja, etc. */
 export const SATUAN_OPTIONS: ChecklistOption[] = [
   {
-    id: 'jas', label: 'Jas', description: 'Cuci dan setrika jas.', priceSubtitle: 'Rp 25.000', price: 25000,
-    icon: 'pewangi_premium'
+    id: 'jas',
+    label: 'Jas',
+    description: 'Cuci dan setrika jas.',
+    priceSubtitle: 'Rp 25.000',
+    price: 25000,
+    icon: 'pewangi_premium',
   },
   {
-    id: 'kemeja', label: 'Kemeja', description: 'Kemeja formal atau casual.', priceSubtitle: 'Rp 15.000', price: 15000,
-    icon: 'pewangi_premium'
+    id: 'kemeja',
+    label: 'Kemeja',
+    description: 'Kemeja formal atau casual.',
+    priceSubtitle: 'Rp 15.000',
+    price: 15000,
+    icon: 'pewangi_premium',
   },
   {
-    id: 'celana', label: 'Celana', description: 'Celana panjang atau pendek.', priceSubtitle: 'Rp 12.000', price: 12000,
-    icon: 'pewangi_premium'
+    id: 'celana',
+    label: 'Celana',
+    description: 'Celana panjang atau pendek.',
+    priceSubtitle: 'Rp 12.000',
+    price: 12000,
+    icon: 'pewangi_premium',
   },
   {
-    id: 'dress', label: 'Dress', description: 'Gaun dan dress.', priceSubtitle: 'Rp 20.000', price: 20000,
-    icon: 'pewangi_premium'
+    id: 'dress',
+    label: 'Dress',
+    description: 'Gaun dan dress.',
+    priceSubtitle: 'Rp 20.000',
+    price: 20000,
+    icon: 'pewangi_premium',
   },
   {
-    id: 'lainnya', label: 'Lainnya', description: 'Item lain (sweater, jaket, dll).', priceSubtitle: 'Rp 10.000', price: 10000,
-    icon: 'pewangi_premium'
+    id: 'lainnya',
+    label: 'Lainnya',
+    description: 'Item lain (sweater, jaket, dll).',
+    priceSubtitle: 'Rp 10.000',
+    price: 10000,
+    icon: 'pewangi_premium',
   },
 ];
 
@@ -99,16 +128,28 @@ export const WASH_ADD_ON_OPTIONS: { id: WashAddOnId; label: string }[] = [
 
 export const SERVICE_TYPE_OPTIONS: ChecklistOption[] = [
   {
-    id: 'reguler', label: 'Reguler', description: 'Layanan ini selesai dalam 2-3 hari.', priceSubtitle: 'Rp 0', price: 0,
-    icon: 'pewangi_premium'
+    id: 'reguler',
+    label: 'Reguler',
+    description: 'Layanan ini selesai dalam 2-3 hari.',
+    priceSubtitle: 'Rp 0',
+    price: 0,
+    icon: 'pewangi_premium',
   },
   {
-    id: 'express', label: 'Express', description: 'Layanan ini selesai dalam 12 jam.', priceSubtitle: 'Rp 2.000', price: 2000,
-    icon: 'pewangi_premium'
+    id: 'express',
+    label: 'Express',
+    description: 'Layanan ini selesai dalam 12 jam.',
+    priceSubtitle: 'Rp 2.000',
+    price: 2000,
+    icon: 'pewangi_premium',
   },
   {
-    id: 'kilat', label: 'Kilat', description: 'Layanan ini selesai dalam 6 jam.', priceSubtitle: 'Rp 6.000', price: 6000,
-    icon: 'pewangi_premium'
+    id: 'kilat',
+    label: 'Kilat',
+    description: 'Layanan ini selesai dalam 6 jam.',
+    priceSubtitle: 'Rp 6.000',
+    price: 6000,
+    icon: 'pewangi_premium',
   },
 ];
 /** Daftar section checklist per laundry type. Bisa dikembangkan (lebih dari satu section). */

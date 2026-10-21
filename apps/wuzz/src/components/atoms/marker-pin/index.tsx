@@ -95,6 +95,7 @@ const MarkerPin = memo(
             width: circleRadius * 2,
             height: circleRadius * 2,
             borderRadius: circleRadius,
+            borderCurve: 'continuous',
             overflow: 'hidden',
             borderWidth: 1,
             borderColor: borderColor,

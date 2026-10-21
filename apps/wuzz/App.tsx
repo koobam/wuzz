@@ -8,10 +8,10 @@
 import { queryClient } from '@core/query-client';
 import { queryPersister } from '@core/query-persister';
 import Root from '@navigation/root';
-import Mapbox from '@rnmapbox/maps';
 import {
   AppState,
   BottomNavHeightProvider,
+  OrderDraftProvider,
   SelectedOutletProvider,
 } from '@services/contexts';
 import { DeliveryAddressProvider } from '@features/(account)/delivery-address';
@@ -32,9 +32,6 @@ import { prefetchHomeData } from '@features/(bottom)/home/prefetch';
 require('./ReactotronConfig');
 
 prefetchHomeData();
-Mapbox.setAccessToken(
-  'pk.eyJ1Ijoia29vYmFtIiwiYSI6ImNtZWxtajNncjBmeWMyd3FyM3V3NzUwMzUifQ.eusnZIscj38jvv9zmm1tHA',
-);
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -61,7 +58,9 @@ function AppContent() {
         <BottomNavHeightProvider>
           <SelectedOutletProvider>
             <DeliveryAddressProvider>
-              <Root />
+              <OrderDraftProvider>
+                <Root />
+              </OrderDraftProvider>
             </DeliveryAddressProvider>
           </SelectedOutletProvider>
         </BottomNavHeightProvider>

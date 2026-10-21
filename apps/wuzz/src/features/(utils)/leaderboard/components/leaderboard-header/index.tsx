@@ -12,6 +12,7 @@ const buttonStyle = {
   items: 'center' as const,
   spacing: theme.spacing.small,
   borderRadius: 999,
+  borderCurve: 'continuous',
   borderWidth: 1,
   borderColor: theme.pallate.neutral['03'],
   backgroundColor: theme.pallate.neutral['01'],

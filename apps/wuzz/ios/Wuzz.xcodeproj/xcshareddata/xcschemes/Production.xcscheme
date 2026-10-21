@@ -10,7 +10,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "react-native-config: use .env.production"
-               scriptText = "if [ -f &quot;${SRCROOT}/../.env.production&quot; ]; then cp &quot;${SRCROOT}/../.env.production&quot; &quot;${SRCROOT}/../.env&quot;; fi&#10;&quot;${SRCROOT}/../node_modules/react-native-config/ios/ReactNativeConfig/BuildXCConfig.rb&quot; &quot;${SRCROOT}/..&quot; &quot;${SRCROOT}/tmp.xcconfig&quot;&#10;"
+               scriptText = "if [ -f &quot;${SRCROOT}/../.env.production&quot; ]; then cp &quot;${SRCROOT}/../.env.production&quot; &quot;${SRCROOT}/../.env&quot;; fi&#10;&quot;${SRCROOT}/../node_modules/react-native-config/ios/ReactNativeConfig/BuildXCConfig.rb&quot; &quot;${SRCROOT}/..&quot; &quot;${SRCROOT}/tmp.xcconfig&quot;&#10;echo &quot;APP_ICON_NAME = AppIcon&quot; &gt;&gt; &quot;${SRCROOT}/tmp.xcconfig&quot;&#10;"
                shellToInvoke = "/bin/sh">
                <EnvironmentBuildable>
                   <BuildableReference

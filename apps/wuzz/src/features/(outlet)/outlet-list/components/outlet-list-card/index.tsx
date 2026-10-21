@@ -43,11 +43,13 @@ const styles = StyleSheet.create({
   cardWrapper: {
     marginHorizontal: theme.spacing.large,
     borderRadius: CARD_BORDER_RADIUS,
+    borderCurve: 'continuous',
     overflow: 'hidden',
     minHeight: 200,
   },
   card: {
     borderRadius: CARD_BORDER_RADIUS,
+    borderCurve: 'continuous',
     overflow: 'hidden',
   },
   tagListContent: {
@@ -58,12 +60,14 @@ const styles = StyleSheet.create({
   },
   tag: {
     borderRadius: TAG_BORDER_RADIUS,
+    borderCurve: 'continuous',
     overflow: 'hidden',
   },
   tagDot: {
     width: 4,
     height: 4,
     borderRadius: 2,
+    borderCurve: 'continuous',
     backgroundColor: theme.pallate.neutral['04'],
   },
   serviceBadge: {
@@ -82,6 +86,7 @@ const styles = StyleSheet.create({
     width: PHOTO_SIZE,
     aspectRatio: 1.6 / 1,
     borderRadius: 10,
+    borderCurve: 'continuous',
     overflow: 'hidden',
   },
   photo: {

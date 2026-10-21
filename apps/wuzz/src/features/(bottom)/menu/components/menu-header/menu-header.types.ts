@@ -1,4 +1,4 @@
-import type { OutletService } from '@features/(outlet)/outlet-list';
+import type { OutletService, OutletStatus } from '@features/(outlet)/outlet-list';
 import type { SharedValue } from 'react-native-reanimated';
 
 export type MenuHeaderProps = {
@@ -9,6 +9,7 @@ export type MenuHeaderProps = {
   outletAddress?: string;
   /** Distance from user in km. Shown next to address when set. */
   distanceKm?: number;
+  outletStatus?: OutletStatus;
   outletServices?: OutletService[];
   onOutletPress: () => void;
   onSearchPress?: () => void;

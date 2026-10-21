@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     width: BADGE_DOT_SIZE,
     height: BADGE_DOT_SIZE,
     borderRadius: BADGE_DOT_SIZE / 2,
+    borderCurve: 'continuous',
   },
 });
 
@@ -86,6 +87,7 @@ export const OutletServiceBadge = memo(function OutletServiceBadge({
     ? 999
     : {
         borderBottomLeftRadius: BADGE_BORDER_RADIUS,
+        borderCurve: 'continuous',
         borderTopRightRadius: BADGE_BORDER_RADIUS,
       };
 

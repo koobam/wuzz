@@ -13,6 +13,9 @@ const getBaseUrl = (): string => {
   return base.replace(/\/$/, '');
 };
 
+/** Version prefix of the customer-app API. Every app endpoint is built from this. */
+export const API_V1 = '/app/v1';
+
 /**
  * Builds full URL for API gateway: base + path + query.
  * Path should start with `/` (e.g. `/login`, `/laundry-services`).

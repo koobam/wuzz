@@ -7,22 +7,22 @@ import {
   TextStyleProps,
 } from './Text.types';
 
-// Each variant maps to a specific Poppins font file via `fontFamily` only.
+// Each variant maps to a specific Nunito font file via `fontFamily` only.
 // Using fontWeight/fontStyle here can make React Native synthesize a faux face
 // instead of loading the actual font file, which breaks italic and extra-bold.
 export const TextStyleWeight: RecordTextStyleWeight = StyleSheet.create({
-  light: { fontFamily: 'Poppins-Light' },
-  lightItalic: { fontFamily: 'Poppins-LightItalic' },
-  regular: { fontFamily: 'Poppins-Regular' },
-  regularItalic: { fontFamily: 'Poppins-Italic' },
-  medium: { fontFamily: 'Poppins-Medium' },
-  mediumItalic: { fontFamily: 'Poppins-MediumItalic' },
-  semibold: { fontFamily: 'Poppins-SemiBold' },
-  semiboldItalic: { fontFamily: 'Poppins-SemiBoldItalic' },
-  bold: { fontFamily: 'Poppins-Bold' },
-  boldItalic: { fontFamily: 'Poppins-BoldItalic' },
-  extrabold: { fontFamily: 'Poppins-ExtraBold' },
-  extraboldItalic: { fontFamily: 'Poppins-ExtraBoldItalic' },
+  light: { fontFamily: 'Nunito-Light' },
+  lightItalic: { fontFamily: 'Nunito-LightItalic' },
+  regular: { fontFamily: 'Nunito-Regular' },
+  regularItalic: { fontFamily: 'Nunito-Italic' },
+  medium: { fontFamily: 'Nunito-Medium' },
+  mediumItalic: { fontFamily: 'Nunito-MediumItalic' },
+  semibold: { fontFamily: 'Nunito-SemiBold' },
+  semiboldItalic: { fontFamily: 'Nunito-SemiBoldItalic' },
+  bold: { fontFamily: 'Nunito-Bold' },
+  boldItalic: { fontFamily: 'Nunito-BoldItalic' },
+  extrabold: { fontFamily: 'Nunito-ExtraBold' },
+  extraboldItalic: { fontFamily: 'Nunito-ExtraBoldItalic' },
   stylized: { fontFamily: Platform.OS === 'ios' ? 'Fredoka One' : 'FredokaOne-Regular' },
 });
 
@@ -40,7 +40,9 @@ export const TextStyleType: RecordTextStyleType = StyleSheet.create({
   l3: { fontSize: 9,  lineHeight: 13.5 },
 });
 
-const LINE_HEIGHT_RATIO = 1.4;
+// Line height as a multiple of the font size. Nunito already carries generous
+// space above and below its letters, so 1.4 read as loose; 1.25 sits tighter.
+const LINE_HEIGHT_RATIO = 1.25;
 
 export const createTextMarginStyle = (margin?: TextMarginType) => {
   if (typeof margin === 'undefined') { return undefined; }

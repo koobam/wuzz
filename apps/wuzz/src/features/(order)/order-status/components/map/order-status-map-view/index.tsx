@@ -1,6 +1,6 @@
-import Mapbox, { Camera, MapView } from '@rnmapbox/maps';
-import { memo, useMemo } from 'react';
+import { memo, useEffect, useMemo, useRef } from 'react';
 import { StyleSheet } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
 import { Box, theme } from '@components/atoms';
 import type { OrderStatusMapViewProps } from './order-status-map-view.types';
 
@@ -13,10 +13,21 @@ const mapStyle = StyleSheet.create({
   },
 });
 
+const DEFAULT_REGION = {
+  latitude: -6.22,
+  longitude: 106.65,
+  latitudeDelta: 0.04,
+  longitudeDelta: 0.04,
+};
+
+const FIT_EDGE_PADDING = { top: 60, right: 60, bottom: 60, left: 60 };
+
 export const OrderStatusMapView = memo(({ order }: OrderStatusMapViewProps) => {
+  const mapRef = useRef<MapView>(null);
+
   const driverCoord = useMemo(() => {
     if (order.driverLat != null && order.driverLng != null) {
-      return [order.driverLng, order.driverLat] as [number, number];
+      return { latitude: order.driverLat, longitude: order.driverLng };
     }
     return null;
   }, [order.driverLat, order.driverLng]);
@@ -24,48 +35,38 @@ export const OrderStatusMapView = memo(({ order }: OrderStatusMapViewProps) => {
   const destCoord = useMemo(() => {
     const lat = order.status === 'delivery_to_customer' ? order.customerLat : order.outletLat;
     const lng = order.status === 'delivery_to_customer' ? order.customerLng : order.outletLng;
-    if (lat != null && lng != null) return [lng, lat] as [number, number];
+    if (lat != null && lng != null) return { latitude: lat, longitude: lng };
     return null;
   }, [order.status, order.customerLat, order.customerLng, order.outletLat, order.outletLng]);
 
-  const bounds = useMemo(() => {
-    const coords: [number, number][] = [];
+  const points = useMemo(() => {
+    const coords: { latitude: number; longitude: number }[] = [];
     if (driverCoord) coords.push(driverCoord);
     if (destCoord) coords.push(destCoord);
-    if (coords.length === 0) {
-      return {
-        ne: [106.66, -6.2] as [number, number],
-        sw: [106.64, -6.24] as [number, number],
-      };
-    }
-    const lngs = coords.map((c) => c[0]);
-    const lats = coords.map((c) => c[1]);
-    const padding = 0.01;
-    return {
-      ne: [Math.max(...lngs) + padding, Math.max(...lats) + padding] as [number, number],
-      sw: [Math.min(...lngs) - padding, Math.min(...lats) - padding] as [number, number],
-    };
+    return coords;
   }, [driverCoord, destCoord]);
+
+  useEffect(() => {
+    if (points.length === 0) return;
+    mapRef.current?.fitToCoordinates(points, {
+      edgePadding: FIT_EDGE_PADDING,
+      animated: true,
+    });
+  }, [points]);
 
   return (
     <MapView
+      ref={mapRef}
       style={mapStyle.fill}
-      styleURL={Mapbox.StyleURL.Outdoors}
+      initialRegion={DEFAULT_REGION}
       scrollEnabled
       pitchEnabled={false}
       rotateEnabled={false}
-      attributionEnabled={false}
-      compassEnabled={false}
-      scaleBarEnabled={false}
-      logoEnabled={false}
+      showsCompass={false}
+      toolbarEnabled={false}
     >
-      <Camera
-        bounds={bounds}
-        animationDuration={800}
-        animationMode="easeTo"
-      />
       {driverCoord != null && (
-        <Mapbox.MarkerView id="driver" coordinate={driverCoord}>
+        <Marker coordinate={driverCoord} anchor={{ x: 0.5, y: 0.5 }} tracksViewChanges={false}>
           <Box
             width={DRIVER_MARKER_SIZE}
             height={DRIVER_MARKER_SIZE}
@@ -74,10 +75,10 @@ export const OrderStatusMapView = memo(({ order }: OrderStatusMapViewProps) => {
             borderWidth={2}
             borderColor={theme.pallate.neutral['01']}
           />
-        </Mapbox.MarkerView>
+        </Marker>
       )}
       {destCoord != null && (
-        <Mapbox.MarkerView id="destination" coordinate={destCoord}>
+        <Marker coordinate={destCoord} anchor={{ x: 0.5, y: 0.5 }} tracksViewChanges={false}>
           <Box
             width={DEST_MARKER_SIZE}
             height={DEST_MARKER_SIZE}
@@ -86,7 +87,7 @@ export const OrderStatusMapView = memo(({ order }: OrderStatusMapViewProps) => {
             borderWidth={2}
             borderColor={theme.pallate.neutral['01']}
           />
-        </Mapbox.MarkerView>
+        </Marker>
       )}
     </MapView>
   );

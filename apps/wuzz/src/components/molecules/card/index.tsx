@@ -170,6 +170,7 @@ const PostCard = memo((props: PostCardProps) => {
                     width: '100%',
                     height: '100%',
                     borderRadius: 30,
+                    borderCurve: 'continuous',
                   }}
                 />
               )}

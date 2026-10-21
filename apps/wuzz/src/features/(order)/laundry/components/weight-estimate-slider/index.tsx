@@ -8,6 +8,8 @@ import { useWeightEstimateSlider } from '../../hooks';
 import {
   MIN_KG,
   MAX_KG,
+  PIECES_PER_KG_MAX,
+  PIECES_PER_KG_MIN,
   THUMB_SIZE,
   TRACK_HEIGHT,
   TOOLTIP_WIDTH,
@@ -18,6 +20,7 @@ const styles = StyleSheet.create({
   track: {
     height: TRACK_HEIGHT,
     borderRadius: TRACK_HEIGHT / 2,
+    borderCurve: 'continuous',
     backgroundColor: theme.pallate.neutral['03'],
   },
   trackFill: {
@@ -26,6 +29,7 @@ const styles = StyleSheet.create({
     top: 0,
     height: TRACK_HEIGHT,
     borderRadius: TRACK_HEIGHT / 2,
+    borderCurve: 'continuous',
     backgroundColor: theme.pallate.primary['03'],
   },
   thumb: {
@@ -35,6 +39,7 @@ const styles = StyleSheet.create({
     width: THUMB_SIZE,
     height: THUMB_SIZE,
     borderRadius: THUMB_SIZE / 2,
+    borderCurve: 'continuous',
     borderWidth: 2,
     borderColor: theme.pallate.neutral['01'],
     backgroundColor: theme.pallate.primary['03'],
@@ -43,6 +48,7 @@ const styles = StyleSheet.create({
     width: TOOLTIP_WIDTH,
     paddingVertical: theme.spacing.tiny,
     borderRadius: 999,
+    borderCurve: 'continuous',
     backgroundColor: theme.pallate.neutral['03'],
     alignItems: 'center',
     justifyContent: 'center',
@@ -103,6 +109,17 @@ export const WeightEstimateSlider = memo(function WeightEstimateSlider({
           </Text>
           <Text type="l2" color={theme.pallate.neutral['04']}>
             Tentukan estimasi berat cucian untuk mengetahui harga.
+          </Text>
+        </VStack>
+        {/* How many garments that weight is, following the slider. */}
+        <VStack items="flex-end">
+          <Text type="l2" color={theme.pallate.neutral['04']}>
+            Perkiraan
+          </Text>
+          <Text type="b2" weight="semibold" color={theme.pallate.neutral['05']}>
+            {`${valueKg * PIECES_PER_KG_MIN}–${
+              valueKg * PIECES_PER_KG_MAX
+            } potong baju`}
           </Text>
         </VStack>
       </HStack>

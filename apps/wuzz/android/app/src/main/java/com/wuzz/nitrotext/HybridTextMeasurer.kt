@@ -30,7 +30,7 @@ class HybridTextMeasurer : HybridTextMeasurerSpec() {
       else           -> Typeface.NORMAL
     }
 
-    // Try exact PostScript name (Poppins-SemiBold, FredokaOne-Regular, etc.)
+    // Try exact PostScript name (Nunito-SemiBold, FredokaOne-Regular, etc.)
     return try {
       Typeface.create(fontFamily, style)
     } catch (_: Exception) {

@@ -59,7 +59,13 @@ export const Root = React.memo(() => {
         theme={navigationTheme}
         linking={linking}
       >
-        <Suspense fallback={<View style={{ flex: 1 }}><ActivityIndicator style={{ flex: 1 }} /></View>}>
+        <Suspense
+          fallback={
+            <View style={{ flex: 1 }}>
+              <ActivityIndicator style={{ flex: 1 }} />
+            </View>
+          }
+        >
           <Stack.Navigator {...rootNavigationConfigs.default}>
             {screens}
           </Stack.Navigator>

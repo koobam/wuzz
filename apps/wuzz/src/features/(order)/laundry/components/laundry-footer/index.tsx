@@ -6,7 +6,7 @@ import type { LaundryFooterProps } from './laundry-footer.types';
 
 export const LaundryFooter = memo(function LaundryFooter({
   priceLabel = DEFAULT_PRICE_LABEL,
-  onAddToCart,
+  onAddToOrder,
   onBingungPress,
 }: LaundryFooterProps) {
   const { bottom } = useSafeAreaInsets();
@@ -62,7 +62,7 @@ export const LaundryFooter = memo(function LaundryFooter({
         }}
       >
         <Pressable
-          onPress={onAddToCart}
+          onPress={onAddToOrder}
           items="center"
           justify="center"
           padding={theme.spacing.large}

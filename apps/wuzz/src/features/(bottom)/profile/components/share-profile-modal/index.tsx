@@ -190,6 +190,7 @@ const styles = StyleSheet.create({
     aspectRatio: PREVIEW_ASPECT,
     maxHeight: PREVIEW_MAX_HEIGHT,
     borderRadius: PREVIEW_BORDER_RADIUS,
+    borderCurve: 'continuous',
     overflow: 'hidden',
   },
   previewImage: {

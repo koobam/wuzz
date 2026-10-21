@@ -127,11 +127,13 @@ export const theme = {
       '05': '#15803D', // Darkest
     },
     neutral: {
-      '01': '#FFFFFF',
+      // Not pure white: a touch of grey so every card and page sits softer.
+      '01': '#FAFAFA',
       '02': '#F2F2F2',
       '03': '#EEEEEE',
       '04': '#909090',
-      '05': '#000000',
+      // Not pure black: softer for text and for the dark cards.
+      '05': '#1A1A1A',
     },
     warning: {
       '01': '#444444',

@@ -1,0 +1,9 @@
+{
+  "name": "Wuzz POS",
+  "short_name": "Wuzz POS",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#e2483d",
+  "icons": []
+}

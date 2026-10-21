@@ -17,14 +17,16 @@ end
 node_require('react-native-permissions/scripts/setup.rb')
 
 platform :ios, min_ios_version_supported
+
+# Firebase from CocoaPods, not Swift Package Manager: the app links pods statically
+# and SPM + static linkage collides at link time (see https://rnfirebase.io/ios-spm).
+$RNFirebaseDisableSPM = true
 prepare_react_native_project!
 
 # Only the handlers the app requests — see useLocationPermission
 setup_permissions([
   'LocationWhenInUse',
 ])
-
-$RNMapboxMapsVersion = '> 11.0.0'
 
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
@@ -44,9 +46,14 @@ target 'Wuzz' do
   # NitroFetch (Swift) imports React-RCTNetwork; enable modular headers only for this pod
   pod 'React-RCTNetwork', :path => '../node_modules/react-native/Libraries/Network', :modular_headers => true
 
-  pre_install do |installer|
-    $RNMapboxMaps.pre_install(installer)
-  end
+  # AppDelegate (Swift) imports FirebaseCore, which needs its dependencies as modules.
+  pod 'FirebaseCore', :modular_headers => true
+  pod 'FirebaseCoreInternal', :modular_headers => true
+  pod 'FirebaseCoreExtension', :modular_headers => true
+  pod 'FirebaseInstallations', :modular_headers => true
+  pod 'GoogleUtilities', :modular_headers => true
+  pod 'GoogleDataTransport', :modular_headers => true
+  pod 'nanopb', :modular_headers => true
 
   def disable_optimizations_in_release(installer)
     installer.pods_project.build_configurations.each do |config|
@@ -59,13 +66,6 @@ target 'Wuzz' do
   end
 
   post_install do |installer|
-    $RNMapboxMaps.post_install(installer)
-    # See https://github.com/rnmapbox/maps/pull/2878
-    installer.pods_project.targets.each do |target|
-      target.build_configurations.each do |config|
-        config.build_settings["ONLY_ACTIVE_ARCH"] = "NO"
-      end
-    end
     react_native_post_install(
       installer,
       config[:reactNativePath],

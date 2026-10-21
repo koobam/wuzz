@@ -27,6 +27,8 @@ export type MenuItemListProps = {
   /** Called when scroll ends (finger lift or momentum end). */
   onScrollEnd?: () => void;
   scrollEventThrottle?: number;
+  /** Room at the bottom for the floating tab bar, so the last row is not under it. */
+  bottomInset?: number;
   /** When true, empty state shows error copy and Retry. */
   isError?: boolean;
   /** Called when user taps Refresh in empty/error state. */

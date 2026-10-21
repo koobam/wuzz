@@ -1,5 +1,7 @@
 
 export type OnlyServiceSectionProps = {
+  title: string;
+  subtitle: string;
   onServicePress: (id: number) => void;
   /** Override items (e.g. with onPress per item). Default: ONLY_SERVICE_ITEMS */
   items: OnlyServiceItem[];
@@ -17,4 +19,6 @@ export type OnlyServiceItem = {
   serviceType: string; // e.g. 'satuan', 'express', etc. (used for navigation param)
   icon: string; // icon name from Icon component (default: 'bag')
   promo?: string; // e.g. '20%' or 'Free' (optional)
+  /** Dipakai kartu ini kalau ada; kalau tidak, jatuh ke onServicePress. */
+  onPress?: () => void;
 };

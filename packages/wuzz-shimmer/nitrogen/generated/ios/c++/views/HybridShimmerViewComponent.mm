@@ -48,8 +48,13 @@ using namespace margelo::nitro::wuzz::shimmer::views;
   return react::concreteComponentDescriptorProvider<HybridShimmerViewComponentDescriptor>();
 }
 
-- (instancetype) init {
-  if (self = [super init]) {
+- (instancetype) initWithFrame:(CGRect)frame {
+  // RN 0.87's Fabric asserts in `updateProps:oldProps:` that `_props` was set up in the
+  // constructor with an instance of this component's OWN props type (not the base
+  // `ViewProps` that `[super initWithFrame:]` assigns) — see RCTViewComponentView.mm's
+  // `updateProps:oldProps:` typeid check. Nitrogen didn't set this, crashing on mount.
+  if (self = [super initWithFrame:frame]) {
+    _props = std::make_shared<const HybridShimmerViewProps>();
     std::shared_ptr<HybridShimmerViewSpec> hybridView = WuzzShimmer::WuzzShimmerAutolinking::createShimmerView();
     _hybridView = std::dynamic_pointer_cast<HybridShimmerViewSpecSwift>(hybridView);
     [self updateView];

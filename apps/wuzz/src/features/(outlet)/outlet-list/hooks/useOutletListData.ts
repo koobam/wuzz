@@ -1,7 +1,7 @@
 import type { OutletsParams } from '@api/outlets.types';
-import { useFetchNearestOutlet, useFetchOutlets } from '@hooks/apis/outlets';
+import { useFetchOutlets } from '@hooks/apis/outlets';
 import { useSelectedOutlet } from '@services/contexts';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import type { OutletListItem } from '../types';
 import {
   mapOutletApiToListItem,
@@ -24,38 +24,21 @@ export type OutletListData = {
   refetch: () => void;
 };
 
-/** Fallback lokasi saat koordinat user belum tersedia: Monas, Jakarta. */
-const DEFAULT_CENTER: OutletsParams = {
-  lat: -6.175392,
-  long: 106.827153,
-};
+/** Backend page-size cap; every outlet fits in one page until there are more than this. */
+const ALL_OUTLETS_PAGE_SIZE = 50;
 
-export const useOutletListData = (
-  params?: OutletsParams | null,
-  options?: { enabled?: boolean },
-): OutletListData => {
-  // Tunda fetch (& init-from-nearest) sampai enabled — mis. sampai lokasi user
-  // resolved, biar tidak keburu init dari default center (Monas).
-  const enabled = options?.enabled ?? true;
-  const { selectedOutlet, initFromNearest } = useSelectedOutlet();
+/** Every outlet, by name — no location needed and nothing is picked for the user. */
+export const useOutletListData = (): OutletListData => {
+  const { selectedOutlet } = useSelectedOutlet();
   const queryParams: OutletsParams = {
-    ...(params ?? DEFAULT_CENTER),
-    num: 5,
+    num: ALL_OUTLETS_PAGE_SIZE,
     selected_outlet_id: selectedOutlet?.id ?? undefined,
   };
-  const { data, isLoading: queryLoading, isError, error, refetch } =
-    useFetchOutlets(queryParams, { enabled });
+  const { data, isLoading, isError, error, refetch } = useFetchOutlets(queryParams);
 
   const outletList = useMemo(() => {
-    if (!data?.outlets?.length) return [];
-    return data.outlets.map(mapOutletApiToListItem);
+    return (data?.outlets ?? []).map(mapOutletApiToListItem);
   }, [data?.outlets]);
-
-  // Init default selected outlet dari yang terdekat (item pertama; list terurut
-  // jarak) — sekali di awal saat user belum memilih.
-  useEffect(() => {
-    if (outletList[0]) initFromNearest(outletList[0]);
-  }, [outletList, initFromNearest]);
 
   const mapMarkers = useMemo(
     () => outletList.map(outletListItemToMapMarker),
@@ -86,40 +69,9 @@ export const useOutletListData = (
     mapMarkers,
     mapBounds,
     nextCursor: data?.next ?? '',
-    // Loading juga saat masih menunggu lokasi (enabled=false).
-    isLoading: !enabled || queryLoading,
+    isLoading,
     isError,
     error,
     refetch,
   };
-};
-
-export type NearestOutletData = {
-  outlet: OutletListItem | null;
-  isLoading: boolean;
-  isError: boolean;
-  error: unknown;
-  refetch: () => void;
-};
-
-/** Single nearest outlet from GET /outlets/nearest, mapped to OutletListItem. */
-export const useNearestOutlet = (
-  params?: OutletsParams | null,
-  options?: { enabled?: boolean }
-): NearestOutletData => {
-  const queryParams = params ?? DEFAULT_CENTER;
-  const { data, isLoading, isError, error, refetch } = useFetchNearestOutlet(queryParams, options);
-  const { initFromNearest } = useSelectedOutlet();
-
-  const outlet = useMemo(
-    () => (data ? mapOutletApiToListItem(data) : null),
-    [data],
-  );
-
-  // Nearest outlet pertama kali di-fetch → jadikan default selected outlet global.
-  useEffect(() => {
-    if (outlet) initFromNearest(outlet);
-  }, [outlet, initFromNearest]);
-
-  return { outlet, isLoading, isError, error, refetch };
 };

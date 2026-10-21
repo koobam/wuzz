@@ -14,11 +14,17 @@ import { Dimensions, StyleSheet } from 'react-native';
 import { MoodItemSeparator } from '../mood-item-separator';
 import { MoodSectionError } from './mood-section-error';
 import { MoodSectionLoading } from './mood-section-loading';
-import type { MoodDisplayItem, MoodItemProps, MoodSectionProps } from './mood-section.types';
+import type {
+  MoodDisplayItem,
+  MoodItemProps,
+  MoodSectionProps,
+} from './mood-section.types';
 
-const mapMoodsToDisplay = (moods: MoodSectionProps['moods']): MoodDisplayItem[] => {
+const mapMoodsToDisplay = (
+  moods: MoodSectionProps['moods'],
+): MoodDisplayItem[] => {
   if (!moods?.length) return [];
-  return moods.map((m) => ({
+  return moods.map(m => ({
     id: m.id,
     name: m.label,
     icon: m.code,
@@ -32,17 +38,20 @@ const styles = StyleSheet.create({
   },
 });
 
-const ITEM_TOP_WIDTH = Dimensions.get('screen').width / 3 - theme.spacing.standard * 2;
+const ITEM_TOP_WIDTH =
+  Dimensions.get('screen').width / 3 - theme.spacing.standard * 2;
 
 const MoodItem = memo((props: MoodItemProps) => {
   const { name, icon, index } = props;
-  const alignSelf = useMemo(() =>
-    [3, 0].includes(index)
-      ? 'flex-end'
-      : [2, 4].includes(index)
-      ? 'flex-start'
-      : 'center'
-, [index]);
+  const alignSelf = useMemo(
+    () =>
+      [3, 0].includes(index)
+        ? 'flex-end'
+        : [2, 4].includes(index)
+        ? 'flex-start'
+        : 'center',
+    [index],
+  );
 
   const width = useMemo(() => {
     return index < 3 ? ITEM_TOP_WIDTH : 'auto';
@@ -99,10 +108,7 @@ export const MoodSection = memo((props: MoodSectionProps) => {
   return (
     <VStack
       gap={theme.spacing.standard}
-      padding={{
-        paddingHorizontal: theme.spacing.large,
-        paddingBottom: theme.spacing.large,
-      }}
+      padding={{ paddingHorizontal: theme.spacing.large }}
     >
       <Flex direction="column" items="center" justify="center">
         <HStack
@@ -139,7 +145,7 @@ export const MoodSection = memo((props: MoodSectionProps) => {
             return layout;
           }}
           numColumns={2}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={item => item.id.toString()}
           removeClippedSubviews
           ItemSeparatorComponent={MoodItemSeparator}
           renderItem={renderItem}

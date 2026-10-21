@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 10,
+    borderCurve: 'continuous',
   },
 });
 
@@ -64,6 +65,7 @@ export const MenuItemList = memo((props: MenuItemListProps) => {
     onScroll,
     onScrollEnd,
     scrollEventThrottle = 16,
+    bottomInset = 0,
     isError = false,
     onRetry,
     onRequestMenu,
@@ -73,16 +75,12 @@ export const MenuItemList = memo((props: MenuItemListProps) => {
   const { width: windowWidth } = useWindowDimensions();
   const bannerWidth = useMemo(
     () =>
-      Math.max(
-        0,
-        windowWidth - categoryListWidth - theme.spacing.standard * 2,
-      ),
+      Math.max(0, windowWidth - categoryListWidth - theme.spacing.standard * 2),
     [windowWidth, categoryListWidth],
   );
 
   const listRef = useRef<FlashListRef<FlatMenuRow>>(null);
   const lastActiveIdRef = useRef<string>('');
-  const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const programmaticScrollUntilRef = useRef<number>(0);
   const onActiveCategoryChangeRef = useRef(onActiveCategoryChange);
   onActiveCategoryChangeRef.current = onActiveCategoryChange;
@@ -98,7 +96,7 @@ export const MenuItemList = memo((props: MenuItemListProps) => {
     ? items.filter(
         i =>
           i.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          (i.description?.toLowerCase().includes(searchQuery.toLowerCase())),
+          i.description?.toLowerCase().includes(searchQuery.toLowerCase()),
       )
     : items;
 
@@ -131,8 +129,7 @@ export const MenuItemList = memo((props: MenuItemListProps) => {
   const scrollToSection = useCallback(
     (categoryId: string) => {
       const index = flatData.findIndex(
-        row =>
-          row.type === 'section' && row.category.id === categoryId,
+        row => row.type === 'section' && row.category.id === categoryId,
       );
       if (index >= 0) {
         programmaticScrollUntilRef.current =
@@ -157,9 +154,13 @@ export const MenuItemList = memo((props: MenuItemListProps) => {
     }
   }, [scrollToSection, scrollToSectionRef]);
 
+  // minimumViewTime does the debouncing: RN's own viewability tracker only
+  // fires once an item has been visible continuously for that long, so a fast
+  // flick past several sections never reaches this callback for them at all.
+  // No manual timer needed on our end.
   const viewabilityConfig = useRef({
     itemVisiblePercentThreshold: 10,
-    minimumViewTime: 0,
+    minimumViewTime: ACTIVE_CATEGORY_DEBOUNCE_MS,
   }).current;
 
   const handleViewableItemsChanged = useCallback(
@@ -171,62 +172,57 @@ export const MenuItemList = memo((props: MenuItemListProps) => {
         first?.type === 'section'
           ? first.category.id
           : first?.type === 'item'
-            ? first.item.categoryId
-            : undefined;
+          ? first.item.categoryId
+          : undefined;
       if (!categoryId || categoryId === lastActiveIdRef.current) return;
 
-      if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
-      debounceTimerRef.current = setTimeout(() => {
-        debounceTimerRef.current = null;
-        lastActiveIdRef.current = categoryId;
-        onActiveCategoryChangeRef.current?.(categoryId);
-      }, ACTIVE_CATEGORY_DEBOUNCE_MS);
+      lastActiveIdRef.current = categoryId;
+      onActiveCategoryChangeRef.current?.(categoryId);
     },
     [],
   );
 
-  useEffect(() => {
-    return () => {
-      if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
-    };
-  }, []);
-
   const renderMenuItem = useCallback(
     (item: MenuItem) => (
-        <Pressable key={item.id} padding={{
+      <Pressable
+        key={item.id}
+        padding={{
           paddingVertical: theme.spacing.standard,
           paddingHorizontal: theme.spacing.small,
-        }} gap={theme.spacing.standard} items="center">
-          <Image
-            source={MenuEmptyPlaceholder}
-            style={styles.menuPlaceholder}
-            resizeMode="contain"
-          />
-          <VStack gap={theme.spacing.small}>
-            <Box>
-              <Text
-                type="b2"
-                weight="semibold"
-                text={item.name}
-                color={theme.pallate.neutral['05']}
-              />
-              {item.description ? (
-                <Text
-                  type="l1"
-                  text={item.description}
-                  color={theme.pallate.neutral['04']}
-                    numberOfLines={2}
-                  />
-                ) : null}
-            </Box>
+        }}
+        gap={theme.spacing.standard}
+        items="center"
+      >
+        <Image
+          source={MenuEmptyPlaceholder}
+          style={styles.menuPlaceholder}
+          resizeMode="contain"
+        />
+        <VStack gap={theme.spacing.small}>
+          <Box>
             <Text
-              type="l1"
+              type="b2"
               weight="semibold"
-              text={formatPrice(item.price)}
+              text={item.name}
               color={theme.pallate.neutral['05']}
             />
-          </VStack>
-        </Pressable>
+            {item.description ? (
+              <Text
+                type="l1"
+                text={item.description}
+                color={theme.pallate.neutral['04']}
+                numberOfLines={2}
+              />
+            ) : null}
+          </Box>
+          <Text
+            type="l1"
+            weight="semibold"
+            text={formatPrice(item.price)}
+            color={theme.pallate.neutral['05']}
+          />
+        </VStack>
+      </Pressable>
     ),
     [],
   );
@@ -290,13 +286,7 @@ export const MenuItemList = memo((props: MenuItemListProps) => {
         onClearSearch={onClearSearch}
       />
     ),
-    [
-      isSearchEmpty,
-      isError,
-      onRetry,
-      onRequestMenu,
-      onClearSearch,
-    ],
+    [isSearchEmpty, isError, onRetry, onRequestMenu, onClearSearch],
   );
 
   if (filteredItems.length === 0) {
@@ -307,7 +297,10 @@ export const MenuItemList = memo((props: MenuItemListProps) => {
         renderItem={() => null}
         ListEmptyComponent={listEmptyComponent}
         style={styles.listFill}
-        contentContainerStyle={styles.listContent}
+        contentContainerStyle={[
+          styles.listContent,
+          { paddingBottom: theme.spacing.extraLarge + bottomInset },
+        ]}
         keyboardShouldPersistTaps="handled"
       />
     );
@@ -332,6 +325,7 @@ export const MenuItemList = memo((props: MenuItemListProps) => {
       overScrollMode="never"
       showsVerticalScrollIndicator
       keyboardShouldPersistTaps="handled"
+      contentContainerStyle={{ paddingBottom: bottomInset }}
     />
   );
 });

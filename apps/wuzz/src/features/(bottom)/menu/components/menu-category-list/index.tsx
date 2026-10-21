@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     width: DUMMY_IMAGE_SIZE,
     height: DUMMY_IMAGE_SIZE,
     borderRadius: 8,
+    borderCurve: 'continuous',
     backgroundColor: theme.pallate.neutral['03'],
   },
 });

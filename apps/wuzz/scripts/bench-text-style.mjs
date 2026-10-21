@@ -18,16 +18,16 @@ const StyleSheet = {
 
 // ── Recreate TextStyleWeight & TextStyleType (static, created once) ──────────
 const TextStyleWeight = StyleSheet.create({
-  light:          { fontWeight: '300', fontFamily: 'Poppins-Light' },
-  lightItalic:    { fontWeight: '300', fontFamily: 'Poppins-LightItalic', fontStyle: 'italic' },
-  regular:        { fontWeight: '400', fontFamily: 'Poppins-Regular' },
-  regularItalic:  { fontWeight: '400', fontFamily: 'Poppins-Italic', fontStyle: 'italic' },
-  medium:         { fontWeight: '500', fontFamily: 'Poppins-Medium' },
-  mediumItalic:   { fontWeight: '500', fontFamily: 'Poppins-MediumItalic', fontStyle: 'italic' },
-  semibold:       { fontWeight: '600', fontFamily: 'Poppins-SemiBold' },
-  semiboldItalic: { fontWeight: '600', fontFamily: 'Poppins-SemiBoldItalic', fontStyle: 'italic' },
-  bold:           { fontWeight: 'bold', fontFamily: 'Poppins-Bold' },
-  boldItalic:     { fontWeight: 'bold', fontFamily: 'Poppins-BoldItalic', fontStyle: 'italic' },
+  light:          { fontWeight: '300', fontFamily: 'Nunito-Light' },
+  lightItalic:    { fontWeight: '300', fontFamily: 'Nunito-LightItalic', fontStyle: 'italic' },
+  regular:        { fontWeight: '400', fontFamily: 'Nunito-Regular' },
+  regularItalic:  { fontWeight: '400', fontFamily: 'Nunito-Italic', fontStyle: 'italic' },
+  medium:         { fontWeight: '500', fontFamily: 'Nunito-Medium' },
+  mediumItalic:   { fontWeight: '500', fontFamily: 'Nunito-MediumItalic', fontStyle: 'italic' },
+  semibold:       { fontWeight: '600', fontFamily: 'Nunito-SemiBold' },
+  semiboldItalic: { fontWeight: '600', fontFamily: 'Nunito-SemiBoldItalic', fontStyle: 'italic' },
+  bold:           { fontWeight: 'bold', fontFamily: 'Nunito-Bold' },
+  boldItalic:     { fontWeight: 'bold', fontFamily: 'Nunito-BoldItalic', fontStyle: 'italic' },
   stylized:       { fontWeight: '400', fontFamily: 'FredokaOne-Regular', fontStyle: 'normal' },
 });
 
@@ -69,7 +69,7 @@ const TextStyle = (props) => {
 
 // ── Pre-computed flat style (what the RN baseline uses) ───────────────────────
 const RN_B2_FLAT = StyleSheet.create({
-  text: { fontFamily: 'Poppins-Regular', fontWeight: '400', fontSize: 14, lineHeight: 21 },
+  text: { fontFamily: 'Nunito-Regular', fontWeight: '400', fontSize: 14, lineHeight: 21 },
 }).text;
 
 // ── Benchmark helpers ─────────────────────────────────────────────────────────
@@ -92,16 +92,16 @@ const bench = (label, fn, iterations = 1_000_000) => {
 // ── Cached lookup (mirrors getCachedTextStyle) ───────────────────────────
 const BASE_WEIGHTS = ['light', 'regular', 'medium', 'semibold', 'bold', 'stylized'];
 const RAW_WEIGHT = {
-  light:          { fontWeight: '300', fontFamily: 'Poppins-Light' },
-  lightItalic:    { fontWeight: '300', fontFamily: 'Poppins-LightItalic', fontStyle: 'italic' },
-  regular:        { fontWeight: '400', fontFamily: 'Poppins-Regular' },
-  regularItalic:  { fontWeight: '400', fontFamily: 'Poppins-Italic', fontStyle: 'italic' },
-  medium:         { fontWeight: '500', fontFamily: 'Poppins-Medium' },
-  mediumItalic:   { fontWeight: '500', fontFamily: 'Poppins-MediumItalic', fontStyle: 'italic' },
-  semibold:       { fontWeight: '600', fontFamily: 'Poppins-SemiBold' },
-  semiboldItalic: { fontWeight: '600', fontFamily: 'Poppins-SemiBoldItalic', fontStyle: 'italic' },
-  bold:           { fontWeight: 'bold', fontFamily: 'Poppins-Bold' },
-  boldItalic:     { fontWeight: 'bold', fontFamily: 'Poppins-BoldItalic', fontStyle: 'italic' },
+  light:          { fontWeight: '300', fontFamily: 'Nunito-Light' },
+  lightItalic:    { fontWeight: '300', fontFamily: 'Nunito-LightItalic', fontStyle: 'italic' },
+  regular:        { fontWeight: '400', fontFamily: 'Nunito-Regular' },
+  regularItalic:  { fontWeight: '400', fontFamily: 'Nunito-Italic', fontStyle: 'italic' },
+  medium:         { fontWeight: '500', fontFamily: 'Nunito-Medium' },
+  mediumItalic:   { fontWeight: '500', fontFamily: 'Nunito-MediumItalic', fontStyle: 'italic' },
+  semibold:       { fontWeight: '600', fontFamily: 'Nunito-SemiBold' },
+  semiboldItalic: { fontWeight: '600', fontFamily: 'Nunito-SemiBoldItalic', fontStyle: 'italic' },
+  bold:           { fontWeight: 'bold', fontFamily: 'Nunito-Bold' },
+  boldItalic:     { fontWeight: 'bold', fontFamily: 'Nunito-BoldItalic', fontStyle: 'italic' },
   stylized:       { fontWeight: '400', fontFamily: 'FredokaOne-Regular', fontStyle: 'normal' },
 };
 const RAW_TYPE = {

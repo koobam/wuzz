@@ -391,6 +391,7 @@ const styles = StyleSheet.create({
   tabBarContent: {
     height: TAB_BAR_HEIGHT,
     borderRadius: TAB_BAR_BORDER_RADIUS,
+    borderCurve: 'continuous',
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.64)',
@@ -402,6 +403,7 @@ const styles = StyleSheet.create({
   backgroundPill: {
     position: 'absolute',
     borderRadius: TAB_BAR_BORDER_RADIUS - TAB_BAR_INNER_PADDING,
+    borderCurve: 'continuous',
   },
   tabsContainer: {
     flex: 1,

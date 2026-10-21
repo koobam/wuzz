@@ -1,7 +1,10 @@
 import React, { memo, useCallback, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { theme, VStack } from '@components/atoms';
-import Animated, { useSharedValue, useAnimatedScrollHandler } from 'react-native-reanimated';
+import Animated, {
+  useSharedValue,
+  useAnimatedScrollHandler,
+} from 'react-native-reanimated';
 import {
   ProfileHeader,
   ProfileMenuSection,
@@ -17,6 +20,7 @@ import type {
   ShareProfileTarget,
 } from '@features/(bottom)/profile';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useBottomNavHeight } from '@services/contexts/bottom-nav-height';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '@navigation/root/root.types';
@@ -30,14 +34,17 @@ const DEFAULT_DISPLAY_NAME = 'Jan Falih Fadhillah';
 
 const Profile: React.FC<ProfileType> = memo((_props: ProfileType) => {
   const { top } = useSafeAreaInsets();
+  const { navHeight } = useBottomNavHeight();
   const scrollY = useSharedValue(0);
-  const scrollHandler = useAnimatedScrollHandler((event) => {
+  const scrollHandler = useAnimatedScrollHandler(event => {
     scrollY.value = event.contentOffset.y;
   });
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const shareModalRef = useRef<BottomSheetModal>(null);
-  const profileCardRef = useRef<React.ComponentRef<typeof ViewShot> | null>(null);
+  const profileCardRef = useRef<React.ComponentRef<typeof ViewShot> | null>(
+    null,
+  );
   const [previewImageUri, setPreviewImageUri] = useState<string | null>(null);
 
   const {
@@ -56,10 +63,10 @@ const Profile: React.FC<ProfileType> = memo((_props: ProfileType) => {
           ? errorMessage === 'Contact permission denied'
             ? 'Izin akses kontak ditolak. Aktifkan di Pengaturan.'
             : errorMessage === 'Nomor telepon tidak valid'
-              ? 'Nomor telepon tidak valid.'
-              : errorMessage?.includes('daftar kontak')
-                ? 'Gagal membuka daftar kontak. Cek izin akses kontak di Pengaturan.'
-                : 'Tidak dapat membuka aplikasi Pesan. Pastikan ada aplikasi SMS dan coba lagi.'
+            ? 'Nomor telepon tidak valid.'
+            : errorMessage?.includes('daftar kontak')
+            ? 'Gagal membuka daftar kontak. Cek izin akses kontak di Pengaturan.'
+            : 'Tidak dapat membuka aplikasi Pesan. Pastikan ada aplikasi SMS dan coba lagi.'
           : 'Gagal berbagi. Pastikan aplikasi terpasang.';
       Toast.show({ type: 'error', text1: message });
     },
@@ -140,49 +147,52 @@ const Profile: React.FC<ProfileType> = memo((_props: ProfileType) => {
     navigation.navigate('leaderboard');
   }, [navigation]);
 
-  const handleMenuPress = useCallback((id: ProfileMenuItemId) => {
-    switch (id) {
-      case 'referral':
-        navigation.navigate('shareProfileQr');
-        break;
-      case 'alamat':
-        navigation.navigate('deliveryaddress');
-        break;
-      case 'voucher':
-        // TODO: navigate to Voucher
-        break;
-      case 'pesanan':
-        // TODO: navigate to Pesanan
-        break;
-      case 'faq':
-        navigation.navigate('webview', {
-          uri: PROFILE_WEBVIEW_URLS.faq,
-          title: 'FAQ',
-        });
-        break;
-      case 'syarat-ketentuan':
-        navigation.navigate('webview', {
-          uri: PROFILE_WEBVIEW_URLS.syaratKetentuan,
-          title: 'Syarat & Ketentuan',
-        });
-        break;
-      case 'kebijakan-privasi':
-        navigation.navigate('webview', {
-          uri: PROFILE_WEBVIEW_URLS.kebijakanPrivasi,
-          title: 'Kebijakan Privasi',
-        });
-        break;
-      case 'bahasa':
-        // TODO: open language picker
-        break;
-      case 'notifikasi':
-        // TODO: navigate to Notifikasi settings
-        break;
-      case 'logout':
-        // TODO: implement logout
-        break;
-    }
-  }, [navigation]);
+  const handleMenuPress = useCallback(
+    (id: ProfileMenuItemId) => {
+      switch (id) {
+        case 'referral':
+          navigation.navigate('shareProfileQr');
+          break;
+        case 'alamat':
+          navigation.navigate('deliveryaddress');
+          break;
+        case 'voucher':
+          // TODO: navigate to Voucher
+          break;
+        case 'pesanan':
+          // TODO: navigate to Pesanan
+          break;
+        case 'faq':
+          navigation.navigate('webview', {
+            uri: PROFILE_WEBVIEW_URLS.faq,
+            title: 'FAQ',
+          });
+          break;
+        case 'syarat-ketentuan':
+          navigation.navigate('webview', {
+            uri: PROFILE_WEBVIEW_URLS.syaratKetentuan,
+            title: 'Syarat & Ketentuan',
+          });
+          break;
+        case 'kebijakan-privasi':
+          navigation.navigate('webview', {
+            uri: PROFILE_WEBVIEW_URLS.kebijakanPrivasi,
+            title: 'Kebijakan Privasi',
+          });
+          break;
+        case 'bahasa':
+          // TODO: open language picker
+          break;
+        case 'notifikasi':
+          // TODO: navigate to Notifikasi settings
+          break;
+        case 'logout':
+          // TODO: implement logout
+          break;
+      }
+    },
+    [navigation],
+  );
 
   return (
     <VStack fill>
@@ -198,7 +208,7 @@ const Profile: React.FC<ProfileType> = memo((_props: ProfileType) => {
           padding={{
             paddingHorizontal: theme.spacing.large,
             paddingTop: theme.spacing.extraLarge,
-            paddingBottom: theme.spacing.extraLarge * 2,
+            paddingBottom: theme.spacing.extraLarge * 2 + navHeight,
           }}
         >
           <VStack gap={theme.spacing.large}>

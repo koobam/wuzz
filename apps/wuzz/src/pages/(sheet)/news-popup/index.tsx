@@ -292,6 +292,7 @@ const NewsPopup = memo(() => {
                         height: 32,
                         backgroundColor: theme.pallate.neutral['04'],
                         borderRadius: 16,
+                        borderCurve: 'continuous',
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}

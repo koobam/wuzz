@@ -5,7 +5,10 @@ import type {
   LaundryServiceSection,
 } from '@core/api/laundry-services.types';
 import { VStack, Text, theme } from '@components/atoms';
-import type { ChecklistOption, LaundryChecklistSection } from '@features/(order)/laundry';
+import type {
+  ChecklistOption,
+  LaundryChecklistSection,
+} from '@features/(order)/laundry';
 import {
   ADD_ON_SECTION_TITLE,
   AddOnChecklist,
@@ -24,13 +27,19 @@ import {
   useStretchyBannerStyle,
   WeightEstimateSlider,
 } from '@features/(order)/laundry';
-import { memo, useCallback, useMemo } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
 import { useWindowDimensions, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useNavigation, useRoute, type RouteProp } from '@react-navigation/native';
+import {
+  useNavigation,
+  useRoute,
+  type RouteProp,
+} from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '@navigation/root/root.types';
 import { useFetchLaundryServiceDetail } from '@hooks/apis';
+import { useOrderDraft } from '@services/contexts';
 
 const styles = StyleSheet.create({
   scrollFill: { flex: 1 },
@@ -56,7 +65,7 @@ const ADDON_ICONS: ChecklistOption['icon'][] = [
 ];
 
 function mapAddonsToOptions(addons: LaundryServiceAddon[]): ChecklistOption[] {
-  return addons.map((addon) => ({
+  return addons.map(addon => ({
     id: String(addon.id),
     label: addon.name,
     description: addon.description,
@@ -81,24 +90,32 @@ function buildChecklistSectionsFromService(
   }));
 }
 
-// Set true untuk menampilkan kembali section "Perkiraan Berat" (WeightEstimateSlider)
-const SHOW_WEIGHT_ESTIMATE = false;
-
 type LaundryRouteProp = RouteProp<RootStackParamList, 'laundry'>;
 
 export const Laundry = memo(() => {
   const { width } = useWindowDimensions();
   const { top } = useSafeAreaInsets();
-  const navigation = useNavigation();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const route = useRoute<LaundryRouteProp>();
   const paramType = route.params?.type;
   const serviceId = route.params?.serviceId ?? '';
+  // Set when a line of the order is opened from checkout to change its choices.
+  const editId = route.params?.editId;
 
-  const { data: serviceDetail, isLoading, isError, error: queryError } = useFetchLaundryServiceDetail(serviceId);
+  const {
+    data: serviceDetail,
+    isLoading,
+    isError,
+    error: queryError,
+  } = useFetchLaundryServiceDetail(serviceId);
 
-  const errorPayload = (queryError as unknown as LaundryServiceDetailErrorResponse | undefined)?.data;
+  const errorPayload = (
+    queryError as unknown as LaundryServiceDetailErrorResponse | undefined
+  )?.data;
   const errorTitle = errorPayload?.title ?? LAUNDRY_ERROR_TITLE_DEFAULT;
-  const errorDescription = errorPayload?.description ?? LAUNDRY_ERROR_DESCRIPTION_DEFAULT;
+  const errorDescription =
+    errorPayload?.description ?? LAUNDRY_ERROR_DESCRIPTION_DEFAULT;
 
   const laundryType = useMemo(() => {
     const fromService = serviceDetail?.service_type;
@@ -116,14 +133,11 @@ export const Laundry = memo(() => {
 
   const mainSectionId = checklistSections[0]?.id ?? 'main';
 
-  const {
-    scrollY,
-    scrollHandler,
-    headerBackgroundStyle,
-    headerPositionStyle,
-  } = useLaundryHeaderScroll({ safeAreaTop: top });
+  const { scrollY, scrollHandler, headerPositionStyle } =
+    useLaundryHeaderScroll({ safeAreaTop: top });
   const stretchyHeaderStyle = useStretchyBannerStyle({ scrollY, width });
   const {
+    weightKg,
     selectedServiceId,
     sectionSelections,
     handleWeightChange,
@@ -137,18 +151,120 @@ export const Laundry = memo(() => {
     initialWeightKg: serviceDetail?.min_kg ?? 5,
   });
 
-  const priceLabel = useMemo(() => {
-    if (!serviceDetail) return formPriceLabel;
-    const isPerKg = serviceDetail.unit?.toLowerCase() === 'kg';
-    const allAddons = serviceDetail.sections?.flatMap((s) => s.addons) ?? [];
+  const unitPrice = useMemo(() => {
+    if (!serviceDetail) return undefined;
+    const allAddons = serviceDetail.sections?.flatMap(s => s.addons) ?? [];
     const selectedAddonIds = Object.values(sectionSelections).flat();
     const addonTotal = selectedAddonIds.reduce(
-      (sum, id) => sum + (allAddons.find((a) => String(a.id) === id)?.price ?? 0),
+      (sum, id) => sum + (allAddons.find(a => String(a.id) === id)?.price ?? 0),
       0,
     );
-    const total = formatPriceRupiah(serviceDetail.price + addonTotal);
+    return serviceDetail.price + addonTotal;
+  }, [serviceDetail, sectionSelections]);
+
+  const priceLabel = useMemo(() => {
+    if (!serviceDetail || unitPrice === undefined) return formPriceLabel;
+    const isPerKg = serviceDetail.unit?.toLowerCase() === 'kg';
+    const total = formatPriceRupiah(unitPrice);
     return isPerKg ? `${total}/${serviceDetail.unit}` : total;
-  }, [serviceDetail, formPriceLabel, sectionSelections]);
+  }, [serviceDetail, unitPrice, formPriceLabel]);
+
+  const isPerKg = serviceDetail?.unit?.toLowerCase() === 'kg';
+
+  // The form's weight starts at a default before the service has loaded; once it
+  // has, start from its own minimum so the slider and the price agree.
+  const serviceMinKg = serviceDetail?.min_kg;
+  useEffect(() => {
+    if (serviceMinKg != null) {
+      handleWeightChange(serviceMinKg);
+    }
+  }, [serviceMinKg, handleWeightChange]);
+
+  // What the footer asks for: the estimate for the chosen weight, not the price
+  // of a single kilo (which the card above already shows).
+  const footerPriceLabel = useMemo(
+    () =>
+      isPerKg && unitPrice !== undefined
+        ? formatPriceRupiah(unitPrice * weightKg)
+        : priceLabel,
+    [isPerKg, unitPrice, weightKg, priceLabel],
+  );
+
+  const { addItem, replaceItem, items } = useOrderDraft();
+  const editItem = editId ? items.find(line => line.id === editId) : undefined;
+
+  // Opened to edit: start from what the line already has, once the service and its
+  // choices have loaded. After the effects above, so these are the last word.
+  const prefilled = useRef(false);
+  useEffect(() => {
+    if (!editItem || prefilled.current || !serviceDetail) return;
+    prefilled.current = true;
+    if (editItem.tierCode) {
+      handleServiceSelect(
+        editItem.tierCode as typeof selectedServiceId & string,
+      );
+    }
+    if (editItem.quantity != null && isPerKg) {
+      handleWeightChange(editItem.quantity);
+    }
+    const chosen = new Set(editItem.addOnIds ?? []);
+    checklistSections.forEach(section => {
+      handleSectionSelectionChange(
+        section.id,
+        section.options.filter(o => chosen.has(o.id)).map(o => o.id),
+      );
+    });
+  }, [
+    editItem,
+    serviceDetail,
+    isPerKg,
+    checklistSections,
+    handleServiceSelect,
+    handleWeightChange,
+    handleSectionSelectionChange,
+  ]);
+
+  const handleAddToOrder = useCallback(() => {
+    if (!serviceDetail || unitPrice === undefined) return;
+    const selectedAddonIds = new Set(Object.values(sectionSelections).flat());
+    const line = {
+      serviceId: String(serviceDetail.id),
+      name: serviceDetail.name,
+      tierName: serviceDetail.tiers?.find(t => t.code === selectedServiceId)
+        ?.name,
+      addOns: checklistSections
+        .flatMap(section => section.options)
+        .filter(option => selectedAddonIds.has(option.id))
+        .map(option => option.label),
+      price: unitPrice,
+      unit: serviceDetail.unit,
+      imageUri: serviceDetail.image || undefined,
+      icon: serviceDetail.icon,
+      quantity: isPerKg ? weightKg : 1,
+      tierCode: selectedServiceId,
+      addOnIds: [...selectedAddonIds],
+      minQuantity: isPerKg ? serviceDetail.min_kg : undefined,
+      maxQuantity: isPerKg ? serviceDetail.max_kg : undefined,
+    };
+    if (editItem) {
+      replaceItem(editItem.id, line);
+    } else {
+      addItem(line);
+    }
+    navigation.goBack();
+  }, [
+    addItem,
+    replaceItem,
+    editItem,
+    checklistSections,
+    isPerKg,
+    weightKg,
+    navigation,
+    sectionSelections,
+    selectedServiceId,
+    serviceDetail,
+    unitPrice,
+  ]);
 
   const handleBackPress = useCallback(() => {
     navigation.goBack();
@@ -175,13 +291,17 @@ export const Laundry = memo(() => {
           title={errorTitle}
           onBackPress={handleBackPress}
           onHelpPress={() => {}}
-          style={[headerPositionStyle, headerBackgroundStyle]}
+          style={headerPositionStyle}
         />
         <VStack style={styles.contentCenter} fill>
           <Text type="s3" weight="semibold" color={theme.pallate.neutral['05']}>
             {errorTitle}
           </Text>
-          <Text type="l2" color={theme.pallate.neutral['04']} style={{ marginTop: theme.spacing.small }}>
+          <Text
+            type="l2"
+            color={theme.pallate.neutral['04']}
+            style={{ marginTop: theme.spacing.small }}
+          >
             {errorDescription}
           </Text>
         </VStack>
@@ -189,16 +309,23 @@ export const Laundry = memo(() => {
     );
   }
 
-  const cardTitle = serviceDetail?.name ?? (laundryType === 'single' ? 'Laundry Satuan' : undefined);
+  const cardTitle =
+    serviceDetail?.name ??
+    (laundryType === 'single' ? 'Laundry Satuan' : undefined);
   const cardDescription =
     serviceDetail?.description ??
-    (laundryType === 'single' ? 'Cuci per item, pilih jenis pakaian.' : undefined);
-  const basePricePerKg = serviceDetail?.service_type === 'multiple' ? serviceDetail.price : undefined;
+    (laundryType === 'single'
+      ? 'Cuci per item, pilih jenis pakaian.'
+      : undefined);
+  const basePricePerKg =
+    serviceDetail?.service_type === 'multiple'
+      ? serviceDetail.price
+      : undefined;
   const priceUnit = serviceDetail?.unit;
   const showKgLabel = laundryType !== 'single';
   const minKg = serviceDetail?.min_kg;
   const maxKg = serviceDetail?.max_kg ?? 30;
-  const initialKg = serviceDetail?.min_kg ?? 5;
+  const initialKg = editItem?.quantity ?? serviceDetail?.min_kg ?? 5;
 
   return (
     <VStack fill>
@@ -206,7 +333,7 @@ export const Laundry = memo(() => {
         title={serviceDetail?.name ?? ''}
         onBackPress={handleBackPress}
         onHelpPress={() => {}}
-        style={[headerPositionStyle, headerBackgroundStyle]}
+        style={headerPositionStyle}
       />
       <Animated.ScrollView
         style={styles.scrollFill}
@@ -243,7 +370,7 @@ export const Laundry = memo(() => {
               hideKgLabel={false}
             />
           )}
-          {SHOW_WEIGHT_ESTIMATE && laundryType === 'multiple' && (
+          {laundryType === 'multiple' && (
             <WeightEstimateSlider
               minKg={minKg}
               maxKg={maxKg}
@@ -259,14 +386,17 @@ export const Laundry = memo(() => {
               selectionMode={section.selectionMode}
               canOptOut={section.canOptOut}
               selectedIds={sectionSelections[section.id]}
-              onSelectionChange={(ids) =>
+              onSelectionChange={ids =>
                 handleSectionSelectionChange(section.id, ids)
               }
             />
           ))}
         </VStack>
       </Animated.ScrollView>
-      <LaundryFooter priceLabel={priceLabel} />
+      <LaundryFooter
+        priceLabel={footerPriceLabel}
+        onAddToOrder={handleAddToOrder}
+      />
     </VStack>
   );
 });

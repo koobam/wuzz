@@ -4,10 +4,7 @@ import { DocumentText, Lock } from 'iconsax-react-native';
 
 export const TermsAndPrivacySection = memo(() => (
   <VStack
-    padding={{
-      paddingHorizontal: theme.spacing.large,
-      paddingBottom: theme.spacing.large,
-    }}
+    padding={{ paddingHorizontal: theme.spacing.large }}
     gap={theme.spacing.large}
   >
     <VStack>
@@ -54,11 +51,7 @@ export const TermsAndPrivacySection = memo(() => (
         gap={theme.spacing.small}
         fill
       >
-        <Lock
-          size={48}
-          variant="Bulk"
-          color={theme.pallate.neutral['04']}
-        />
+        <Lock size={48} variant="Bulk" color={theme.pallate.neutral['04']} />
         <VStack
           padding={{
             paddingTop: theme.spacing.large,
@@ -68,8 +61,8 @@ export const TermsAndPrivacySection = memo(() => (
             Privasi Terjaga
           </Text>
           <Text type="l2">
-            Data dan barang kamu hanya ditangani tim terpilih, tidak dibagikan ke
-            pihak lain.
+            Data dan barang kamu hanya ditangani tim terpilih, tidak dibagikan
+            ke pihak lain.
           </Text>
         </VStack>
       </VStack>

@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: theme.pallate.neutral['01'],
     borderRadius: theme.spacing.standard,
+    borderCurve: 'continuous',
   },
   labelWrapper: {
     marginTop: theme.spacing.large,

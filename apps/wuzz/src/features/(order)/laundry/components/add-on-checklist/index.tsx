@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: theme.spacing.small,
+    borderCurve: 'continuous',
     backgroundColor: theme.pallate.neutral['03'],
   },
   row: {

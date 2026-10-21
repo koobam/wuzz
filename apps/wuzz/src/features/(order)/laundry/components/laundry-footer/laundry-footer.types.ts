@@ -1,5 +1,5 @@
 export type LaundryFooterProps = {
   priceLabel?: string;
-  onAddToCart?: () => void;
+  onAddToOrder?: () => void;
   onBingungPress?: () => void;
 };

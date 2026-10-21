@@ -9,7 +9,7 @@ import {
   useMenuData,
   useMenuHeaderCollapse,
 } from '@features/(bottom)/menu';
-import { useOutletListData } from '@features/(outlet)/outlet-list';
+import { useSelectedOutlet } from '@services/contexts';
 import type { FlashListRef } from '@shopify/flash-list';
 import type { MenuCategory } from '@features/(bottom)/menu/types';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
     width: FLOAT_SIZE,
     height: FLOAT_SIZE,
     borderRadius: FLOAT_SIZE / 2,
+    borderCurve: 'continuous',
     backgroundColor: theme.pallate.primary['03'],
     alignItems: 'center',
     justifyContent: 'center',
@@ -39,22 +40,29 @@ export const Menu = memo((props: MenuScreenProps) => {
   const { navigation } = props;
   const { top } = useSafeAreaInsets();
   const { navHeight } = useBottomNavHeight();
-  const { outletList } = useOutletListData();
-  const { items: menuItems, isError: menuError, refetch: refetchMenu } = useMenuData();
+  // Outlet yang dipilih user sendiri; kosong kalau belum memilih.
+  const { selectedOutlet } = useSelectedOutlet();
+  const {
+    items: menuItems,
+    isError: menuError,
+    refetch: refetchMenu,
+  } = useMenuData();
 
-  const showCategoryList =
-    !menuError && menuItems.length > 0;
+  const showCategoryList = !menuError && menuItems.length > 0;
 
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
     () => MENU_CATEGORIES[0]?.id ?? null,
   );
 
-  const scrollToSectionRef = useRef<((categoryId: string) => void) | null>(null);
+  const scrollToSectionRef = useRef<((categoryId: string) => void) | null>(
+    null,
+  );
   const categoryListRef = useRef<FlashListRef<MenuCategory> | null>(null);
-  const { collapseProgress, scrollHandler, scrollEndHandler } = useMenuHeaderCollapse();
+  const { collapseProgress, scrollHandler, scrollEndHandler } =
+    useMenuHeaderCollapse();
 
   const selectedIndex = useMemo(
-    () => MENU_CATEGORIES.findIndex((c) => c.id === selectedCategoryId),
+    () => MENU_CATEGORIES.findIndex(c => c.id === selectedCategoryId),
     [selectedCategoryId],
   );
 
@@ -66,8 +74,6 @@ export const Menu = memo((props: MenuScreenProps) => {
       });
     }
   }, [selectedIndex]);
-
-  const defaultOutlet = outletList[0] ?? null;
 
   const handleOutletPress = useCallback(() => {
     navigation.navigate('outletlist');
@@ -90,10 +96,11 @@ export const Menu = memo((props: MenuScreenProps) => {
     <VStack fill>
       <MenuHeader
         topInset={top}
-        outletName={defaultOutlet?.name}
-        outletAddress={defaultOutlet?.address}
-        distanceKm={defaultOutlet?.distance_in_km}
-        outletServices={defaultOutlet?.services}
+        outletName={selectedOutlet?.name}
+        outletAddress={selectedOutlet?.address}
+        distanceKm={selectedOutlet?.distance_in_km}
+        outletStatus={selectedOutlet?.status}
+        outletServices={selectedOutlet?.services}
         onOutletPress={handleOutletPress}
         onSearchPress={handleSearchPress}
         collapseProgress={collapseProgress}
@@ -118,6 +125,7 @@ export const Menu = memo((props: MenuScreenProps) => {
           onScroll={scrollHandler}
           onScrollEnd={scrollEndHandler}
           scrollEventThrottle={16}
+          bottomInset={navHeight}
           isError={menuError}
           onRetry={refetchMenu}
           onRequestMenu={refetchMenu}
@@ -132,9 +140,26 @@ export const Menu = memo((props: MenuScreenProps) => {
         minY={top}
         maxY={SCREEN_HEIGHT - navHeight}
       >
-        <VStack gap={theme.spacing.small} width={FLOAT_SIZE} height={FLOAT_SIZE} items="center" justify="center" fill backgroundColor={theme.pallate.neutral['01']}>
-          <Box width={FLOAT_SIZE} height={50} backgroundColor={theme.pallate.neutral['02']} />
-          <Text type="l2" align="center" weight="stylized" text={`Custom\nYour Coffee`} />
+        <VStack
+          gap={theme.spacing.small}
+          width={FLOAT_SIZE}
+          height={FLOAT_SIZE}
+          items="center"
+          justify="center"
+          fill
+          backgroundColor={theme.pallate.neutral['01']}
+        >
+          <Box
+            width={FLOAT_SIZE}
+            height={50}
+            backgroundColor={theme.pallate.neutral['02']}
+          />
+          <Text
+            type="l2"
+            align="center"
+            weight="stylized"
+            text={`Custom\nYour Coffee`}
+          />
         </VStack>
       </FloatingDraggable>
     </VStack>

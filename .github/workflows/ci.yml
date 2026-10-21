@@ -1,0 +1,61 @@
+name: CI
+
+# Pull requests and main: install once, then check every app. The web apps (POS,
+# backoffice, landing) must build; the mobile app must not get worse than its
+# recorded baseline of type errors.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [pos, backoffice, landing]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Build ${{ matrix.app }}
+        run: pnpm --filter @wuzz/${{ matrix.app }} build
+        env:
+          VITE_API_URL: https://api-stg.wuzz.care
+          VITE_SUPPORT_URL: https://api-stg.wuzz.care/support
+
+  mobile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Prettier
+        working-directory: apps/wuzz
+        run: npx prettier --check "src/**/*.{ts,tsx}" || true
+      - name: Type errors must not exceed the baseline
+        working-directory: apps/wuzz
+        run: |
+          baseline=$(cat .tsc-baseline)
+          count=$(npx tsc --noEmit -p . 2>&1 | grep -c 'error TS' || true)
+          echo "type errors: $count (baseline $baseline)"
+          if [ "$count" -gt "$baseline" ]; then
+            echo "More type errors than the baseline. Fix the new ones, or if you removed old ones, lower .tsc-baseline."
+            exit 1
+          fi

@@ -1,7 +1,7 @@
 import { HStack, Text, theme, VStack, Box, Pressable } from '@components/atoms';
 import { MapsType } from './maps.types';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Mapbox, { Camera, MapView } from '@rnmapbox/maps';
+import MapView, { Marker, type Region } from 'react-native-maps';
 import LinearGradient from 'react-native-linear-gradient';
 import { useState, useCallback } from 'react';
 import Image from '@components/atoms/image';
@@ -13,10 +13,9 @@ export const Maps = (_props: MapsType) => {
   const { top } = useSafeAreaInsets();
   const [zoomLevel, setZoomLevel] = useState<number>(2);
 
-  const handleCameraChanged = useCallback((state: any) => {
-    if (state?.properties?.zoom !== undefined) {
-      setZoomLevel(state.properties.zoom);
-    }
+  const handleRegionChangeComplete = useCallback((region: Region) => {
+    // Perkiraan zoom level dari lebar region (setara properties.zoom Mapbox dulu).
+    setZoomLevel(Math.log2(360 / region.longitudeDelta));
   }, []);
 
 
@@ -103,24 +102,14 @@ export const Maps = (_props: MapsType) => {
         style={{
           flex: 1,
         }}
-        projection="globe"
-        logoEnabled={false}
-        attributionEnabled={false}
-        onCameraChanged={handleCameraChanged}
-        compassEnabled={false}
-        scaleBarEnabled={false}
+        onRegionChangeComplete={handleRegionChangeComplete}
+        showsCompass={false}
         pitchEnabled={false}
         rotateEnabled={false}
+        minZoomLevel={3}
+        showsUserLocation
+        followsUserLocation
       >
-        <Camera
-          animationDuration={800}
-          animationMode="easeTo"
-          followPadding={{
-            paddingBottom: 0,
-          }}
-          followUserLocation
-          minZoomLevel={3}
-        />
         {[
           {
             id: 1,
@@ -187,10 +176,10 @@ export const Maps = (_props: MapsType) => {
             rating: 4.6,
           },
         ].map(post => (
-          <Mapbox.MarkerView
+          <Marker
             key={`post-marker-${post.id}`}
-            id={`post-marker-${post.id}`}
-            coordinate={[post.lng, post.lat]}
+            coordinate={{ latitude: post.lat, longitude: post.lng }}
+            tracksViewChanges={false}
           >
             <Box width={90}>
               {post.imageUri.map((image, index) => (
@@ -242,9 +231,8 @@ export const Maps = (_props: MapsType) => {
                 </Text>
               </Box>
             </Box>
-          </Mapbox.MarkerView>
+          </Marker>
         ))}
-        <Mapbox.UserLocation animated={false} />
       </MapView>
     </VStack>
   );

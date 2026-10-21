@@ -7,7 +7,7 @@ export type BottomNavigationParamList = {
   home: undefined;
   menu: undefined;
   history: undefined;
-  scan: undefined;
+  support: undefined;
   profile: undefined;
 };
 
@@ -16,8 +16,11 @@ export type RootStackParamList = {
   checkout: undefined;
   walkthrough: undefined;
   outletlist: undefined;
+  /** Where the customer is, so the list does not have to ask for the position again. */
+  wuzzerlist: { lat: number; long: number } | undefined;
   menusearch: undefined;
-  laundry: { type?: string; serviceId: string };
+  /** editId: a line already in the order, opened to change its choices. */
+  laundry: { type?: string; serviceId: string; editId?: string };
   orderstatus: { orderId: string };
   // (auth) group
   login: undefined;
@@ -69,6 +72,7 @@ export type RootStackParamList = {
   survey: undefined;
   // (utils) group
   help: undefined;
+  scan: undefined;
   webview: {
     uri: string;
     title?: string;

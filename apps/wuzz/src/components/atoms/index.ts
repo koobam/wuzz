@@ -9,3 +9,4 @@ export * from './icon';
 export * from './progress';
 export * from './shimmer';
 export { default as MarkerPin } from './marker-pin';
+export * from './glass';

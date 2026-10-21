@@ -16,6 +16,7 @@ const Camera = () => {
       style={{
         flex: 1,
         borderRadius: 30,
+        borderCurve: 'continuous',
         overflow: 'hidden',
       }}
       device={device}

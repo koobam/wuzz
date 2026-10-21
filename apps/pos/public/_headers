@@ -1,0 +1,31 @@
+# Cloudflare Pages reads this from the build output. Vite names everything under
+# /assets/ with a content hash, so those files never change: cache them for good.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Unhashed static files (icons, images, fonts): a day, then revalidate.
+/*.png
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/*.jpg
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/*.svg
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/*.webp
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/*.ico
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+
+# The shell points at the current hashed bundle, so it must always be fresh.
+/
+  Cache-Control: no-cache
+/index.html
+  Cache-Control: no-cache
+
+# A service worker that gets cached never updates. The browser also caps this at
+# 24h, but be explicit.
+/sw.js
+  Cache-Control: no-cache
+/manifest.webmanifest
+  Cache-Control: no-cache

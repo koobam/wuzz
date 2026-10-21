@@ -4,6 +4,15 @@ import {
   laundryServiceDetail,
 } from '@api/laundry-services';
 import type { LaundryServicesParams } from '@api/laundry-services.types';
+import { queryClient } from '@core/query-client';
+
+/**
+ * Hasil prefetch hanya untuk pemuatan pertama (data belum ada). Kalau tetap
+ * dikirim saat refetch, nitro-fetch bisa menjawab dari hasil prefetch lama dan
+ * tidak pernah menghubungi server, jadi tarik-untuk-refresh tidak mengubah apa-apa.
+ */
+const prefetchKeyWhenCold = (queryKey: readonly unknown[], prefetchKey: string) =>
+  queryClient.getQueryData(queryKey) === undefined ? prefetchKey : undefined;
 
 export const LAUNDRY_SERVICES_QUERY_KEY = {
   base: 'laundryServices',
@@ -15,17 +24,31 @@ export const LAUNDRY_SERVICES_QUERY_KEY = {
 export const laundryServicesQueries = createQueryKeys(LAUNDRY_SERVICES_QUERY_KEY.base, {
   regular: (params?: LaundryServicesParams) => ({
     queryKey: [LAUNDRY_SERVICES_QUERY_KEY.regular],
-    queryFn: ({ signal }) =>
-      laundryServices('regular',params, LAUNDRY_SERVICES_QUERY_KEY.regular, signal),
+    queryFn: ({ signal, queryKey }) =>
+      laundryServices(
+        'regular',
+        params,
+        prefetchKeyWhenCold(queryKey, LAUNDRY_SERVICES_QUERY_KEY.regular),
+        signal,
+      ),
   }),
   alacarte: (params?: LaundryServicesParams) => ({
     queryKey: [LAUNDRY_SERVICES_QUERY_KEY.alacarte],
-    queryFn: ({ signal }) =>
-      laundryServices('alacarte', params, LAUNDRY_SERVICES_QUERY_KEY.alacarte, signal),
+    queryFn: ({ signal, queryKey }) =>
+      laundryServices(
+        'alacarte',
+        params,
+        prefetchKeyWhenCold(queryKey, LAUNDRY_SERVICES_QUERY_KEY.alacarte),
+        signal,
+      ),
   }),
   detail: (id: string) => ({
     queryKey: [LAUNDRY_SERVICES_QUERY_KEY.detail(id), id],
-    queryFn: ({ signal }) =>
-      laundryServiceDetail(id, LAUNDRY_SERVICES_QUERY_KEY.detail(id), signal),
+    queryFn: ({ signal, queryKey }) =>
+      laundryServiceDetail(
+        id,
+        prefetchKeyWhenCold(queryKey, LAUNDRY_SERVICES_QUERY_KEY.detail(id)),
+        signal,
+      ),
   }),
 });

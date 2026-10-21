@@ -1,0 +1,109 @@
+name: Android
+
+# Manual only: pick the app and the environment, get a signed APK and AAB back as
+# build artifacts. Nothing here runs on push, so it spends minutes only when asked.
+#
+# Secrets (Settings > Secrets and variables > Actions), per app WUZZ or STATION:
+#   <APP>_ENV_STAGING / <APP>_ENV_PRODUCTION   the whole .env.<flavor> file
+#   <APP>_KEYSTORE_B64                         base64 of the release .jks
+#   <APP>_KEYSTORE_PASSWORD                    store and key password (same)
+#   WUZZ_GOOGLE_SERVICES_JSON                  Firebase config for wuzz (optional until push is used)
+on:
+  workflow_dispatch:
+    inputs:
+      app:
+        description: App to build
+        type: choice
+        options: [wuzz, station]
+        default: wuzz
+      env:
+        description: Environment
+        type: choice
+        options: [staging, production]
+        default: staging
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-${{ inputs.app }}-${{ inputs.env }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      APP: ${{ inputs.app }}
+      FLAVOR: ${{ inputs.env }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+
+      - run: pnpm install --frozen-lockfile
+
+      # Secrets cannot be indexed by a computed name, so pick them in the shell.
+      - name: Write env file and signing material
+        env:
+          WUZZ_ENV_STAGING: ${{ secrets.WUZZ_ENV_STAGING }}
+          WUZZ_ENV_PRODUCTION: ${{ secrets.WUZZ_ENV_PRODUCTION }}
+          STATION_ENV_STAGING: ${{ secrets.STATION_ENV_STAGING }}
+          STATION_ENV_PRODUCTION: ${{ secrets.STATION_ENV_PRODUCTION }}
+          WUZZ_KEYSTORE_B64: ${{ secrets.WUZZ_KEYSTORE_B64 }}
+          WUZZ_KEYSTORE_PASSWORD: ${{ secrets.WUZZ_KEYSTORE_PASSWORD }}
+          STATION_KEYSTORE_B64: ${{ secrets.STATION_KEYSTORE_B64 }}
+          STATION_KEYSTORE_PASSWORD: ${{ secrets.STATION_KEYSTORE_PASSWORD }}
+          WUZZ_GOOGLE_SERVICES_JSON: ${{ secrets.WUZZ_GOOGLE_SERVICES_JSON }}
+        run: |
+          set -eu
+          app_up=$(echo "$APP" | tr a-z A-Z)
+          flavor_up=$(echo "$FLAVOR" | tr a-z A-Z)
+          env_var="${app_up}_ENV_${flavor_up}"
+          ks_var="${app_up}_KEYSTORE_B64"
+          pw_var="${app_up}_KEYSTORE_PASSWORD"
+
+          [ -n "${!env_var:-}" ] || { echo "::error::secret $env_var is empty"; exit 1; }
+          [ -n "${!ks_var:-}" ] || { echo "::error::secret $ks_var is empty"; exit 1; }
+          [ -n "${!pw_var:-}" ] || { echo "::error::secret $pw_var is empty"; exit 1; }
+
+          printf '%s\n' "${!env_var}" > "apps/$APP/.env.$FLAVOR"
+          echo "${!ks_var}" | base64 --decode > "apps/$APP/android/app/release.jks"
+          {
+            echo "storeFile=release.jks"
+            echo "storePassword=${!pw_var}"
+            echo "keyAlias=$APP"
+            echo "keyPassword=${!pw_var}"
+          } > "apps/$APP/android/keystore.properties"
+
+          # Only wuzz has a Firebase project so far; nothing reads the file until the
+          # google-services Gradle plugin is added.
+          if [ "$APP" = wuzz ] && [ -n "${WUZZ_GOOGLE_SERVICES_JSON:-}" ]; then
+            printf '%s' "$WUZZ_GOOGLE_SERVICES_JSON" > apps/wuzz/android/app/google-services.json
+          fi
+
+      - name: Build APK and AAB
+        working-directory: apps/${{ inputs.app }}/android
+        env:
+          ENVFILE: .env.${{ inputs.env }}
+        run: |
+          set -eu
+          Flavor="$(echo "${FLAVOR:0:1}" | tr a-z A-Z)${FLAVOR:1}"
+          ./gradlew --no-daemon "assemble${Flavor}Release" "bundle${Flavor}Release"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.app }}-${{ inputs.env }}-${{ github.run_number }}
+          path: |
+            apps/${{ inputs.app }}/android/app/build/outputs/apk/${{ inputs.env }}/release/*.apk
+            apps/${{ inputs.app }}/android/app/build/outputs/bundle/${{ inputs.env }}Release/*.aab
+          if-no-files-found: error
+          retention-days: 14

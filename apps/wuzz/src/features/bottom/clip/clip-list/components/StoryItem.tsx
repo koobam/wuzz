@@ -37,6 +37,7 @@ export const StoryItem = memo(
         width: containerWidth,
         height: containerHeight,
         borderRadius: BORDER_RADIUS + BORDER_WIDTH + CONTAINER_PADDING,
+        borderCurve: 'continuous',
         padding: CONTAINER_PADDING,
         justifyContent: 'center',
         alignItems: 'center',
@@ -44,6 +45,7 @@ export const StoryItem = memo(
       maskBorder: {
         borderWidth: BORDER_WIDTH,
         borderRadius: BORDER_RADIUS + 3,
+        borderCurve: 'continuous',
       },
       imageContainer: {
         position: 'absolute',
@@ -52,6 +54,7 @@ export const StoryItem = memo(
         width: STORY_WIDTH,
         height: STORY_HEIGHT,
         borderRadius: BORDER_RADIUS,
+        borderCurve: 'continuous',
         overflow: 'hidden',
       },
     });
@@ -82,6 +85,7 @@ export const StoryItem = memo(
                 width: STORY_WIDTH,
                 height: STORY_HEIGHT,
                 borderRadius: BORDER_RADIUS,
+                borderCurve: 'continuous',
               }}
             />
             <Box position={{

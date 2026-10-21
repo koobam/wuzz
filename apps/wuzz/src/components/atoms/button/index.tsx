@@ -1,5 +1,5 @@
 import React from 'react';
-import sv, {VariantProps} from 'style-variants';
+import sv, { VariantProps } from 'style-variants';
 import theme from '../theme';
 import GesturePressable from '../gesture-pressable';
 import { GesturePressableProps } from '../gesture-pressable/gesture-pressable.types';
@@ -8,12 +8,15 @@ const button = sv({
   base: {
     alignItems: 'center',
     borderRadius: 4,
+    borderCurve: 'continuous',
     justifyContent: 'center',
   },
   variants: {
     size: {
+      // All three are a fixed height, so a button is the same size wherever it
+      // appears and no screen needs its own padding to look right.
       sm: {
-        paddingVertical: 10,
+        height: 34,
         paddingHorizontal: 16,
       },
       md: {
@@ -40,6 +43,14 @@ const button = sv({
       default: {
         backgroundColor: theme.pallate.neutral['03'],
       },
+      // Black, for a destructive or secondary action beside a heading.
+      dark: {
+        backgroundColor: theme.pallate.neutral['05'],
+      },
+      // White, for sitting on a dark surface.
+      light: {
+        backgroundColor: theme.pallate.neutral['01'],
+      },
       outline: {
         borderColor: theme.pallate.neutral['03'],
         borderWidth: 1,
@@ -49,13 +60,14 @@ const button = sv({
     rounded: {
       true: {
         borderRadius: 9999,
+        borderCurve: 'continuous',
       },
     },
     disabled: {
       true: {
         opacity: 0.2,
       },
-    }
+    },
   },
   defaultVariants: {
     size: 'md',
@@ -69,7 +81,7 @@ type ButtonVariantsProps = VariantProps<typeof button>;
 type ButtonProps = ButtonVariantsProps & GesturePressableProps;
 
 export const Button = React.memo((props: ButtonProps) => {
-  const {disabled, variant, size, rounded, style} = props;
+  const { disabled, variant, size, rounded, style } = props;
 
   const buttonStyles = button({
     size,

@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
   indicator: {
     height: 3,
     borderRadius: 2,
+    borderCurve: 'continuous',
     position: 'absolute',
     bottom: 0,
     left: 0,

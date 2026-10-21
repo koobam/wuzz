@@ -9,7 +9,7 @@ import {
 } from 'react-native-device-info';
 import { NetworkInfo } from 'react-native-network-info';
 import { ACCESS_TOKEN_STORAGE, REFRESH_TOKEN_STORAGE, storage } from '@wuzz/native';
-import apiUrl from './url';
+import apiUrl, { API_V1 } from './url';
 
 type RequestOptions = {
   method?: string;
@@ -130,7 +130,7 @@ export async function buildHeaders(extra?: Record<string, string>): Promise<Reco
 
 async function doRefreshTokens(): Promise<TokenData> {
   const headers = await buildHeaders();
-  const response = await nitroFetch(apiUrl('/refresh'), {
+  const response = await nitroFetch(apiUrl(`${API_V1}/refresh`), {
     method: 'POST',
     headers,
     body: JSON.stringify({ refreshToken: storage.getString(REFRESH_TOKEN_STORAGE) }),

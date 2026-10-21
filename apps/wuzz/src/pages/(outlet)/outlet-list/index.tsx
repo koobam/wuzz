@@ -16,9 +16,8 @@ import {
 import type { OutletListItem } from '@features/(outlet)/outlet-list';
 import BottomSheet, { useBottomSheetScrollableCreator } from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
-import Mapbox, { Camera, MapView, UserLocation } from '@rnmapbox/maps';
+import MapView, { Marker } from 'react-native-maps';
 import { useSelectedOutlet } from '@services/contexts';
-import { useCurrentLocation } from '@hooks/utils';
 import { ArrowDown2, Location, Setting4 } from 'iconsax-react-native';
 import {
   memo,
@@ -27,7 +26,6 @@ import {
   useMemo,
   useRef,
   useState,
-  type ComponentRef,
 } from 'react';
 import { Dimensions } from 'react-native';
 import {
@@ -66,16 +64,12 @@ const OutletList = memo((props: any) => {
   const padMax = height * SNAP_RATIOS[1]; // padding di index 1 (batas atas kamera)
   const bottomSheetHeight = sheetIndex >= 1 ? padMax : padMin;
 
-  const { coords, isLoading: isLoadingLocation } = useCurrentLocation();
-  const { outletList, mapMarkers, mapBounds, isLoading } = useOutletListData(
-    coords,
-    { enabled: !isLoadingLocation },
-  );
+  const { outletList, mapMarkers, mapBounds, isLoading } = useOutletListData();
 
   // Real-time: ikuti index sheet tiap frame (bukan cuma pas settle). `sheetAnimatedIndex`
   // interpolasi kontinu: 0 = 40%, 1 = 75%, 2 = 100%. Di-clamp ke [0,1] supaya di atas
   // index 1 kamera beku. Pakai index (bukan posisi piksel) biar akurat & bebas topInset.
-  const cameraRef = useRef<ComponentRef<typeof Camera>>(null);
+  const mapRef = useRef<MapView>(null);
   const sheetAnimatedIndex = useSharedValue(1);
   const lastPaddingBottom = useSharedValue(-1);
   // Target fokus kamera (outlet yang di-tap). Null = fit-all bounds. Diupdate tiap
@@ -84,6 +78,13 @@ const OutletList = memo((props: any) => {
   const focusTargetRef = useRef<{ lng: number; lat: number } | null>(null);
   const bottomSheetHeightRef = useRef(bottomSheetHeight);
   bottomSheetHeightRef.current = bottomSheetHeight;
+  // mapPadding: prop statis MapView (bukan per-panggilan seperti Mapbox Camera dulu).
+  const [mapPadding, setMapPadding] = useState({
+    top: 0,
+    right: 0,
+    bottom: bottomSheetHeight,
+    left: 0,
+  });
 
   // Zoom mode fokus dari padding sheet: padding kecil (sheet turun) → zoom in.
   const computeFocusZoom = useCallback(
@@ -100,34 +101,37 @@ const OutletList = memo((props: any) => {
 
   const applyCameraPadding = useCallback(
     (paddingBottom: number) => {
-      const padding = {
-        paddingBottom,
-        paddingTop: 0,
-        paddingLeft: 0,
-        paddingRight: 0,
-      };
+      setMapPadding({ top: 0, right: 0, bottom: paddingBottom, left: 0 });
       const target = focusTargetRef.current;
       if (target) {
-        // Fokus: cuma ubah zoom + padding, TANPA centerCoordinate → biar pan
-        // manual user tidak ketimpa balik ke marker saat sheet digeser.
-        cameraRef.current?.setCamera({
-          zoomLevel: computeFocusZoom(paddingBottom),
-          padding,
-          animationDuration: 0,
-        });
+        // Fokus: cuma ubah zoom, TANPA center → biar pan manual user tidak
+        // ketimpa balik ke marker saat sheet digeser.
+        mapRef.current?.animateCamera(
+          { zoom: computeFocusZoom(paddingBottom) },
+          { duration: 0 },
+        );
         return;
       }
-      cameraRef.current?.setCamera({
-        bounds: {
-          ne: [mapBounds.maxLng, mapBounds.maxLat],
-          sw: [mapBounds.minLng, mapBounds.minLat],
+      mapRef.current?.fitToCoordinates(
+        [
+          { latitude: mapBounds.maxLat, longitude: mapBounds.maxLng },
+          { latitude: mapBounds.minLat, longitude: mapBounds.minLng },
+        ],
+        {
+          edgePadding: { top: 0, right: 0, bottom: paddingBottom, left: 0 },
+          animated: false,
         },
-        padding,
-        animationDuration: 0,
-      });
+      );
     },
     [mapBounds, computeFocusZoom],
   );
+
+  // Fit-all-bounds tiap kali mapBounds berubah (data baru/lokasi user resolved) —
+  // setara reaktivitas prop `bounds` Camera Mapbox dulu.
+  useEffect(() => {
+    applyCameraPadding(bottomSheetHeightRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mapBounds]);
 
   useAnimatedReaction(
     () => sheetAnimatedIndex.value,
@@ -162,22 +166,19 @@ const OutletList = memo((props: any) => {
   const selectedMarkerId = selectedMarker?.id ?? null;
   useEffect(() => {
     if (!selectedMarker) return;
-    cameraRef.current?.setCamera({
-      centerCoordinate: [selectedMarker.lng, selectedMarker.lat],
-      zoomLevel: computeFocusZoom(bottomSheetHeightRef.current),
-      padding: {
-        paddingBottom: bottomSheetHeightRef.current,
-        paddingTop: 0,
-        paddingLeft: 0,
-        paddingRight: 0,
+    setMapPadding({ top: 0, right: 0, bottom: bottomSheetHeightRef.current, left: 0 });
+    mapRef.current?.animateCamera(
+      {
+        center: { latitude: selectedMarker.lat, longitude: selectedMarker.lng },
+        zoom: computeFocusZoom(bottomSheetHeightRef.current),
       },
-      animationDuration: 500,
-    });
+      { duration: 500 },
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedMarkerId]);
 
-  // Render marker terpilih paling akhir → tampil paling atas & tidak ketutup marker
-  // lain (dipadu allowOverlap agar tidak disembunyikan collision detection Mapbox).
+  // Render marker terpilih paling akhir + zIndex tertinggi → tampil paling atas &
+  // tidak ketutup marker lain.
   const orderedMarkers = useMemo(() => {
     if (selectedMarker == null) return mapMarkers;
     return [
@@ -185,6 +186,19 @@ const OutletList = memo((props: any) => {
       selectedMarker,
     ];
   }, [mapMarkers, selectedMarker]);
+
+  // Hanya dipakai sekali untuk render pertama (MapView.initialRegion tidak reaktif) —
+  // fit sebenarnya ke mapBounds dilakukan lewat effect applyCameraPadding di atas.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const initialRegion = useMemo(
+    () => ({
+      latitude: (mapBounds.maxLat + mapBounds.minLat) / 2,
+      longitude: (mapBounds.maxLng + mapBounds.minLng) / 2,
+      latitudeDelta: Math.max((mapBounds.maxLat - mapBounds.minLat) * 1.4, 0.01),
+      longitudeDelta: Math.max((mapBounds.maxLng - mapBounds.minLng) * 1.4, 0.01),
+    }),
+    [],
+  );
 
   const listContentStyle = useMemo(
     () => ({
@@ -237,7 +251,7 @@ const OutletList = memo((props: any) => {
   );
 
   return (
-    <VStack fill>
+    <VStack fill backgroundColor={theme.pallate.neutral['01']}>
       <HStack
         position={{
           top,
@@ -301,58 +315,31 @@ const OutletList = memo((props: any) => {
       </Pressable>
       </HStack>
       <MapView
+        ref={mapRef}
         style={{
           flex: 1,
         }}
-        styleURL={Mapbox.StyleURL.Outdoors}
+        initialRegion={initialRegion}
+        mapPadding={mapPadding}
         scrollEnabled={true}
         pitchEnabled={false}
         rotateEnabled={false}
-        attributionEnabled={false}
-        compassEnabled={false}
-        scaleBarEnabled={false}
-        logoEnabled={false}
+        showsCompass={false}
+        toolbarEnabled={false}
+        showsUserLocation
       >
-        {/* Show a route polyline on the map */}
-        <Camera
-          ref={cameraRef}
-          {...(selectedMarker
-            ? {}
-            : {
-                bounds: {
-                  ne: [mapBounds.maxLng, mapBounds.maxLat],
-                  sw: [mapBounds.minLng, mapBounds.minLat],
-                },
-              })}
-          animationDuration={300}
-          animationMode="easeTo"
-          followPadding={{
-            paddingBottom: bottomSheetHeight,
-            paddingLeft: 0,
-            paddingRight: 0,
-            paddingTop: 0,
-          }}
-          padding={{
-            paddingBottom: bottomSheetHeight,
-            paddingLeft: 0,
-            paddingRight: 0,
-            paddingTop: 0,
-          }}
-        />
-        <UserLocation />
-
         {orderedMarkers.map((marker) => (
-          <Mapbox.MarkerView
+          <Marker
             key={`marker-${marker.id}`}
-            id={`marker-${marker.id}`}
-            coordinate={[marker.lng, marker.lat]}
-            allowOverlap={selectedOutletId === marker.id}
+            coordinate={{ latitude: marker.lat, longitude: marker.lng }}
+            zIndex={selectedOutletId === marker.id ? 1 : 0}
+            tracksViewChanges={false}
           >
             <OutletMapMarker
               marker={marker}
               isSelected={selectedOutletId === marker.id}
             />
-          </Mapbox.MarkerView>
+          </Marker>
         ))}
       </MapView>
       <BottomSheet
@@ -373,6 +360,7 @@ const OutletList = memo((props: any) => {
           height: 5,
           width: 38,
         }}
+        backgroundStyle={{ backgroundColor: theme.pallate.neutral['01'] }}
         enableDynamicSizing={false}
       >
         <FlashList

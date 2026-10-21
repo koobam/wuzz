@@ -1,5 +1,5 @@
 import request from '@http/request';
-import { apiUrl } from '@http/url';
+import { API_V1, apiUrl } from '@http/url';
 import type { StringifiableRecord } from 'query-string';
 import {
   LaundryServiceDetailResponse,
@@ -30,11 +30,11 @@ export const laundryServices = (
   prefetchKey?: string,
   signal?: AbortSignal,
 ): Promise<LaundryServicesResponse> =>
-  request(apiUrl('/services', listQuery(category, params)), { signal, prefetchKey });
+  request(apiUrl(`${API_V1}/services`, listQuery(category, params)), { signal, prefetchKey });
 
 export const laundryServiceDetail = (
   id: string,
   prefetchKey?: string,
   signal?: AbortSignal,
 ): Promise<LaundryServiceDetailResponse> =>
-  request(apiUrl(`/services/${id}`), { signal, prefetchKey });
+  request(apiUrl(`${API_V1}/services/${id}`), { signal, prefetchKey });

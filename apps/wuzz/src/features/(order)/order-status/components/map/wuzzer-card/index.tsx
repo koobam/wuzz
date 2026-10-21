@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
     width: AVATAR_SIZE,
     height: AVATAR_SIZE,
     borderRadius: AVATAR_SIZE / 2,
+    borderCurve: 'continuous',
     overflow: 'hidden',
   },
   avatarImage: {

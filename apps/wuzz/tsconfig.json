@@ -3,22 +3,21 @@
   "include": ["**/*.ts", "**/*.tsx", "**/*.d.ts"],
   "exclude": ["**/node_modules", "**/Pods"],
   "compilerOptions": {
-    "baseUrl": "./",
     "paths": {
-      "@features/*": ["src/features/*"],
-      "@core/*": ["src/core/*"],
-      "@components/*": ["src/components/*"],
-      "@pages/*": ["src/pages/*"],
+      "@features/*": ["./src/features/*"],
+      "@core/*": ["./src/core/*"],
+      "@components/*": ["./src/components/*"],
+      "@pages/*": ["./src/pages/*"],
       "@http/*": ["../../libs/api/src/*"],
-      "@mock/*": ["src/core/mock/*"],
-      "@api/*": ["src/core/api/*"],
-      "@hooks/*": ["src/services/hooks/*"],
-      "@navigation/*": ["src/navigation/*"],
-      "@services/*": ["src/services/*"],
-      "@assets/*": ["public/assets/*"],
-      "@fonts/*": ["public/fonts/*"],
-      "@icons/*": ["public/icons/*"],
-      "@locales/*": ["public/locales/*"]
+      "@mock/*": ["./src/core/mock/*"],
+      "@api/*": ["./src/core/api/*"],
+      "@hooks/*": ["./src/services/hooks/*"],
+      "@navigation/*": ["./src/navigation/*"],
+      "@services/*": ["./src/services/*"],
+      "@assets/*": ["./public/assets/*"],
+      "@fonts/*": ["./public/fonts/*"],
+      "@icons/*": ["./public/icons/*"],
+      "@locales/*": ["./public/locales/*"]
     }
   }
 }

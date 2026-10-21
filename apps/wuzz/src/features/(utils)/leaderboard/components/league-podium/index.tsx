@@ -70,7 +70,7 @@ const PodiumBlock3D = ({
   rotation = 0,
 }: PodiumBlock3DProps) => {
   const { frontPath, topPath } = create3DFaces(x, y, width, height, depth);
-  const font = useFont(require('@fonts/Poppins-Bold.ttf'), 80);
+  const font = useFont(require('@fonts/Nunito-Bold.ttf'), 80);
 
   const origin = vec(x + width / 2, y + height / 2);
   const transform = [{ rotate: rotation }];
@@ -155,6 +155,7 @@ const PlayerCard = memo(function PlayerCard({
           width: avatarSize,
           height: avatarSize,
           borderRadius: avatarSize / 2,
+          borderCurve: 'continuous',
         }}
       />
       <VStack items="center">

@@ -11,10 +11,15 @@ import { memo, useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
-import { theme } from '@components/atoms';
+import { Pressable, theme } from '@components/atoms';
+import { IconX } from 'tabler-icons-react-native';
 
 const styles = StyleSheet.create({
   wrapper: { flex: 1 },
+  closeButton: {
+    position: 'absolute',
+    left: theme.spacing.large,
+  },
   resultOverlay: {
     position: 'absolute',
     left: 0,
@@ -25,9 +30,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const Scan = memo((_props: ScanScreenProps) => {
+const Scan = memo(({ navigation }: ScanScreenProps) => {
   const { hasPermission, requestPermission } = useCameraPermission();
-  const { bottom: safeBottom } = useSafeAreaInsets();
+  const { top: safeTop, bottom: safeBottom } = useSafeAreaInsets();
   const [scannedResult, setScannedResult] = useState<{
     machineType: 'washer' | 'dryer';
     priceCoins: number;
@@ -52,6 +57,21 @@ const Scan = memo((_props: ScanScreenProps) => {
         codeScanner={codeScanner}
         isActive={scannedResult === null}
       />
+      <Pressable
+        onPress={navigation.goBack}
+        accessibilityLabel="Tutup"
+        items="center"
+        justify="center"
+        width={44}
+        height={44}
+        borderRadius={14}
+        borderWidth={1}
+        borderColor={theme.pallate.neutral['03']}
+        backgroundColor={theme.pallate.neutral['01']}
+        style={[styles.closeButton, { top: safeTop + theme.spacing.standard }]}
+      >
+        <IconX size={22} color={theme.pallate.neutral['05']} />
+      </Pressable>
       {scannedResult !== null && (
         <View
           style={[
@@ -67,7 +87,11 @@ const Scan = memo((_props: ScanScreenProps) => {
               Toast.show({
                 type: 'success',
                 text1: 'Memproses scan',
-                text2: `${scannedResult.machineType === 'washer' ? 'Mesin cuci' : 'Mesin pengering'} — ${scannedResult.priceCoins} koin (dummy)`,
+                text2: `${
+                  scannedResult.machineType === 'washer'
+                    ? 'Mesin cuci'
+                    : 'Mesin pengering'
+                } — ${scannedResult.priceCoins} koin (dummy)`,
               });
             }}
           />

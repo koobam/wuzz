@@ -22,6 +22,7 @@ const segmentStyles = StyleSheet.create({
     flex: 1,
     height: 5,
     borderRadius: 25,
+    borderCurve: 'continuous',
   },
 });
 

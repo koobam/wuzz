@@ -79,6 +79,7 @@ const TabBarLine = (props: TabBarLineProps) => {
       bottom: 0,
       transform: [{ translateX }],
       borderRadius: 1.5,
+      borderCurve: 'continuous',
     };
   });
 

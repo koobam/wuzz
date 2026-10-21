@@ -21,7 +21,7 @@ final class HybridTextMeasurer: HybridTextMeasurerSpec {
     fontWeight: String,
     fontStyle: String
   ) -> UIFont {
-    // Try exact PostScript name first (Poppins-SemiBold, FredokaOne-Regular, etc.)
+    // Try exact PostScript name first (Nunito-SemiBold, FredokaOne-Regular, etc.)
     if let f = UIFont(name: fontFamily, size: CGFloat(fontSize)) { return f }
 
     // Fallback: system font with closest weight

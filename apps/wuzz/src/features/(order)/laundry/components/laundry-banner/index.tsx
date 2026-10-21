@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
   },
   imageRadius: {
     borderBottomLeftRadius: theme.spacing.large * 2,
+    borderCurve: 'continuous',
     borderBottomRightRadius: theme.spacing.large * 2,
   },
 });

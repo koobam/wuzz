@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     width: INDICATOR_WIDTH,
     backgroundColor: theme.pallate.primary['03'],
     borderRadius: INDICATOR_WIDTH / 2,
+    borderCurve: 'continuous',
   },
 });
 

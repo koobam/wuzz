@@ -2,9 +2,6 @@ import { ApiResponse } from '@http/response';
 
 export type OutletsResponse = ApiResponse<OutletsData>;
 
-/** GET /outlets/nearest — single nearest outlet. */
-export type NearestOutletResponse = ApiResponse<OutletApi>;
-
 export interface OutletsData {
   next: string;
   outlets: OutletApi[];
@@ -31,33 +28,16 @@ export interface OutletApi {
   updated_at?: string;
 }
 
-/** Query params: use (lat + long) for nearest, or (cursor + num) for pagination */
+/** Query params. Without lat/long outlets come back by name; (cursor + num) pages through them. */
 export interface OutletsParams {
-  /** Latitude (with long: returns 10 nearest) */
+  /** Latitude (with long: sorts nearest first and fills distance_in_km) */
   lat?: number;
-  /** Longitude (with lat: returns 10 nearest) */
+  /** Longitude (with lat: sorts nearest first and fills distance_in_km) */
   long?: number;
   /** Pagination cursor (when not using lat/long) */
   cursor?: string;
-  /** Page size (default 10, when not using lat/long) */
+  /** Page size (default 10, max 50) */
   num?: number;
   /** Outlet terpilih → backend menaruhnya di urutan atas daftar. */
   selected_outlet_id?: number;
-}
-
-export interface NearestOutletParams {
-  lat: number;
-  long: number;
-}
-
-
-export interface NearestOutletData {
-  id: number
-  name: string
-  address: string
-  category: string
-  distance_in_km: number
-  current_status: string
-  delivery_types: string[]
-  hours: string[]
 }

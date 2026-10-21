@@ -1,36 +1,47 @@
-import { memo, useMemo } from 'react';
-import { Dimensions, Linking } from 'react-native';
-import { HStack, Text, theme, VStack } from '@components/atoms';
+import { memo, useCallback, useMemo } from 'react';
+import { Linking, StyleSheet } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
+import { Box, Text, theme, VStack } from '@components/atoms';
+import type { LaundryService } from '@core/api';
 import { EmptyStatePlaceholder } from '@components/molecules';
 import { isNetworkError } from '@http/errors';
 import { Danger, InfoCircle, WifiSquare } from 'iconsax-react-native';
 import type { CategoryGridProps } from './category-grid.types';
-import { CategoryCard } from './category-card';
+import {
+  CategoryCard,
+  CATEGORY_ICON_AREA,
+  CATEGORY_LABEL_HEIGHT,
+} from './category-card';
 import { CategoryGridLoading } from './category-grid-loading';
 import { useTranslation } from 'react-i18next';
 
-/** Background color per category index (cycles if there are more items). */
-const CATEGORY_COLORS = ['#002FFF', '#FF9D00', '#FF6265', '#2DC892'];
+/** Width of one category cell; the label wraps inside it. */
+const CELL_WIDTH = 84;
 
-/** Tilt (degrees) per category index (cycles if there are more items). */
-const CATEGORY_ROTATIONS = [-8, 4, -4, 8];
+/** Space between the two rows and between columns. */
+const ROW_GAP = theme.spacing.standard;
+const COLUMN_GAP = theme.spacing.small;
 
-/** Number of cards per row. */
-const COLUMNS = 4;
+/** Icon area + gap + a two-line label. */
+const CELL_HEIGHT =
+  CATEGORY_ICON_AREA + theme.spacing.small + CATEGORY_LABEL_HEIGHT;
+const LIST_HEIGHT = CELL_HEIGHT * 2 + ROW_GAP;
 
-/** How much each card overlaps the previous one (px). */
-const CARD_OVERLAP = 16;
+/** Categories sit in two rows and scroll sideways: each list item is a column
+ *  holding the top and bottom cell. */
+const toColumns = (items: LaundryService[]): LaundryService[][] => {
+  const columns: LaundryService[][] = [];
+  for (let i = 0; i < items.length; i += 2) {
+    columns.push(items.slice(i, i + 2));
+  }
+  return columns;
+};
 
-/**
- * Card width: available row width (screen minus the VStack's horizontal padding)
- * split into COLUMNS, plus the overlap added back so the overlapped cards still
- * fill the full width edge-to-edge (otherwise they'd cluster left).
- */
-const CARD_WIDTH =
-  (Dimensions.get('window').width -
-    theme.spacing.large * 2 +
-    CARD_OVERLAP * (COLUMNS - 1)) /
-  COLUMNS;
+const columnKey = (column: LaundryService[]): string =>
+  column.map(c => c.id).join('-');
+
+const ColumnSeparator = memo(() => <Box width={COLUMN_GAP} />);
+ColumnSeparator.displayName = 'ColumnSeparator';
 
 export const CategoryGrid = memo(
   ({
@@ -41,19 +52,33 @@ export const CategoryGrid = memo(
     error,
     onRetry,
   }: CategoryGridProps) => {
-    const { t } = useTranslation("home");
+    const { t } = useTranslation('home');
     const items = itemsProp;
     const errorMessage = useMemo(() => {
       if (error instanceof Error) return error.message;
-      if (
-        typeof error === 'object' &&
-        error !== null &&
-        'message' in error
-      ) {
+      if (typeof error === 'object' && error !== null && 'message' in error) {
         return String((error as { message?: string }).message);
       }
       return null;
     }, [error]);
+
+    const columns = useMemo(() => toColumns(items), [items]);
+
+    const renderColumn = useCallback(
+      ({ item: column }: { item: LaundryService[] }) => (
+        <VStack gap={ROW_GAP}>
+          {column.map(service => (
+            <CategoryCard
+              key={service.id}
+              item={service}
+              width={CELL_WIDTH}
+              onPress={() => onCategoryPress(service)}
+            />
+          ))}
+        </VStack>
+      ),
+      [onCategoryPress],
+    );
 
     const content = useMemo(() => {
       if (isLoading) return <CategoryGridLoading />;
@@ -65,12 +90,22 @@ export const CategoryGrid = memo(
             iconSize={48}
             icon={
               network ? (
-                <WifiSquare size={48} color={theme.pallate.neutral['04']} variant="Bulk" />
+                <WifiSquare
+                  size={48}
+                  color={theme.pallate.neutral['04']}
+                  variant="Bulk"
+                />
               ) : (
-                <Danger size={48} color={theme.pallate.neutral['04']} variant="Bulk" />
+                <Danger
+                  size={48}
+                  color={theme.pallate.neutral['04']}
+                  variant="Bulk"
+                />
               )
             }
-            title={network ? 'Tidak ada koneksi internet' : 'Gagal memuat layanan'}
+            title={
+              network ? 'Tidak ada koneksi internet' : 'Gagal memuat layanan'
+            }
             description={
               network
                 ? 'Periksa koneksi internetmu lalu coba lagi.'
@@ -81,8 +116,18 @@ export const CategoryGrid = memo(
             }
             secondaryButton={
               network
-                ? { label: 'Pengaturan', onPress: () => { Linking.openSettings(); } }
-                : { label: 'Perlu Bantuan ?', onPress: () => { Linking.openSettings(); } }
+                ? {
+                    label: 'Pengaturan',
+                    onPress: () => {
+                      Linking.openSettings();
+                    },
+                  }
+                : {
+                    label: 'Perlu Bantuan ?',
+                    onPress: () => {
+                      Linking.openSettings();
+                    },
+                  }
             }
           />
         );
@@ -93,7 +138,11 @@ export const CategoryGrid = memo(
           <EmptyStatePlaceholder
             iconSize={48}
             icon={
-              <InfoCircle size={48} color={theme.pallate.neutral['04']} variant="Linear" />
+              <InfoCircle
+                size={48}
+                color={theme.pallate.neutral['04']}
+                variant="Linear"
+              />
             }
             title="Belum ada layanan"
             description="Kategori layanan belum tersedia saat ini."
@@ -105,32 +154,31 @@ export const CategoryGrid = memo(
       }
 
       return (
-        <HStack items="flex-start">
-          {items.map((item, index) => (
-            <CategoryCard
-              key={item.name}
-              index={index}
-              width={CARD_WIDTH}
-              overlap={CARD_OVERLAP}
-              rotation={CATEGORY_ROTATIONS[index % CATEGORY_ROTATIONS.length]}
-              backgroundColor={CATEGORY_COLORS[index % CATEGORY_COLORS.length]}
-              item={item}
-              onPress={() => onCategoryPress(item)}
-            />
-          ))}
-        </HStack>
+        <FlashList
+          data={columns}
+          horizontal
+          keyExtractor={columnKey}
+          renderItem={renderColumn}
+          ItemSeparatorComponent={ColumnSeparator}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.listContent}
+          style={styles.list}
+        />
       );
-    }, [isLoading, isError, items, error, errorMessage, onRetry, onCategoryPress]);
+    }, [
+      isLoading,
+      isError,
+      items,
+      error,
+      errorMessage,
+      onRetry,
+      columns,
+      renderColumn,
+    ]);
 
     return (
-      <VStack
-        gap={theme.spacing.standard}
-        padding={{
-          paddingHorizontal: theme.spacing.large,
-          paddingBottom: theme.spacing.large,
-        }}
-      >
-        <VStack>
+      <VStack gap={theme.spacing.standard}>
+        <VStack padding={{ paddingHorizontal: theme.spacing.large }}>
           <Text type="s2" weight="semibold">
             {t('category.title')}
           </Text>
@@ -145,3 +193,8 @@ export const CategoryGrid = memo(
 );
 
 CategoryGrid.displayName = 'CategoryGrid';
+
+const styles = StyleSheet.create({
+  list: { height: LIST_HEIGHT },
+  listContent: { paddingHorizontal: theme.spacing.large },
+});

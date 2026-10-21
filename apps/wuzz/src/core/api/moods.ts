@@ -1,7 +1,7 @@
 import request from '@http/request';
-import { apiUrl } from '@http/url';
+import { API_V1, apiUrl } from '@http/url';
 import type { MoodsResponse } from './moods.types';
 
 export const moods = (): Promise<MoodsResponse> => {
-  return request(apiUrl('/moods'));
+  return request(apiUrl(`${API_V1}/moods`));
 };

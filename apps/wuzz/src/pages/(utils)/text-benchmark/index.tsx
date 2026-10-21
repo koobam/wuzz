@@ -30,7 +30,7 @@ const PROFILER_RUNS  = 7; // mount cycles per variant, first 2 discarded as warm
 // Equivalent flat style to Text type="b2" weight="regular" — used for the
 // RN baseline so we're comparing component overhead, not style differences.
 const RN_B2_STYLE = StyleSheet.create({
-  text: { fontFamily: 'Poppins-Regular', fontWeight: '400', fontSize: 14, lineHeight: 21 },
+  text: { fontFamily: 'Nunito-Regular', fontWeight: '400', fontSize: 14, lineHeight: 21 },
 }).text;
 
 const RNTextBatch = React.memo(({ seed }: { seed: number }) => (
@@ -281,7 +281,7 @@ const TextBenchmarkScreen = memo(({ navigation }: { navigation: any }) => {
         () => prepFn(LONG, 'regular', 16)));
       suite.push(await bench('Nitro — measurement', 'measureNaturalWidth() long',
         () => measureWidthFn(LONG, 'regular', 16)));
-      suite.push(await bench('Nitro — measurement', 'getFontMetrics() Poppins-Regular 16',
+      suite.push(await bench('Nitro — measurement', 'getFontMetrics() Nunito-Regular 16',
         () => getFontMetricsFn('regular', 16)));
       suite.push(await bench('Nitro — measurement', 'measureInkBounds() italic',
         () => measureInkFn(ITALIC_SAMPLE, 'regular', 16, true)));
@@ -617,6 +617,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: theme.pallate.neutral['01'],
     borderRadius: 16,
+    borderCurve: 'continuous',
     overflow: 'hidden',
   },
   emptyCard: {
@@ -635,6 +636,7 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     backgroundColor: theme.pallate.neutral['02'],
     borderRadius: 6,
+    borderCurve: 'continuous',
   },
   sectionLabel: {
     letterSpacing: 0.8,

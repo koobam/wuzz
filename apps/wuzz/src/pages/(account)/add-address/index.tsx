@@ -21,7 +21,7 @@ import {
 } from '@gorhom/bottom-sheet';
 import { RootStackParamList } from '@navigation/root/root.types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import Mapbox, { Camera, MapView } from '@rnmapbox/maps';
+import MapView, { type Region } from 'react-native-maps';
 import { Gps, Location, Map, Map1, SearchNormal1, TickCircle } from 'iconsax-react-native';
 import { useCurrentLocation } from '@hooks/utils';
 import {
@@ -31,7 +31,6 @@ import {
   useMemo,
   useRef,
   useState,
-  type ComponentRef,
 } from 'react';
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { BlurView } from '@react-native-community/blur';
@@ -51,7 +50,15 @@ type AddAddressProps = {
 
 // Titik awal peta (Jakarta) — nanti bisa diganti lokasi user.
 const DEFAULT_CENTER: [number, number] = [106.8272, -6.1754];
-// Token sama dengan yang dipakai peta (App.tsx) untuk reverse-geocoding.
+const DEFAULT_REGION: Region = {
+  latitude: DEFAULT_CENTER[1],
+  longitude: DEFAULT_CENTER[0],
+  latitudeDelta: 0.01,
+  longitudeDelta: 0.01,
+};
+// Zoom-in delta dipakai saat pindah ke lokasi user (setara zoomLevel 16 Mapbox dulu).
+const FOCUS_DELTA = 0.005;
+// Cuma dipakai untuk reverse-geocoding lewat Mapbox Geocoding API (REST, bukan SDK peta).
 const MAPBOX_TOKEN =
   'pk.eyJ1Ijoia29vYmFtIiwiYSI6ImNtZWxtajNncjBmeWMyd3FyM3V3NzUwMzUifQ.eusnZIscj38jvv9zmm1tHA';
 
@@ -60,7 +67,7 @@ const AddAddress = memo(({ navigation }: AddAddressProps) => {
   const { addAddress } = useDeliveryAddress();
   const { coords: currentCoords } = useCurrentLocation();
   const detailsRef = useRef<BottomSheetModal>(null);
-  const cameraRef = useRef<ComponentRef<typeof Camera>>(null);
+  const mapRef = useRef<MapView>(null);
 
   const [coords, setCoords] = useState<{ lng: number; lat: number }>({
     lng: DEFAULT_CENTER[0],
@@ -115,15 +122,13 @@ const AddAddress = memo(({ navigation }: AddAddressProps) => {
   }, []);
 
   // Pin di tengah: baca center peta saat berhenti digeser + reverse-geocode.
-  const handleMapIdle = useCallback(
-    (state: Mapbox.MapState) => {
-      const center = state?.properties?.center;
-      if (!center) return;
+  const handleRegionChangeComplete = useCallback(
+    (region: Region) => {
       // Idle pertama = load awal (bukan geseran user). Idle berikutnya = sudah digeser.
       if (readyRef.current) setMoved(true);
       else readyRef.current = true;
-      setCoords({ lng: center[0], lat: center[1] });
-      reverseGeocode(center[0], center[1]);
+      setCoords({ lng: region.longitude, lat: region.latitude });
+      reverseGeocode(region.longitude, region.latitude);
       // Debounce turunkan pin: kalau digeser lagi dalam jeda ini, dibatalkan.
       if (dropTimer.current) clearTimeout(dropTimer.current);
       dropTimer.current = setTimeout(() => setDragging(false), 350);
@@ -131,8 +136,9 @@ const AddAddress = memo(({ navigation }: AddAddressProps) => {
     [reverseGeocode],
   );
 
-  // Mulai geser: sembunyikan tooltip + angkat pin (batalkan jadwal turun).
-  const handleCameraChanged = useCallback(() => {
+  // Mulai geser (drag tangan user, bukan animasi kamera): sembunyikan tooltip +
+  // angkat pin (batalkan jadwal turun).
+  const handlePanDrag = useCallback(() => {
     if (!readyRef.current) return;
     if (dropTimer.current) {
       clearTimeout(dropTimer.current);
@@ -156,11 +162,15 @@ const AddAddress = memo(({ navigation }: AddAddressProps) => {
 
   const handleGoToCurrentLocation = useCallback(() => {
     if (!currentCoords) return;
-    cameraRef.current?.setCamera({
-      centerCoordinate: [currentCoords.long, currentCoords.lat],
-      zoomLevel: 16,
-      animationDuration: 600,
-    });
+    mapRef.current?.animateToRegion(
+      {
+        latitude: currentCoords.lat,
+        longitude: currentCoords.long,
+        latitudeDelta: FOCUS_DELTA,
+        longitudeDelta: FOCUS_DELTA,
+      },
+      600,
+    );
   }, [currentCoords]);
 
   // Init kamera ke lokasi device begitu tersedia (sekali). Settle-nya diperlakukan
@@ -170,11 +180,15 @@ const AddAddress = memo(({ navigation }: AddAddressProps) => {
     if (didInitLocationRef.current || !currentCoords) return;
     didInitLocationRef.current = true;
     readyRef.current = false;
-    cameraRef.current?.setCamera({
-      centerCoordinate: [currentCoords.long, currentCoords.lat],
-      zoomLevel: 16,
-      animationDuration: 0,
-    });
+    mapRef.current?.animateToRegion(
+      {
+        latitude: currentCoords.lat,
+        longitude: currentCoords.long,
+        latitudeDelta: FOCUS_DELTA,
+        longitudeDelta: FOCUS_DELTA,
+      },
+      0,
+    );
   }, [currentCoords]);
 
   // --- Search: search bar SENDIRI yang morph jadi card, bertahap ---
@@ -229,22 +243,15 @@ const AddAddress = memo(({ navigation }: AddAddressProps) => {
       {/* Peta full-screen */}
       <VStack fill>
         <MapView
+          ref={mapRef}
           style={styles.map}
-          styleURL={Mapbox.StyleURL.Street}
-          scaleBarEnabled={false}
-          logoEnabled={false}
-          attributionEnabled={false}
-          compassEnabled={false}
+          initialRegion={DEFAULT_REGION}
+          showsCompass={false}
           rotateEnabled={false}
           pitchEnabled={false}
-          onCameraChanged={handleCameraChanged}
-          onMapIdle={handleMapIdle}
-        >
-          <Camera
-            ref={cameraRef}
-            defaultSettings={{ centerCoordinate: DEFAULT_CENTER, zoomLevel: 15 }}
-          />
-        </MapView>
+          onPanDrag={handlePanDrag}
+          onRegionChangeComplete={handleRegionChangeComplete}
+        />
         {/* Card atas: judul + alamat */}
         <VStack  width="85%"
           self="center"

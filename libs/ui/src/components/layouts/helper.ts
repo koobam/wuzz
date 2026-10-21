@@ -162,8 +162,10 @@ export const createBorderWidthStyle = (
 export const createBorderRadiusStyle = (
   borderRadius: BorderRadiusType | number,
 ) => {
+  // Continuous (squircle) corners everywhere a radius is set. iOS-only; other
+  // platforms ignore it.
   if (typeof borderRadius === 'number') {
-    return {borderRadius};
+    return {borderRadius, borderCurve: 'continuous' as const};
   }
   const {
     borderTopLeftRadius,
@@ -177,6 +179,7 @@ export const createBorderRadiusStyle = (
     borderTopRightRadius,
     borderBottomLeftRadius,
     borderBottomRightRadius,
+    borderCurve: 'continuous' as const,
   };
 };
 

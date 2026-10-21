@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
     height: 55,
     overflow: 'hidden',
     borderRadius: 14,
+    borderCurve: 'continuous',
     borderWidth: 4,
   },
   image: {

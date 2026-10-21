@@ -35,8 +35,10 @@ export const MENU_EMPTY = {
 
 /** Scroll distance (px) after which the header outlet section is fully collapsed. */
 export const MENU_HEADER_COLLAPSE_THRESHOLD = 80;
-/** Approximate height of the outlet card in the menu header (for collapse animation). */
-export const MENU_HEADER_OUTLET_SECTION_HEIGHT = 88;
+/** Approximate height of the outlet card in the menu header (for collapse animation).
+ *  Includes the 20px the outlet card's pill badge hangs above the card itself —
+ *  without that room the collapsing wrapper's overflow:hidden clips the pill. */
+export const MENU_HEADER_OUTLET_SECTION_HEIGHT = 108;
 
 export const MENU_CATEGORIES: MenuCategory[] = [
   { id: 'coffee', name: 'Coffee' },

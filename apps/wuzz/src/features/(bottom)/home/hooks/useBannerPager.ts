@@ -4,9 +4,9 @@ import { FlashListRef } from '@shopify/flash-list';
 import { useSharedValue } from 'react-native-reanimated';
 
 export const useBannerPager = () => {
-  const bannerListRef  = useRef<FlashListRef<string>>(null);
-  const scrollOffsetX  = useSharedValue(0);
-  const currentIndex   = useRef(0);
+  const bannerListRef = useRef<FlashListRef<string>>(null);
+  const scrollOffsetX = useSharedValue(0);
+  const currentIndex = useRef(0);
 
   // useEffect(() => {
   //   if (!isFocused) return;
@@ -22,7 +22,9 @@ export const useBannerPager = () => {
     (event: NativeSyntheticEvent<NativeScrollEvent>) => {
       const x = event.nativeEvent.contentOffset.x;
       scrollOffsetX.value = x;
-      currentIndex.current = Math.round(x / event.nativeEvent.layoutMeasurement.width);
+      currentIndex.current = Math.round(
+        x / event.nativeEvent.layoutMeasurement.width,
+      );
     },
     [scrollOffsetX],
   );
