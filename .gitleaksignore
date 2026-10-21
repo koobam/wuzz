@@ -1,0 +1,19 @@
+# Findings gitleaks reports in the history, reviewed and accepted. Anything new
+# must not be added here without a reason: remove the secret instead.
+#
+# Mapbox PUBLIC tokens (pk.*): meant to ship inside the app.
+3459434276cf56a7f637d3fd57c025c0cee606dc:.env.production:generic-api-key:10
+519ea0c2e8f56dbb405b71d9976345540da72e57:.env.staging:generic-api-key:9
+519ea0c2e8f56dbb405b71d9976345540da72e57:android/.env.staging:generic-api-key:7
+8a70c58f1e911d18ffa549bfd1e80ddbb4edd24c:src/pages/(account)/add-address/index.tsx:generic-api-key:55
+# Supabase DATABASE PASSWORD for hot-updater (HOT_UPDATER_SUPABASE_PASSWORD), in the
+# first commit. This is a real secret in a public history. The owner chose to leave
+# it for now; rotating it is the proper fix, after which this line can go.
+519ea0c2e8f56dbb405b71d9976345540da72e57:.env.production:generic-api-key:11
+#
+# Supabase anon key (a JWT with role "anon"): public by design.
+519ea0c2e8f56dbb405b71d9976345540da72e57:.env.production:jwt:13
+# Pod checksums and a JS bundle, not secrets.
+1b8b33e0a2beaa96a3ed1b6ecd075eeaefb465df:apps/station/ios/Podfile.lock:generic-api-key:2158
+1b8b33e0a2beaa96a3ed1b6ecd075eeaefb465df:apps/wuzz/ios/Podfile.lock:generic-api-key:2867
+519ea0c2e8f56dbb405b71d9976345540da72e57:dist/index.ios.bundle:generic-api-key:591805
