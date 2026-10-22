@@ -46,4 +46,4 @@ feature/<what>  ->  PR to develop  ->  CI + a preview  ->  look at it  ->  merge
 4. **Backend:** see the backend repo's README ("Seeing a change on staging").
 5. Merging to `develop` updates staging (the web apps when `PAGES_AUTO_DEPLOY=true`).
 
-Previews are never cleaned up automatically; Cloudflare keeps the latest ones per project.
+Previews are not cleaned up automatically; delete old ones in the Cloudflare dashboard (Workers & Pages > project > Deployments) when they pile up.
