@@ -1,14 +1,18 @@
 name: Deploy web apps
 
-# Builds the backoffice and the POS and uploads them to Cloudflare Pages, where they
-# are served at admin-stg.wuzz.care and pos-stg.wuzz.care.
+# Builds the backoffice and the POS and uploads them to Cloudflare Pages.
 #
-#   By hand   Actions > Deploy web apps > Run workflow
-#   On push   to develop when one of the apps changed, but only if the repository
-#             variable PAGES_AUTO_DEPLOY is "true". Off by default.
+#   Staging       on push to develop (when an app changed) and by hand; served at
+#                 admin-stg.wuzz.care and pos-stg.wuzz.care. Push deploys need the
+#                 repository variable PAGES_AUTO_DEPLOY=true. Off by default.
+#   Feature branch  every pull request from this repository gets its own preview, at
+#                 <branch>.wuzz-admin-stg.pages.dev and <branch>.wuzz-pos-stg.pages.dev, and a
+#                 comment on the PR with the link. Staging itself is not touched. The preview
+#                 talks to the staging API.
 #
 # Repository secrets: CLOUDFLARE_API_TOKEN (Account > Cloudflare Pages > Edit) and
-# CLOUDFLARE_ACCOUNT_ID. The Pages projects themselves already exist.
+# CLOUDFLARE_ACCOUNT_ID. The Pages projects themselves already exist. Without the secrets,
+# pull requests simply get no preview; a manual run fails loudly.
 on:
   workflow_dispatch:
   push:
@@ -19,16 +23,28 @@ on:
       - "packages/**"
       - "pnpm-lock.yaml"
       - ".github/workflows/pages.yml"
+  pull_request:
+    paths:
+      - "apps/backoffice/**"
+      - "apps/pos/**"
+      - "packages/**"
+      - "pnpm-lock.yaml"
+      - ".github/workflows/pages.yml"
 
 permissions:
   contents: read
+  pull-requests: write
 
 jobs:
   deploy:
+    # A pull request from a fork gets no secrets, so no preview.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && vars.PAGES_AUTO_DEPLOY == 'true') ||
+      (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
     concurrency:
-      group: pages-${{ matrix.app }}
-      cancel-in-progress: false
-    if: github.event_name == 'workflow_dispatch' || vars.PAGES_AUTO_DEPLOY == 'true'
+      group: pages-${{ matrix.app }}-${{ github.head_ref || github.ref_name }}
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -36,22 +52,62 @@ jobs:
         include:
           - { app: backoffice, project: wuzz-admin-stg }
           - { app: pos, project: wuzz-pos-stg }
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
+      - name: Are the Cloudflare secrets set?
+        id: secrets
+        run: |
+          if [ -n "$CLOUDFLARE_API_TOKEN" ] && [ -n "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "have=true" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event_name }}" = pull_request ]; then
+            echo "have=false" >> "$GITHUB_OUTPUT"
+            echo "No Cloudflare secrets: skipping the preview." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "::error::CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID are not set"; exit 1
+          fi
       - uses: actions/checkout@v4
+        if: steps.secrets.outputs.have != 'false'
       - uses: pnpm/action-setup@v4
+        if: steps.secrets.outputs.have != 'false'
       - uses: actions/setup-node@v4
+        if: steps.secrets.outputs.have != 'false'
         with:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+        if: steps.secrets.outputs.have != 'false'
       - name: Build ${{ matrix.app }}
+        if: steps.secrets.outputs.have != 'false'
         run: pnpm --filter @wuzz/${{ matrix.app }} build
         env:
           # The apps' .env files are not in git; the staging values are set here.
           VITE_API_URL: https://api-stg.wuzz.care
           VITE_SUPPORT_URL: https://api-stg.wuzz.care/support
       - name: Upload to Cloudflare Pages
-        run: npx --yes wrangler@4 pages deploy "apps/${{ matrix.app }}/dist" --project-name "${{ matrix.project }}" --branch main --commit-dirty=true
+        id: upload
+        if: steps.secrets.outputs.have != 'false'
         env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          APP: ${{ matrix.app }}
+          PROJECT: ${{ matrix.project }}
+          HEAD_REF: ${{ github.head_ref }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          # "main" is the Pages project's production branch, which the *-stg.wuzz.care
+          # domains serve. Any other branch name becomes a preview, and Pages makes the
+          # <branch>.<project>.pages.dev alias from it.
+          branch=main
+          if [ "$EVENT" = pull_request ]; then branch="$HEAD_REF"; fi
+          npx --yes wrangler@4 pages deploy "apps/$APP/dist" --project-name "$PROJECT" \
+            --branch "$branch" --commit-dirty=true | tee upload.log
+          url="$(grep -oE 'https://[a-z0-9.-]+\.pages\.dev' upload.log | tail -1)"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "$APP: $url" >> "$GITHUB_STEP_SUMMARY"
+      - name: Comment the preview on the pull request
+        if: github.event_name == 'pull_request' && steps.upload.outputs.url != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: scripts/ci/preview-comment.sh "${{ matrix.app }}" "${{ steps.upload.outputs.url }}"
