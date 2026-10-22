@@ -1,0 +1,18 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule: { interval: weekly }
+    open-pull-requests-limit: 5
+    target-branch: develop
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
+    ignore:
+      # React Native is bumped by hand together with its native projects.
+      - dependency-name: react-native
+      - dependency-name: react
+  - package-ecosystem: github-actions
+    directory: /
+    schedule: { interval: weekly }
+    target-branch: develop

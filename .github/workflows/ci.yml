@@ -1,12 +1,12 @@
 name: CI
 
-# Pull requests and main: install once, then check every app. The web apps (POS,
+# Pull requests, master and develop: install once, then check every app. The web apps (POS,
 # backoffice, landing) must build; the mobile app must not get worse than its
 # recorded baseline of type errors.
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [master, develop]
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -59,3 +59,16 @@ jobs:
             echo "More type errors than the baseline. Fix the new ones, or if you removed old ones, lower .tsc-baseline."
             exit 1
           fi
+
+  secrets:
+    # The repository is public: a committed key or password is public too. Scans the
+    # whole history; reviewed findings are listed in .gitleaksignore.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: gitleaks
+        run: |
+          docker run --rm -v "$PWD":/repo zricethezav/gitleaks:v8.21.2 \
+            detect --source /repo --no-banner --redact --verbose

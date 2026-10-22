@@ -65,8 +65,8 @@ jobs:
           WUZZ_GOOGLE_SERVICES_JSON: ${{ secrets.WUZZ_GOOGLE_SERVICES_JSON }}
         run: |
           set -eu
-          app_up=$(echo "$APP" | tr a-z A-Z)
-          flavor_up=$(echo "$FLAVOR" | tr a-z A-Z)
+          app_up=$(echo "$APP" | tr '[:lower:]' '[:upper:]')
+          flavor_up=$(echo "$FLAVOR" | tr '[:lower:]' '[:upper:]')
           env_var="${app_up}_ENV_${flavor_up}"
           ks_var="${app_up}_KEYSTORE_B64"
           pw_var="${app_up}_KEYSTORE_PASSWORD"
@@ -96,7 +96,7 @@ jobs:
           ENVFILE: .env.${{ inputs.env }}
         run: |
           set -eu
-          Flavor="$(echo "${FLAVOR:0:1}" | tr a-z A-Z)${FLAVOR:1}"
+          Flavor="$(echo "${FLAVOR:0:1}" | tr '[:lower:]' '[:upper:]')${FLAVOR:1}"
           ./gradlew --no-daemon "assemble${Flavor}Release" "bundle${Flavor}Release"
 
       - uses: actions/upload-artifact@v4
