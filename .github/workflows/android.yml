@@ -3,6 +3,11 @@ name: Android
 # Manual only: pick the app and the environment, get a signed APK and AAB back as
 # build artifacts. Nothing here runs on push, so it spends minutes only when asked.
 #
+# To try a feature branch: Actions > Android > Run workflow, and under "Use workflow from"
+# pick the branch. The artifact name carries the branch, so builds do not get mixed up. The
+# staging build (com.koobam.wuzz.staging) talks to api-stg.wuzz.care and installs next to the
+# production app.
+#
 # Secrets (Settings > Secrets and variables > Actions), per app WUZZ or STATION:
 #   <APP>_ENV_STAGING / <APP>_ENV_PRODUCTION   the whole .env.<flavor> file
 #   <APP>_KEYSTORE_B64                         base64 of the release .jks
@@ -99,9 +104,16 @@ jobs:
           Flavor="$(echo "${FLAVOR:0:1}" | tr '[:lower:]' '[:upper:]')${FLAVOR:1}"
           ./gradlew --no-daemon "assemble${Flavor}Release" "bundle${Flavor}Release"
 
+      - name: Name the artifact after the branch
+        id: slug
+        run: |
+          # Artifact names cannot contain "/": feature/login -> feature-login
+          slug="$(printf '%s' "$GITHUB_REF_NAME" | tr -c 'A-Za-z0-9_.\n-' '-' | cut -c1-60)"
+          echo "branch=$slug" >> "$GITHUB_OUTPUT"
+
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{ inputs.app }}-${{ inputs.env }}-${{ github.run_number }}
+          name: ${{ inputs.app }}-${{ inputs.env }}-${{ steps.slug.outputs.branch }}-${{ github.run_number }}
           path: |
             apps/${{ inputs.app }}/android/app/build/outputs/apk/${{ inputs.env }}/release/*.apk
             apps/${{ inputs.app }}/android/app/build/outputs/bundle/${{ inputs.env }}Release/*.aab
