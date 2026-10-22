@@ -1,12 +1,12 @@
 name: CI
 
-# Pull requests, master and develop: install once, then check every app. The web apps (POS,
+# Pull requests, main and develop: install once, then check every app. The web apps (POS,
 # backoffice, landing) must build; the mobile app must not get worse than its
 # recorded baseline of type errors.
 on:
   pull_request:
   push:
-    branches: [master, develop]
+    branches: [main, develop]
 
 concurrency:
   group: ci-${{ github.ref }}
