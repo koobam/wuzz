@@ -89,6 +89,9 @@ jobs:
           # A DSN identifies a project to send to; it is not a secret, so these are variables:
           # SENTRY_DSN_POS and SENTRY_DSN_BACKOFFICE under Settings > Secrets and variables > Actions.
           VITE_SENTRY_DSN: ${{ matrix.app == 'pos' && vars.SENTRY_DSN_POS || vars.SENTRY_DSN_BACKOFFICE }}
+          # So Sentry can tell staging from production and an error from the deploy that caused it.
+          VITE_APP_ENV: staging
+          VITE_RELEASE: ${{ github.sha }}
       - name: Upload to Cloudflare Pages
         id: upload
         if: steps.secrets.outputs.have != 'false'
