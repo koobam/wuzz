@@ -9,7 +9,10 @@ export function initSentry() {
   if (!env.VITE_SENTRY_DSN) return;
   Sentry.init({
     dsn: env.VITE_SENTRY_DSN,
-    environment: import.meta.env.MODE,
+    // A staging build is still a Vite "production" build, so the mode alone cannot tell the two
+    // apart; the pipeline names the deployment.
+    environment: env.VITE_APP_ENV ?? import.meta.env.MODE,
+    release: env.VITE_RELEASE,
   });
 }
 
